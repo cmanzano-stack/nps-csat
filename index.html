@@ -17,7 +17,7 @@
   --text:#1A1A2E; --text2:#6B7280; --text3:#9CA3AF;
   --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
   --radius:14px; --radius-sm:8px;
-  --shadow:0 2px 12px rgba(0,0,0,.06); --shadow-lg:0 8px 32px rgba(0,0,0,.10);
+  --shadow:0 2px 12px rgba(0,0,0,.06); --shadow-lg:0 8px 32px rgba(0,0,0,.12);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -51,63 +51,63 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tab-btn{padding:14px 22px;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;background:none;border:none;border-bottom:2.5px solid transparent;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:7px}
 .tab-btn:hover{color:var(--text);background:var(--bg)}
 .tab-btn.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
-.tab-btn.coming-soon{opacity:.6}
-.tab-btn.coming-soon:hover{color:var(--text2);background:none;cursor:default}
+.tab-btn.coming-soon{opacity:.55}
+.tab-btn.coming-soon:hover{color:var(--text2);background:transparent;cursor:default}
 
-/* ── METRIC CARD (el widget grande con donut) ── */
-.metric-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;transition:box-shadow .2s}
+/* ── METRIC CARD (gran widget donut) ── */
+.metric-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;transition:box-shadow .2s}
 .metric-card:hover{box-shadow:var(--shadow-lg)}
-
-.mc-left{display:flex;flex-direction:column;gap:10px;padding-right:24px;border-right:1px solid var(--border)}
-.mc-question{font-size:14px;font-weight:700;color:var(--text);line-height:1.45;max-width:220px}
+.mc-left{display:flex;flex-direction:column;gap:14px;padding-right:28px;border-right:1.5px solid var(--border)}
+.mc-question{font-size:15px;font-weight:700;color:var(--text);line-height:1.45;max-width:240px}
 .mc-based{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
-.mc-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
-select.mc-sel{font-family:var(--font);font-size:12px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:5px 24px 5px 10px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color .15s}
+.mc-filters{display:flex;gap:8px;flex-wrap:wrap}
+select.mc-sel{font-family:var(--font);font-size:12px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:6px 26px 6px 11px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color .15s}
 select.mc-sel:hover,select.mc-sel:focus{border-color:var(--brand)}
 
-.mc-donut-wrap{position:relative;width:160px;height:160px;margin:12px auto 8px}
-.mc-donut-wrap canvas{position:absolute;inset:0}
+/* Donut — tamaño compacto y elegante */
+.mc-donut-wrap{position:relative;width:140px;height:140px;margin:8px auto 4px;flex-shrink:0}
+.mc-donut-wrap canvas{position:absolute;inset:0;width:140px!important;height:140px!important}
 .mc-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.mc-donut-score{font-size:28px;font-weight:800;color:var(--text);line-height:1}
-.mc-donut-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.05em;margin-top:2px}
+.mc-donut-score{font-size:26px;font-weight:800;color:var(--text);line-height:1}
+.mc-donut-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.05em;margin-top:2px;text-align:center}
 
-.mc-legend{display:flex;justify-content:center;gap:20px;margin-top:6px}
+.mc-legend{display:flex;justify-content:center;gap:18px;margin-top:8px}
 .mc-leg-item{text-align:center}
-.mc-leg-val{font-size:18px;font-weight:700}
-.mc-leg-val.alto{color:var(--success)}
-.mc-leg-val.medio{color:var(--warning)}
-.mc-leg-val.bajo{color:var(--danger)}
+.mc-leg-val{font-size:19px;font-weight:700}
+.mc-leg-val.alto{color:#10B981}
+.mc-leg-val.medio{color:#F59E0B}
+.mc-leg-val.bajo{color:#EF4444}
 .mc-leg-lbl{font-size:10px;color:var(--text3);margin-top:1px}
 
-.mc-right{display:flex;flex-direction:column;gap:16px;padding-left:24px;justify-content:space-between}
+.mc-right{display:flex;flex-direction:column;gap:18px;padding-left:28px;justify-content:space-between}
 .mc-consolidado-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
-.mc-stats{display:flex;gap:20px;margin-top:4px}
-.mc-stat-box{display:flex;flex-direction:column;gap:3px}
-.mc-stat-label{font-size:11px;color:var(--text2)}
-.mc-stat-value{font-size:26px;font-weight:700;color:var(--text)}
-.mc-stat-value.green{color:var(--success)}
-.mc-stat-sub{font-size:11px;color:var(--text3)}
+.mc-stats{display:flex;gap:24px;margin-top:6px}
+.mc-stat-box{}
+.mc-stat-label{font-size:12px;color:var(--text2);margin-bottom:2px}
+.mc-stat-value{font-size:28px;font-weight:700;color:var(--text);line-height:1.1}
+.mc-stat-value.green{color:#10B981}
+.mc-stat-sub{font-size:11px;color:var(--text3);margin-top:2px}
 
-.btn-report{display:inline-flex;align-items:center;gap:8px;padding:14px 20px;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;border:none;background:var(--brand);color:#fff;width:100%;justify-content:center;letter-spacing:.02em;box-shadow:0 3px 10px rgba(250,52,94,.3);transition:all .18s;text-transform:uppercase}
-.btn-report:hover{background:var(--brand-dark);box-shadow:0 5px 16px rgba(250,52,94,.4)}
-.btn-report:disabled{opacity:.55;cursor:not-allowed}
-.btn-report svg{width:16px;height:16px;flex-shrink:0}
+/* Botón reporte — grande y llamativo */
+.btn-report{display:flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;border:none;background:var(--brand);color:#fff;width:100%;letter-spacing:.04em;box-shadow:0 3px 12px rgba(250,52,94,.3);transition:all .18s;text-transform:uppercase}
+.btn-report:hover{background:var(--brand-dark);box-shadow:0 5px 18px rgba(250,52,94,.4);transform:translateY(-1px)}
+.btn-report:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-report svg{width:17px;height:17px;flex-shrink:0}
 
-/* SECTION HEADER (secciones CSAT) */
+/* AI result inline */
+.mc-ai-result{display:none;margin-top:0}
+.mc-ai-result.visible{display:block}
+.mc-ai-result-box{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap}
+
+/* SECTION HEADER */
 .section-header{padding:12px 18px;border-radius:var(--radius-sm);margin-bottom:16px;border:1px solid var(--brand-border);background:var(--brand-bg)}
 .section-header h3{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:2px}
 .section-header p{font-size:12px;color:var(--text2)}
 
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
-@media(max-width:900px){.metrics-grid{grid-template-columns:1fr}.metric-card{grid-template-columns:1fr}.mc-left{border-right:none;border-bottom:1px solid var(--border);padding-right:0;padding-bottom:20px}.mc-right{padding-left:0;padding-top:20px}}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+@media(max-width:920px){.metrics-grid{grid-template-columns:1fr}.metric-card{grid-template-columns:1fr}.mc-left{border-right:none;border-bottom:1.5px solid var(--border);padding-right:0;padding-bottom:20px}.mc-right{padding-left:0;padding-top:20px}}
 
-/* EMPRESAS */
-.emp-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.emp-stat{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500}
-.emp-stat strong{font-weight:700;font-size:15px}
-.emp-stat.respondido{background:#D1FAE5;color:#065F46}
-.emp-stat.enviado{background:#DBEAFE;color:#1E40AF}
-.emp-stat.bloqueado{background:#FEF3C7;color:#92400E}
+/* ── TABLA ── */
 .table-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
 .table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1.5px solid var(--border);gap:12px;flex-wrap:wrap}
 .card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
@@ -118,11 +118,6 @@ td{font-size:13px;padding:11px 14px;border-bottom:1px solid var(--border);color:
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#FAFBFE}
 .country-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
-.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.status-respondido{background:#D1FAE5;color:#065F46}
-.status-enviado{background:#DBEAFE;color:#1E40AF}
-.status-bloqueado{background:#FEF3C7;color:#92400E}
-.company-cell{font-weight:500;color:var(--text)}
 .score-pill{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-family:var(--mono);font-size:12px;font-weight:700}
 .score-pill.promotor{background:#D1FAE5;color:#065F46}
 .score-pill.neutro{background:#FEF3C7;color:#92400E}
@@ -132,32 +127,84 @@ tr:hover td{background:#FAFBFE}
 .risk-alto{background:#FEF3C7;color:#92400E}
 .risk-medio{background:#EDE9FE;color:#5B21B6}
 .risk-sano{background:#D1FAE5;color:#065F46}
+.status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:default}
+.status-respondido{background:#D1FAE5;color:#065F46}
+.status-enviado{background:#DBEAFE;color:#1E40AF}
+.status-bloqueado{background:#FEF3C7;color:#92400E}
+/* Estado clickeable en tabla empresas */
+.status-btn{cursor:pointer;border:none;font-family:var(--font);transition:opacity .15s}
+.status-btn:hover{opacity:.75}
+.status-btn.active-filter{outline:2.5px solid var(--brand);outline-offset:2px}
+.company-cell{font-weight:500;color:var(--text)}
 .interp-cell{font-size:12px;color:var(--text2);max-width:280px;line-height:1.45}
 .section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* AI PANEL */
-.ai-panel{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);border-radius:var(--radius);padding:24px;margin-bottom:24px;position:relative;overflow:hidden}
-.ai-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(250,52,94,.12) 0%,transparent 65%);pointer-events:none}
-.ai-panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
-.ai-title-row{display:flex;align-items:center;gap:10px}
-.ai-title{color:#fff;font-size:15px;font-weight:600}
-.ai-badge{background:rgba(250,52,94,.2);border:1px solid rgba(250,52,94,.4);color:#FA345E;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
-.ai-desc{color:rgba(255,255,255,.55);font-size:12px;line-height:1.55;margin-top:6px}
-.ai-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.ai-result{display:none}
-.ai-result.visible{display:block;margin-top:4px}
-.ai-result-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);padding:18px 20px;font-size:13px;color:rgba(255,255,255,.82);line-height:1.7;white-space:pre-wrap;font-family:var(--font)}
-.ai-result-box strong{color:#fff;font-weight:700}
-.btn-ai-ghost{background:transparent;color:rgba(255,255,255,.5);border:1.5px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
-.btn-ai-ghost:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.8)}
+/* EMPRESAS summary */
+.emp-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.emp-stat{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.emp-stat strong{font-weight:700;font-size:15px}
+.emp-stat.respondido{background:#D1FAE5;color:#065F46}
+.emp-stat.enviado{background:#DBEAFE;color:#1E40AF}
+.emp-stat.bloqueado{background:#FEF3C7;color:#92400E}
+.emp-stat:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.emp-stat.active-filter{border-color:var(--brand)!important;box-shadow:0 0 0 3px rgba(250,52,94,.15)!important}
+.clear-filter-btn{font-size:12px;color:var(--brand);cursor:pointer;text-decoration:underline;background:none;border:none;padding:4px 8px;font-family:var(--font)}
 
-/* COMING SOON */
-.coming-soon-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;background:var(--card);border:2px dashed var(--border2);border-radius:var(--radius);margin-top:8px}
+/* ── COMING SOON ── */
+.coming-soon-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;background:var(--card);border:2px dashed var(--border2);border-radius:var(--radius)}
 .coming-soon-icon{font-size:52px;margin-bottom:20px;opacity:.6}
 .coming-soon-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
 .coming-soon-sub{font-size:14px;color:var(--text2);max-width:400px;line-height:1.6}
 .coming-soon-badge{display:inline-block;margin-top:18px;padding:6px 16px;border-radius:20px;background:var(--bg2);border:1.5px solid var(--border2);font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase}
+
+/* ── AI CHAT BANNER ── */
+.ai-banner{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);border-radius:var(--radius);padding:24px;margin-bottom:28px;position:relative;overflow:hidden}
+.ai-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 10% 50%,rgba(250,52,94,.15),transparent 60%);pointer-events:none}
+.ai-banner-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.ai-banner-title-row{display:flex;align-items:center;gap:10px}
+.ai-banner-title{color:#fff;font-size:16px;font-weight:700}
+.ai-banner-badge{background:rgba(250,52,94,.25);border:1px solid rgba(250,52,94,.5);color:#FA345E;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.ai-banner-desc{color:rgba(255,255,255,.55);font-size:12px;line-height:1.55;margin-top:5px;max-width:560px}
+.ai-chat-area{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px;min-height:80px;max-height:320px;overflow-y:auto;margin-bottom:12px;font-size:13px;color:rgba(255,255,255,.8);line-height:1.7}
+.ai-chat-area.empty{display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-style:italic}
+.ai-msg{margin-bottom:10px;padding:10px 14px;border-radius:8px;line-height:1.6}
+.ai-msg.user{background:rgba(250,52,94,.2);color:#fff;border-left:3px solid var(--brand)}
+.ai-msg.bot{background:rgba(255,255,255,.07);color:rgba(255,255,255,.88)}
+.ai-msg.bot strong{color:#fff}
+.ai-input-row{display:flex;gap:10px}
+.ai-input{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font);font-size:13px;color:#fff;outline:none;transition:border-color .15s}
+.ai-input::placeholder{color:rgba(255,255,255,.35)}
+.ai-input:focus{border-color:rgba(250,52,94,.6);background:rgba(255,255,255,.12)}
+.ai-send-btn{padding:10px 20px;border-radius:var(--radius-sm);background:var(--brand);color:#fff;font-family:var(--font);font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.ai-send-btn:hover{background:var(--brand-dark)}
+.ai-send-btn:disabled{opacity:.5;cursor:not-allowed}
+.ai-clear-btn{padding:10px 14px;border-radius:var(--radius-sm);background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-family:var(--font);font-size:12px;border:1px solid rgba(255,255,255,.15);cursor:pointer;transition:all .18s}
+.ai-clear-btn:hover{background:rgba(255,255,255,.18);color:#fff}
+.ai-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.ai-sug{padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:11px;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.ai-sug:hover{background:rgba(250,52,94,.25);border-color:rgba(250,52,94,.4);color:#fff}
+
+/* ── MODAL REPORTE PDF ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);border-radius:var(--radius);width:100%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1.5px solid var(--border);background:var(--bg)}
+.modal-title{font-size:15px;font-weight:700;color:var(--text)}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3);line-height:1;padding:4px 8px;border-radius:6px;transition:background .15s}
+.modal-close:hover{background:var(--bg2);color:var(--text)}
+.modal-body{flex:1;overflow-y:auto;padding:24px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;padding:16px 22px;border-top:1.5px solid var(--border);background:var(--bg)}
+/* Reporte contenido */
+.report-section{margin-bottom:24px}
+.report-section h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--brand);margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--brand-border)}
+.report-group{display:flex;flex-direction:column;gap:10px}
+.report-item{padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg);font-size:13px;line-height:1.6;color:var(--text2)}
+.report-item.negative{border-left:3px solid #EF4444;background:#FEF2F2}
+.report-item.neutral{border-left:3px solid #F59E0B;background:#FFFBEB}
+.report-item.positive{border-left:3px solid #10B981;background:#F0FDF4}
+.action-item{padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--brand-border);background:var(--brand-bg);font-size:13px;line-height:1.6;color:var(--text)}
+.action-item::before{content:'→ ';color:var(--brand);font-weight:700}
 
 /* MISC */
 .empty-state{text-align:center;padding:36px 20px;color:var(--text3);font-size:13px}
@@ -194,31 +241,55 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
     <button class="tab-btn active"    onclick="showTab('tab-nps',this)">📊 NPS</button>
     <button class="tab-btn"           onclick="showTab('tab-csat',this)">⭐ CSAT</button>
     <button class="tab-btn"           onclick="showTab('tab-empresas',this)">🏢 Encuestas enviadas</button>
-    <button class="tab-btn coming-soon" onclick="showComingSoon(this,'Inactivos')">😴 Inactivos</button>
-    <button class="tab-btn coming-soon" onclick="showComingSoon(this,'Salidas')">🚪 Salidas</button>
+    <button class="tab-btn coming-soon" onclick="showComingSoon(this,'inactivos')">😴 Inactivos</button>
+    <button class="tab-btn coming-soon" onclick="showComingSoon(this,'salidas')">🚪 Salidas</button>
   </div>
 
   <!-- ══ TAB NPS ══ -->
   <div id="tab-nps">
+
+    <!-- AI BANNER -->
+    <div class="ai-banner" id="ai-banner-nps">
+      <div class="ai-banner-top">
+        <div>
+          <div class="ai-banner-title-row">
+            <span style="font-size:22px">🤖</span>
+            <span class="ai-banner-title">Asistente IA · Apprecio Beat</span>
+            <span class="ai-banner-badge">⚡ Apprecio Beat IA</span>
+          </div>
+          <div class="ai-banner-desc">Pregunta sobre clientes en riesgo, acciones para mejorar el NPS, qué está fallando o cualquier insight de las métricas. No responderá preguntas ajenas al negocio.</div>
+        </div>
+        <button class="ai-clear-btn" onclick="clearAIChat('nps')">✕ Limpiar</button>
+      </div>
+      <div class="ai-suggestions">
+        <span class="ai-sug" onclick="sendSuggestion('nps','¿Qué clientes están en mayor riesgo de churn?')">¿Clientes en riesgo?</span>
+        <span class="ai-sug" onclick="sendSuggestion('nps','¿Qué acciones concretas podemos tomar para subir el NPS?')">Subir NPS</span>
+        <span class="ai-sug" onclick="sendSuggestion('nps','¿Cuáles son los principales puntos negativos que reportan los detractores?')">Motivos detractores</span>
+        <span class="ai-sug" onclick="sendSuggestion('nps','¿Qué está haciendo bien Apprecio según los promotores?')">Qué hacemos bien</span>
+        <span class="ai-sug" onclick="sendSuggestion('nps','Dame un plan de acción para los clientes neutros')">Plan para neutros</span>
+      </div>
+      <div id="ai-chat-nps" class="ai-chat-area empty">Haz una pregunta sobre tus métricas de NPS...</div>
+      <div class="ai-input-row" style="margin-top:10px">
+        <input class="ai-input" id="ai-input-nps" type="text" placeholder="¿Qué clientes están en riesgo? ¿Cómo mejorar el score?" onkeydown="if(event.key==='Enter')sendAIChat('nps')">
+        <button class="ai-send-btn" id="ai-send-nps" onclick="sendAIChat('nps')">Enviar ✈</button>
+      </div>
+    </div>
+
     <div class="metrics-grid" id="nps-metrics-grid">
-      <!-- card NPS Score (recomendación app) -->
+      <!-- card NPS P1 -->
       <div class="metric-card">
         <div class="mc-left">
           <div>
-            <div class="mc-question">Pregunta 1:<br>En una escala del 1 al 10, ¿Qué tanto recomiendas nuestra aplicación Apprecio?</div>
+            <div class="mc-question">Pregunta 1: En una escala del 1 al 10, ¿Qué tanto recomiendas nuestra aplicación Apprecio?</div>
             <div class="mc-based" id="nps1-based">Cargando...</div>
             <div class="mc-filters">
-              <select class="mc-sel" id="nps1-country" onchange="applyNPS1Filters()"><option value="">País: Todos</option></select>
-              <select class="mc-sel" id="nps1-period" onchange="applyNPS1Filters()"><option value="">Mes: Todos</option></select>
+              <select class="mc-sel" id="nps1-country" onchange="renderNPS1()"><option value="">País: Todos</option></select>
+              <select class="mc-sel" id="nps1-period" onchange="renderNPS1()"><option value="">Mes: Todos</option></select>
             </div>
           </div>
-          <div>
-            <div class="mc-donut-wrap">
-              <canvas id="nps1-chart"></canvas>
-              <div class="mc-donut-center">
-                <div class="mc-donut-score" id="nps1-score">—</div>
-                <div class="mc-donut-label">NPS Score</div>
-              </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="mc-donut-wrap"><canvas id="nps1-chart"></canvas>
+              <div class="mc-donut-center"><div class="mc-donut-score" id="nps1-score">—</div><div class="mc-donut-label">NPS Score</div></div>
             </div>
             <div class="mc-legend">
               <div class="mc-leg-item"><div class="mc-leg-val alto" id="nps1-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
@@ -235,32 +306,27 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
               <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="nps1-dest">—</div><div class="mc-stat-sub" id="nps1-dest-pct">—</div></div>
             </div>
           </div>
-          <button class="btn-report" id="btn-nps1-report" onclick="runAI_NPS('nps1')">
+          <button class="btn-report" id="btn-nps1-report" onclick="openReport('nps1')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Generar Reporte de Respuestas Abiertas
           </button>
-          <div id="ai-result-nps1" class="ai-result"></div>
         </div>
       </div>
 
-      <!-- card NPS Operativo (atención KAM) -->
+      <!-- card NPS P2 -->
       <div class="metric-card">
         <div class="mc-left">
           <div>
-            <div class="mc-question">Pregunta 2:<br>¿Cómo calificarías la atención del KAM asignado a tu cuenta trimestralmente?</div>
+            <div class="mc-question">Pregunta 2: ¿Cómo calificarías la atención del KAM asignado a tu cuenta trimestralmente?</div>
             <div class="mc-based" id="nps2-based">Cargando...</div>
             <div class="mc-filters">
-              <select class="mc-sel" id="nps2-country" onchange="applyNPS2Filters()"><option value="">País: Todos</option></select>
-              <select class="mc-sel" id="nps2-period" onchange="applyNPS2Filters()"><option value="">Mes: Todos</option></select>
+              <select class="mc-sel" id="nps2-country" onchange="renderNPS2()"><option value="">País: Todos</option></select>
+              <select class="mc-sel" id="nps2-period" onchange="renderNPS2()"><option value="">Mes: Todos</option></select>
             </div>
           </div>
-          <div>
-            <div class="mc-donut-wrap">
-              <canvas id="nps2-chart"></canvas>
-              <div class="mc-donut-center">
-                <div class="mc-donut-score" id="nps2-score">—</div>
-                <div class="mc-donut-label">Operativo</div>
-              </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="mc-donut-wrap"><canvas id="nps2-chart"></canvas>
+              <div class="mc-donut-center"><div class="mc-donut-score" id="nps2-score">—</div><div class="mc-donut-label">Operativo</div></div>
             </div>
             <div class="mc-legend">
               <div class="mc-leg-item"><div class="mc-leg-val alto" id="nps2-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
@@ -277,40 +343,63 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
               <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="nps2-dest">—</div><div class="mc-stat-sub" id="nps2-dest-pct">—</div></div>
             </div>
           </div>
-          <button class="btn-report" id="btn-nps2-report" onclick="runAI_NPS('nps2')">
+          <button class="btn-report" id="btn-nps2-report" onclick="openReport('nps2')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Generar Reporte de Respuestas Abiertas
           </button>
-          <div id="ai-result-nps2" class="ai-result"></div>
         </div>
       </div>
     </div>
 
-    <!-- Tabla detractores NPS -->
-    <div class="section-title" style="margin-top:8px">Detractores · Riesgo de Churn</div>
+    <!-- Tabla NPS -->
+    <div class="section-title">Detractores · Riesgo de Churn</div>
     <div class="table-card" style="margin-bottom:24px">
       <div class="table-head"><div class="card-title">🚨 Clientes Detractores</div><span id="det-count" style="font-size:12px;color:var(--text3)"></span></div>
-      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS App</th><th>NPS KAM</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-det"><tr><td colspan="8"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
+      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS App</th><th>NPS KAM</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-det"></tbody></table></div>
     </div>
-
     <div class="section-title">Todas las respuestas NPS</div>
     <div class="table-card">
       <div class="table-head"><div class="card-title">📋 Respuestas completas</div><span id="all-count" style="font-size:12px;color:var(--text3)"></span></div>
-      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS App</th><th>NPS KAM</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-all"><tr><td colspan="8"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
+      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS App</th><th>NPS KAM</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-all"></tbody></table></div>
     </div>
   </div>
 
   <!-- ══ TAB CSAT ══ -->
   <div id="tab-csat" style="display:none">
 
-    <!-- SECCIÓN 1: CSAT Post Abono Trimestral -->
+    <!-- AI BANNER CSAT -->
+    <div class="ai-banner">
+      <div class="ai-banner-top">
+        <div>
+          <div class="ai-banner-title-row">
+            <span style="font-size:22px">🤖</span>
+            <span class="ai-banner-title">Asistente IA · CSAT</span>
+            <span class="ai-banner-badge">⚡ Apprecio Beat IA</span>
+          </div>
+          <div class="ai-banner-desc">Consulta sobre satisfacción de plataforma, calidad de reuniones comerciales, qué mejorar y acciones concretas para subir el CSAT.</div>
+        </div>
+        <button class="ai-clear-btn" onclick="clearAIChat('csat')">✕ Limpiar</button>
+      </div>
+      <div class="ai-suggestions">
+        <span class="ai-sug" onclick="sendSuggestion('csat','¿Cuáles son los principales problemas que reportan los clientes insatisfechos con la plataforma?')">Problemas plataforma</span>
+        <span class="ai-sug" onclick="sendSuggestion('csat','¿Qué acciones podemos tomar para mejorar la satisfacción post reunión?')">Mejorar reuniones</span>
+        <span class="ai-sug" onclick="sendSuggestion('csat','¿Qué aspectos de la plataforma son más valorados positivamente?')">Lo más valorado</span>
+        <span class="ai-sug" onclick="sendSuggestion('csat','Dame un plan de acción para clientes con CSAT bajo')">Plan CSAT bajo</span>
+      </div>
+      <div id="ai-chat-csat" class="ai-chat-area empty">Haz una pregunta sobre satisfacción de clientes...</div>
+      <div class="ai-input-row" style="margin-top:10px">
+        <input class="ai-input" id="ai-input-csat" type="text" placeholder="¿Qué está fallando en la plataforma? ¿Cómo mejorar la experiencia?" onkeydown="if(event.key==='Enter')sendAIChat('csat')">
+        <button class="ai-send-btn" id="ai-send-csat" onclick="sendAIChat('csat')">Enviar ✈</button>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1 -->
     <div class="section-header">
       <h3>Sección Horizontal 1 · CSAT Post Abono Trimestral</h3>
       <p>Evaluación gatillada tras la confirmación de abonos trimestrales en la plataforma financiera.</p>
     </div>
-
-    <div style="margin-bottom:28px">
-      <div class="metric-card" style="grid-template-columns:1fr 1fr">
+    <div style="margin-bottom:24px">
+      <div class="metric-card">
         <div class="mc-left">
           <div>
             <div class="mc-question">¿Qué tan satisfecho(a) estás con el uso de la plataforma para la gestión de tus abonos trimestrales?</div>
@@ -320,13 +409,9 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
               <select class="mc-sel" id="csat1-period" onchange="renderCSAT1()"><option value="">Mes: Todos</option></select>
             </div>
           </div>
-          <div>
-            <div class="mc-donut-wrap">
-              <canvas id="csat1-chart"></canvas>
-              <div class="mc-donut-center">
-                <div class="mc-donut-score" id="csat1-score">—</div>
-                <div class="mc-donut-label">Satisfechos</div>
-              </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="mc-donut-wrap"><canvas id="csat1-chart"></canvas>
+              <div class="mc-donut-center"><div class="mc-donut-score" id="csat1-score">—</div><div class="mc-donut-label">Satisfechos</div></div>
             </div>
             <div class="mc-legend">
               <div class="mc-leg-item"><div class="mc-leg-val alto" id="csat1-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
@@ -343,23 +428,21 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
               <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="csat1-dest">—</div><div class="mc-stat-sub" id="csat1-dest-pct">—</div></div>
             </div>
           </div>
-          <button class="btn-report" id="btn-csat1-report" onclick="runAI_CSAT('csat1')">
+          <button class="btn-report" id="btn-csat1-report" onclick="openReport('csat1')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Generar Reporte de Respuestas Abiertas
           </button>
-          <div id="ai-result-csat1" class="ai-result"></div>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 2: CSAT Post Reunión Comercial -->
+    <!-- SECCIÓN 2 -->
     <div class="section-header">
       <h3>Sección Horizontal 2 · CSAT Post Reunión Comercial</h3>
       <p>Medición de calidad del servicio consultivo ejecutada inmediatamente al cierre de mesas de trabajo.</p>
     </div>
-
-    <div style="margin-bottom:28px">
-      <div class="metric-card" style="grid-template-columns:1fr 1fr">
+    <div style="margin-bottom:24px">
+      <div class="metric-card">
         <div class="mc-left">
           <div>
             <div class="mc-question">¿El ejecutivo comercial resolvió de forma clara y oportuna tus requerimientos en la reunión de cuenta?</div>
@@ -369,13 +452,9 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
               <select class="mc-sel" id="csat2-period" onchange="renderCSAT2()"><option value="">Mes: Todos</option></select>
             </div>
           </div>
-          <div>
-            <div class="mc-donut-wrap">
-              <canvas id="csat2-chart"></canvas>
-              <div class="mc-donut-center">
-                <div class="mc-donut-score" id="csat2-score">—</div>
-                <div class="mc-donut-label">Satisfechos</div>
-              </div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="mc-donut-wrap"><canvas id="csat2-chart"></canvas>
+              <div class="mc-donut-center"><div class="mc-donut-score" id="csat2-score">—</div><div class="mc-donut-label">Satisfechos</div></div>
             </div>
             <div class="mc-legend">
               <div class="mc-leg-item"><div class="mc-leg-val alto" id="csat2-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
@@ -392,16 +471,15 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
               <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="csat2-dest">—</div><div class="mc-stat-sub" id="csat2-dest-pct">—</div></div>
             </div>
           </div>
-          <button class="btn-report" id="btn-csat2-report" onclick="runAI_CSAT('csat2')">
+          <button class="btn-report" id="btn-csat2-report" onclick="openReport('csat2')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Generar Reporte de Respuestas Abiertas
           </button>
-          <div id="ai-result-csat2" class="ai-result"></div>
         </div>
       </div>
     </div>
 
-    <!-- Tabla comentarios CSAT -->
+    <!-- Tabla CSAT -->
     <div class="section-title">Comentarios recientes</div>
     <div class="table-card">
       <div class="table-head"><div class="card-title">💬 Todas las respuestas CSAT</div><span id="csat-all-count" style="font-size:12px;color:var(--text3)"></span></div>
@@ -415,38 +493,60 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
   <!-- ══ TAB EMPRESAS ══ -->
   <div id="tab-empresas" style="display:none">
     <div class="section-title">Estado de encuestas enviadas</div>
-    <div class="emp-summary" id="emp-summary">
-      <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
-      <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
-      <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <div class="emp-summary" id="emp-summary" style="margin-bottom:0">
+        <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
+        <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
+        <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
+      </div>
+      <button class="clear-filter-btn" id="emp-clear-filter" onclick="clearEmpFilter()" style="display:none">✕ Quitar filtro</button>
     </div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:16px">Haz clic en un estado para filtrar la tabla</div>
     <div class="table-card">
       <div class="table-head"><div class="card-title">🏢 Empresas · NPS enviado</div><span id="emp-count" style="font-size:12px;color:var(--text3)"></span></div>
       <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>Abonos trim.</th><th>Estado</th><th>Fecha generado</th><th>Último abono</th></tr></thead><tbody id="tbody-emp"><tr><td colspan="6"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
     </div>
   </div>
 
-  <!-- ══ TAB INACTIVOS (coming soon) ══ -->
+  <!-- ══ COMING SOON ══ -->
   <div id="tab-inactivos" style="display:none">
     <div class="coming-soon-panel">
       <div class="coming-soon-icon">😴</div>
       <div class="coming-soon-title">Módulo Inactivos</div>
-      <div class="coming-soon-sub">Próximamente podrás visualizar el análisis de empresas inactivas, su segmentación por tiempo sin actividad y estrategias de reactivación.</div>
+      <div class="coming-soon-sub">Próximamente podrás visualizar análisis de empresas inactivas, segmentación por tiempo sin actividad y estrategias de reactivación.</div>
       <span class="coming-soon-badge">🚧 En desarrollo</span>
     </div>
   </div>
-
-  <!-- ══ TAB SALIDAS (coming soon) ══ -->
   <div id="tab-salidas" style="display:none">
     <div class="coming-soon-panel">
       <div class="coming-soon-icon">🚪</div>
       <div class="coming-soon-title">Módulo Salidas</div>
-      <div class="coming-soon-sub">Próximamente podrás analizar las causas de churn, el volumen de bajas por período y los patrones de comportamiento previos a la salida.</div>
+      <div class="coming-soon-sub">Próximamente análisis de churn, volumen de bajas por período y patrones de comportamiento previos a la salida.</div>
       <span class="coming-soon-badge">🚧 En desarrollo</span>
     </div>
   </div>
-
 </main>
+
+<!-- ══ MODAL REPORTE ══ -->
+<div class="modal-overlay" id="report-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Reporte de Respuestas Abiertas</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div style="text-align:center;padding:40px;color:var(--text3)"><span class="spinner-dark"></span> Generando análisis con IA...</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cerrar</button>
+      <button class="btn btn-brand" onclick="printReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 6,2 18,2 18,9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Descargar PDF
+      </button>
+    </div>
+  </div>
+</div>
+
 <footer>APPRECIO BEAT · CX DASHBOARD · <span id="last-update">—</span></footer>
 
 <script>
@@ -455,34 +555,35 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
 // ══════════════════════════════════════════
 const N8N_WEBHOOK = 'https://n8n.openip.cl/webhook/apprecio-cx-analisis';
 
+// NPS: respuestas abiertas en gid=1574708855
+const SHEET_NPS_RESPUESTAS = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:json&gid=1574708855';
+// NPS: datos KPI principales
 const SHEET_NPS = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:json&gid=749991184';
+// Empresas (estado encuestas)
 const SHEET_EMPRESAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
-// CSAT Post Abono (respuestas_encuestas en el sheet de empresas)
-const SHEET_CSAT_ABONO = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
-// CSAT Post Reunión (Hoja 1 del segundo sheet)
+// CSAT Post Abono: respuestas_encuestas gid=122849284 + consulta_abono (estado)
+const SHEET_CSAT_ABONO = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=122849284';
+// CSAT Post Reunión: Hoja 1 gid=0
 const SHEET_CSAT_REUNION = 'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:json&gid=0';
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
-let npsData = [];        // datos crudos NPS
-let csatAbonoData = [];  // CSAT plataforma (post abono)
-let csatReunionData = []; // CSAT reunión comercial
-let empresaData = [];
-
-// filtrados locales por card
-let nps1Filtered = [], nps2Filtered = [];
-let csat1Filtered = [], csat2Filtered = [];
-
-let charts = {};  // { nps1, nps2, csat1, csat2 }
+let npsData=[], npsRespuestasData=[], empresaData=[];
+let csatAbonoData=[], csatReunionData=[];
+let nps1Filtered=[], nps2Filtered=[];
+let csat1Filtered=[], csat2Filtered=[];
+let charts={};
+let empActiveFilter=null; // 'RESPONDIDO' | 'CORREO ENVIADO' | 'BLOQUEADO' | null
+let aiChatHistory={nps:[], csat:[]};
 
 // ══════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════
-function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function flag(c){return{'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Perú':'🇵🇪','Argentina':'🇦🇷'}[c]||'🌎';}
-function monthName(m){return['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m-1]||'';}
-function riskOrd(r){return{'Crítico':0,'Alto':1,'Medio':2,'Sano':3}[r]??4;}
+const x=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const flag=c=>({'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Perú':'🇵🇪','Argentina':'🇦🇷'}[c]||'🌎');
+const monthName=m=>['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m-1]||'';
+const riskOrd=r=>({'Crítico':0,'Alto':1,'Medio':2,'Sano':3}[r]??4);
 function parseDate(s){
   if(!s)return null;
   const m1=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -491,494 +592,447 @@ function parseDate(s){
   if(m2)return new Date(+m2[1],+m2[2]-1,+m2[3]);
   const d=new Date(s); return isNaN(d)?null:d;
 }
-function dateToPeriod(d){return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:null;}
-
-function setProgress(p){
-  const b=document.getElementById('loading-bar');
-  b.style.width=p+'%';
-  if(p>=100)setTimeout(()=>b.style.width='0%',700);
-}
-function showBanner(msg,type){
-  const el=document.getElementById('status-banner');
-  el.className='status-'+type; el.innerHTML=msg; el.style.display='flex';
-  if(type!=='loading')setTimeout(()=>el.style.display='none',5000);
-}
+const dateToPeriod=d=>d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:null;
+function setProgress(p){const b=document.getElementById('loading-bar');b.style.width=p+'%';if(p>=100)setTimeout(()=>b.style.width='0%',700);}
+function showBanner(msg,type){const el=document.getElementById('status-banner');el.className='status-'+type;el.innerHTML=msg;el.style.display='flex';if(type!=='loading')setTimeout(()=>el.style.display='none',5000);}
 
 // ══════════════════════════════════════════
-//  FETCH GOOGLE SHEETS
+//  FETCH SHEETS
 // ══════════════════════════════════════════
 async function fetchSheet(url){
   const res=await fetch(url);
   if(!res.ok)throw new Error('HTTP '+res.status);
   const text=await res.text();
   const match=text.match(/setResponse\((\{[\s\S]+\})\)/);
-  if(!match)throw new Error('Respuesta inesperada de Google Sheets');
+  if(!match)throw new Error('Respuesta inesperada');
   const data=JSON.parse(match[1]);
-  if(data.status==='error')throw new Error(data.errors?.[0]?.message||'Error en Sheets');
+  if(data.status==='error')throw new Error(data.errors?.[0]?.message||'Error Sheets');
   const cols=data.table.cols.map(c=>c.label);
   return data.table.rows.map(row=>{
     const obj={};
-    row.c.forEach((cell,i)=>{
-      if(!cols[i])return;
-      obj[cols[i]]=cell==null?'':(cell.f!=null?cell.f:String(cell.v??''));
-    });
+    row.c.forEach((cell,i)=>{if(!cols[i])return;obj[cols[i]]=cell==null?'':(cell.f!=null?cell.f:String(cell.v??''));});
     return obj;
   });
 }
 
 // ══════════════════════════════════════════
-//  INIT & REFRESH
+//  INIT
 // ══════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', refreshData);
 
 async function refreshData(){
-  showBanner('<span class="spinner"></span>&nbsp; Cargando datos desde Google Sheets...','loading');
+  showBanner('<span class="spinner"></span>&nbsp; Cargando datos...','loading');
   setProgress(15);
   try{
-    const [npsRaw, empRaw, csatAbonoRaw, csatReunRaw] = await Promise.all([
+    const [npsRaw, npsRespRaw, empRaw, csatAbonoRaw, csatReunRaw] = await Promise.all([
       fetchSheet(SHEET_NPS),
+      fetchSheet(SHEET_NPS_RESPUESTAS).catch(()=>[]),
       fetchSheet(SHEET_EMPRESAS),
-      fetchSheet(SHEET_CSAT_ABONO),
-      fetchSheet(SHEET_CSAT_REUNION)
+      fetchSheet(SHEET_CSAT_ABONO).catch(()=>[]),
+      fetchSheet(SHEET_CSAT_REUNION).catch(()=>[])
     ]);
     setProgress(70);
-
     npsData = npsRaw.filter(r=>r['CLIENTE']?.trim());
+    npsRespuestasData = npsRespRaw;
     empresaData = empRaw.filter(r=>r['empresa_id']?.trim());
 
-    // Normalizar CSAT Abono (respuestas_encuestas)
-    csatAbonoData = csatAbonoRaw
-      .filter(r=>r['Estado']==='COMPLETADO')
+    // CSAT Abono — intentar con gid=122849284; si vacío fallback a gid=527249897 (respuestas_encuestas)
+    let csatAbonoRawFinal = csatAbonoRaw;
+    if(!csatAbonoRaw.length){
+      try{ csatAbonoRawFinal = await fetchSheet('https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897'); }
+      catch(e){}
+    }
+    csatAbonoData = csatAbonoRawFinal
+      .filter(r=>r['Estado']==='COMPLETADO'||r['Estado']==='completado')
       .map(r=>{
-        const notaKey = Object.keys(r).find(k=>k.toLowerCase().includes('satisfech'));
-        const comentKey = Object.keys(r).find(k=>k.toLowerCase().includes('facil')||k.toLowerCase().includes('fácil')||k.toLowerCase().includes('mejorar'));
-        return {
-          empresa: r['Nombre de la empresa']||r['empresa_id']||'',
-          pais: r['País']||r['Pais']||'',
-          ejecutivo: '',
-          nota: notaKey ? +r[notaKey] : NaN,
-          comentario: comentKey ? r[comentKey] : '',
-          fecha: r['Fecha_Envio']||r['fecha']||'',
-          email: r['correo_enviado']||''
-        };
-      })
-      .filter(r=>!isNaN(r.nota)&&r.nota>0);
+        const notaKey=Object.keys(r).find(k=>k.toLowerCase().includes('satisfech'));
+        const comentKey=Object.keys(r).find(k=>k.toLowerCase().includes('facil')||k.toLowerCase().includes('fácil')||k.toLowerCase().includes('mejorar'));
+        return{empresa:r['Nombre de la empresa']||r['empresa_id']||'',pais:r['País']||r['Pais']||'',ejecutivo:'',nota:notaKey?+r[notaKey]:NaN,comentario:comentKey?r[comentKey]:'',fecha:r['Fecha_Envio']||r['fecha']||'',email:r['correo_enviado']||''};
+      }).filter(r=>!isNaN(r.nota)&&r.nota>0);
 
-    // Normalizar CSAT Reunión (Hoja 1)
     csatReunionData = csatReunRaw
-      .map(r=>({
-        empresa: r['Empresa']||'',
-        pais: r['País']||r['Pais']||'',
-        ejecutivo: r['ejecutivo comercial']||'',
-        nota: +r['Satisfaccion'],
-        comentario: r['Comentarios']||'',
-        fecha: r['Fecha']||'',
-        email: r['Email']||''
-      }))
+      .map(r=>({empresa:r['Empresa']||'',pais:r['País']||r['Pais']||'',ejecutivo:r['ejecutivo comercial']||'',nota:+r['Satisfaccion'],comentario:r['Comentarios']||'',fecha:r['Fecha']||'',email:r['Email']||''}))
       .filter(r=>!isNaN(r.nota)&&r.nota>0);
 
     setProgress(90);
     buildAllFilters();
-    renderAll();
+    renderNPS1(); renderNPS2(); renderNPSTables();
+    renderCSAT1(); renderCSAT2(); renderCsatAllTable();
     renderEmpresasTab();
     setProgress(100);
     document.getElementById('last-update').textContent='Actualizado: '+new Date().toLocaleString('es-CL');
-    showBanner('✓ Datos cargados: '+npsData.length+' NPS · '+csatAbonoData.length+' CSAT abono · '+csatReunionData.length+' CSAT reunión','success');
-  }catch(e){
-    setProgress(100);
-    showBanner('⚠ Error al cargar: '+e.message,'error');
-    console.error(e);
-  }
+    showBanner(`✓ ${npsData.length} NPS · ${csatAbonoData.length} CSAT abono · ${csatReunionData.length} CSAT reunión`,'success');
+  }catch(e){setProgress(100);showBanner('⚠ Error: '+e.message,'error');console.error(e);}
 }
 
 // ══════════════════════════════════════════
-//  BUILD FILTERS (populamos todos los selects)
+//  BUILD FILTERS
 // ══════════════════════════════════════════
 function buildAllFilters(){
-  // Países NPS
-  const npsCountries=[...new Set(npsData.map(r=>r['PAÍS']).filter(Boolean))].sort();
-  // Períodos NPS
-  const npsPeriods=[...new Set(npsData.map(r=>dateToPeriod(parseDate(r['FECHA']))).filter(Boolean))].sort().reverse();
-
-  populateSel('nps1-country', npsCountries, 'País');
-  populateSel('nps2-country', npsCountries, 'País');
-  populatePeriods('nps1-period', npsPeriods);
-  populatePeriods('nps2-period', npsPeriods);
-
-  // Países CSAT abono
-  const c1Countries=[...new Set(csatAbonoData.map(r=>r.pais).filter(Boolean))].sort();
-  const c1Periods=[...new Set(csatAbonoData.map(r=>dateToPeriod(parseDate(r.fecha))).filter(Boolean))].sort().reverse();
-  populateSel('csat1-country', c1Countries, 'País');
-  populatePeriods('csat1-period', c1Periods);
-
-  // Países CSAT reunión
-  const c2Countries=[...new Set(csatReunionData.map(r=>r.pais).filter(Boolean))].sort();
-  const c2Periods=[...new Set(csatReunionData.map(r=>dateToPeriod(parseDate(r.fecha))).filter(Boolean))].sort().reverse();
-  populateSel('csat2-country', c2Countries, 'País');
-  populatePeriods('csat2-period', c2Periods);
+  const npsC=[...new Set(npsData.map(r=>r['PAÍS']).filter(Boolean))].sort();
+  const npsP=[...new Set(npsData.map(r=>dateToPeriod(parseDate(r['FECHA']))).filter(Boolean))].sort().reverse();
+  populateSel('nps1-country',npsC,'País'); populateSel('nps2-country',npsC,'País');
+  populatePeriods('nps1-period',npsP); populatePeriods('nps2-period',npsP);
+  const c1C=[...new Set(csatAbonoData.map(r=>r.pais).filter(Boolean))].sort();
+  const c1P=[...new Set(csatAbonoData.map(r=>dateToPeriod(parseDate(r.fecha))).filter(Boolean))].sort().reverse();
+  populateSel('csat1-country',c1C,'País'); populatePeriods('csat1-period',c1P);
+  const c2C=[...new Set(csatReunionData.map(r=>r.pais).filter(Boolean))].sort();
+  const c2P=[...new Set(csatReunionData.map(r=>dateToPeriod(parseDate(r.fecha))).filter(Boolean))].sort().reverse();
+  populateSel('csat2-country',c2C,'País'); populatePeriods('csat2-period',c2P);
 }
-
-function populateSel(id, vals, label){
-  const el=document.getElementById(id); if(!el)return;
-  el.innerHTML=`<option value="">${label}: Todos</option>`+vals.map(v=>`<option value="${v}">${flag(v)} ${v}</option>`).join('');
-}
-function populatePeriods(id, periods){
-  const el=document.getElementById(id); if(!el)return;
-  el.innerHTML='<option value="">Mes: Todos</option>'+periods.map(p=>{const[y,m]=p.split('-');return`<option value="${p}">${monthName(+m)} ${y}</option>`;}).join('');
-}
-
-// ══════════════════════════════════════════
-//  FILTER HELPERS
-// ══════════════════════════════════════════
-function filterByCountryPeriod(data, country, period, fechaFn){
-  return data.filter(r=>{
-    if(country && fechaFn(r,'pais')!==country) return false;
-    if(period){
-      const d=parseDate(fechaFn(r,'fecha'));
-      if(!d) return false;
-      if(dateToPeriod(d)!==period) return false;
-    }
-    return true;
-  });
-}
-
-function applyNPS1Filters(){ renderNPS1(); }
-function applyNPS2Filters(){ renderNPS2(); renderNPSTables(); }
-
-// ══════════════════════════════════════════
-//  RENDER ALL
-// ══════════════════════════════════════════
-function renderAll(){
-  renderNPS1();
-  renderNPS2();
-  renderNPSTables();
-  renderCSAT1();
-  renderCSAT2();
-  renderCsatAllTable();
-}
+function populateSel(id,vals,label){const el=document.getElementById(id);if(!el)return;el.innerHTML=`<option value="">${label}: Todos</option>`+vals.map(v=>`<option value="${v}">${flag(v)} ${v}</option>`).join('');}
+function populatePeriods(id,periods){const el=document.getElementById(id);if(!el)return;el.innerHTML='<option value="">Mes: Todos</option>'+periods.map(p=>{const[y,m]=p.split('-');return`<option value="${p}">${monthName(+m)} ${y}</option>`;}).join('');}
 
 // ══════════════════════════════════════════
 //  NPS RENDERS
 // ══════════════════════════════════════════
-function getFiltered_NPS(num){
+function getFilteredNPS(num){
   const country=document.getElementById(`nps${num}-country`)?.value||'';
   const period=document.getElementById(`nps${num}-period`)?.value||'';
   return npsData.filter(r=>{
-    if(country && r['PAÍS']!==country) return false;
+    if(country&&r['PAÍS']!==country)return false;
     if(period){const d=parseDate(r['FECHA']);if(!d)return false;if(dateToPeriod(d)!==period)return false;}
     return true;
   });
 }
+function renderNPS1(){nps1Filtered=getFilteredNPS(1);renderMetricCard('nps1',nps1Filtered,'NPS (Col G)','NPS Score','nps1-based');renderNPSTables();}
+function renderNPS2(){nps2Filtered=getFilteredNPS(2);renderMetricCard('nps2',nps2Filtered,'INTENCIÓN PERMANENCIA','Operativo','nps2-based');}
 
-function renderNPS1(){
-  const data = getFiltered_NPS(1);
-  nps1Filtered = data;
-  const scoreKey = 'NPS (Col G)'; // columna NPS aplicación
-  renderMetricCard('nps1', data, scoreKey, 'NPS Score', 'nps1-based', data.length+' respuestas reales');
-  renderNPSTables();
-}
-
-function renderNPS2(){
-  const data = getFiltered_NPS(2);
-  nps2Filtered = data;
-  const scoreKey = 'INTENCIÓN PERMANENCIA'; // columna NPS KAM / operativo
-  renderMetricCard('nps2', data, scoreKey, 'Operativo', 'nps2-based', data.length+' respuestas reales');
-}
-
-function renderMetricCard(prefix, data, scoreKey, centerLabel, basedId, basedText){
-  const n = data.length;
-  document.getElementById(basedId).textContent = n>0 ? 'BASADO EN '+n+' RESPUESTAS REALES' : 'SIN DATOS DISPONIBLES';
-
-  if(!n){
-    ['score','alto','medio','bajo','avg','dest'].forEach(k=>{
-      const el=document.getElementById(`${prefix}-${k}`); if(el) el.textContent='—';
-    });
-    const el=document.getElementById(`${prefix}-dest-pct`); if(el) el.textContent='—';
-    destroyChart(prefix);
-    return;
-  }
-
-  const pro = data.filter(r=>+r[scoreKey]>=9).length;
-  const neu = data.filter(r=>{const v=+r[scoreKey];return v>=7&&v<=8;}).length;
-  const det = data.filter(r=>+r[scoreKey]<=6&&+r[scoreKey]>=0).length;
-  const npsScore = Math.round(((pro-det)/n)*100);
-  const avg = (data.reduce((s,r)=>s+(+r[scoreKey]||0),0)/n).toFixed(1);
-
-  document.getElementById(`${prefix}-score`).textContent = (npsScore>0?'+':'')+npsScore;
-  document.getElementById(`${prefix}-alto`).textContent = pro;
-  document.getElementById(`${prefix}-medio`).textContent = neu;
-  document.getElementById(`${prefix}-bajo`).textContent = det;
-  document.getElementById(`${prefix}-avg`).textContent = avg;
-  document.getElementById(`${prefix}-dest`).textContent = pro;
-  document.getElementById(`${prefix}-dest-pct`).textContent = Math.round((pro/n)*100)+'% de este corte';
-
-  // Donut chart
-  destroyChart(prefix);
-  const ctx = document.getElementById(`${prefix}-chart`).getContext('2d');
-  charts[prefix] = new Chart(ctx,{
-    type:'doughnut',
-    data:{
-      labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
-      datasets:[{
-        data:[pro,neu,det],
-        backgroundColor:['#22C55E','#F59E0B','#EF4444'],
-        borderColor:['#16A34A','#D97706','#DC2626'],
-        borderWidth:2, hoverOffset:6
-      }]
-    },
-    options:{
-      responsive:false, maintainAspectRatio:false,
-      cutout:'68%',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}`}}}
-    }
-  });
-}
-
-function destroyChart(prefix){
-  if(charts[prefix]){charts[prefix].destroy();delete charts[prefix];}
-}
-
-// ══════════════════════════════════════════
-//  NPS TABLES
-// ══════════════════════════════════════════
-function renderNPSTables(){
-  // Usamos NPS1 filtrado como base (aplica mismo filtro de país/período)
-  const data = nps1Filtered.length ? nps1Filtered : npsData;
-  const scoreKey='NPS (Col G)';
-  const kamKey='INTENCIÓN PERMANENCIA';
-  const perKey='INTENCIÓN PERMANENCIA';
-
-  const rowHTML = r => {
-    const nps=+r[scoreKey], kam=+r[kamKey];
-    const nc=nps>=9?'promotor':nps>=7?'neutro':'detractor';
-    const kc=kam>=9?'promotor':kam>=7?'neutro':'detractor';
-    const rk=(r['Nivel de Riesgo']||'').toLowerCase().replace(/[íi]/g,'i').replace(/[óo]/g,'o').replace(/[éê]/g,'e');
-    return`<tr>
-      <td><span class="company-cell">${x(r['CLIENTE'])}</span></td>
-      <td><span class="country-badge">${flag(r['PAÍS'])} ${x(r['PAÍS'])}</span></td>
-      <td><span class="score-pill ${nc}">${isNaN(nps)?'—':nps}</span></td>
-      <td><span class="score-pill ${kc}">${isNaN(kam)?'—':kam}</span></td>
-      <td>${x(r['INTENCIÓN PERMANENCIA']||'—')}</td>
-      <td><span class="risk-badge risk-${rk}">${x(r['Nivel de Riesgo']||'—')}</span></td>
-      <td class="interp-cell">${x(r['Interpretación']||'—')}</td>
-      <td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r['FECHA']||'').split(' ')[0])}</td>
-    </tr>`;
-  };
-
-  const dets = data.filter(r=>+r[scoreKey]<=6).sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
-  document.getElementById('det-count').textContent=dets.length+' clientes';
-  document.getElementById('tbody-det').innerHTML=dets.length?dets.map(rowHTML).join(''):'<tr><td colspan="8"><div class="empty-state">Sin detractores en el período ✓</div></td></tr>';
-
-  const all=[...data].sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
-  document.getElementById('all-count').textContent=all.length+' respuestas';
-  document.getElementById('tbody-all').innerHTML=all.length?all.map(rowHTML).join(''):'<tr><td colspan="8"><div class="empty-state">Sin datos</div></td></tr>';
-}
-
-// ══════════════════════════════════════════
-//  CSAT RENDERS
-// ══════════════════════════════════════════
-function getFilteredCSAT(dataset, prefix){
-  const country=document.getElementById(`${prefix}-country`)?.value||'';
-  const period=document.getElementById(`${prefix}-period`)?.value||'';
-  return dataset.filter(r=>{
-    if(country && r.pais!==country) return false;
-    if(period){const d=parseDate(r.fecha);if(!d)return false;if(dateToPeriod(d)!==period)return false;}
-    return true;
-  });
-}
-
-function renderCSAT1(){
-  const data = getFilteredCSAT(csatAbonoData,'csat1');
-  csat1Filtered = data;
-  renderCSATCard('csat1', data, 'csat1-based', data.length+' respuestas reales');
-  renderCsatAllTable();
-}
-
-function renderCSAT2(){
-  const data = getFilteredCSAT(csatReunionData,'csat2');
-  csat2Filtered = data;
-  renderCSATCard('csat2', data, 'csat2-based', data.length+' respuestas reales');
-  renderCsatAllTable();
-}
-
-function renderCSATCard(prefix, data, basedId, basedText){
-  const n = data.length;
-  document.getElementById(basedId).textContent = n>0 ? 'BASADO EN '+n+' RESPUESTAS REALES' : 'SIN DATOS DISPONIBLES';
-
-  if(!n){
-    ['score','alto','medio','bajo','avg','dest'].forEach(k=>{
-      const el=document.getElementById(`${prefix}-${k}`); if(el) el.textContent='—';
-    });
-    destroyChart(prefix);
-    return;
-  }
-
-  const pro = data.filter(r=>r.nota>=9).length;
-  const neu = data.filter(r=>r.nota>=7&&r.nota<=8).length;
-  const det = data.filter(r=>r.nota<=6).length;
-  // CSAT score = % satisfechos expresado en escala NPS-like (+promotores - detractores)
-  const csatScore = Math.round(((pro-det)/n)*100);
-  const avg = (data.reduce((s,r)=>s+r.nota,0)/n).toFixed(1);
-
-  document.getElementById(`${prefix}-score`).textContent=(csatScore>0?'+':'')+csatScore;
+function renderMetricCard(prefix,data,scoreKey,centerLabel,basedId){
+  const n=data.length;
+  document.getElementById(basedId).textContent=n?'BASADO EN '+n+' RESPUESTAS REALES':'SIN DATOS DISPONIBLES';
+  if(!n){['score','alto','medio','bajo','avg','dest'].forEach(k=>{const el=document.getElementById(`${prefix}-${k}`);if(el)el.textContent='—';});destroyChart(prefix);return;}
+  const pro=data.filter(r=>+r[scoreKey]>=9).length;
+  const neu=data.filter(r=>{const v=+r[scoreKey];return v>=7&&v<=8;}).length;
+  const det=data.filter(r=>+r[scoreKey]<=6&&+r[scoreKey]>=0).length;
+  const score=Math.round(((pro-det)/n)*100);
+  const avg=(data.reduce((s,r)=>s+(+r[scoreKey]||0),0)/n).toFixed(1);
+  document.getElementById(`${prefix}-score`).textContent=(score>0?'+':'')+score;
   document.getElementById(`${prefix}-alto`).textContent=pro;
   document.getElementById(`${prefix}-medio`).textContent=neu;
   document.getElementById(`${prefix}-bajo`).textContent=det;
   document.getElementById(`${prefix}-avg`).textContent=avg;
   document.getElementById(`${prefix}-dest`).textContent=pro;
   document.getElementById(`${prefix}-dest-pct`).textContent=Math.round((pro/n)*100)+'% de este corte';
-
   destroyChart(prefix);
-  const ctx=document.getElementById(`${prefix}-chart`).getContext('2d');
-  charts[prefix]=new Chart(ctx,{
+  const ctx=document.getElementById(`${prefix}-chart`);
+  if(!ctx)return;
+  charts[prefix]=new Chart(ctx.getContext('2d'),{
     type:'doughnut',
-    data:{
-      labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
-      datasets:[{
-        data:[pro,neu,det],
-        backgroundColor:['#22C55E','#F59E0B','#EF4444'],
-        borderColor:['#16A34A','#D97706','#DC2626'],
-        borderWidth:2, hoverOffset:6
-      }]
-    },
-    options:{
-      responsive:false, maintainAspectRatio:false,
-      cutout:'68%',
-      plugins:{legend:{display:false}}
-    }
+    data:{labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
+      datasets:[{data:[pro,neu,det],
+        backgroundColor:['rgba(16,185,129,.85)','rgba(245,158,11,.85)','rgba(239,68,68,.85)'],
+        borderColor:['#059669','#D97706','#DC2626'],
+        borderWidth:3,hoverOffset:6,hoverBorderWidth:4}]},
+    options:{responsive:false,maintainAspectRatio:false,cutout:'70%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}`}}}}
+  });
+}
+function destroyChart(p){if(charts[p]){charts[p].destroy();delete charts[p];}}
+
+// NPS Tables
+function renderNPSTables(){
+  const data=nps1Filtered.length?nps1Filtered:npsData;
+  const row=r=>{
+    const nps=+r['NPS (Col G)'],kam=+r['INTENCIÓN PERMANENCIA'];
+    const nc=nps>=9?'promotor':nps>=7?'neutro':'detractor';
+    const kc=kam>=9?'promotor':kam>=7?'neutro':'detractor';
+    const rk=(r['Nivel de Riesgo']||'').toLowerCase().replace(/[íi]/g,'i').replace(/[óo]/g,'o').replace(/[éê]/g,'e');
+    return`<tr><td><span class="company-cell">${x(r['CLIENTE'])}</span></td><td><span class="country-badge">${flag(r['PAÍS'])} ${x(r['PAÍS'])}</span></td><td><span class="score-pill ${nc}">${isNaN(nps)?'—':nps}</span></td><td><span class="score-pill ${kc}">${isNaN(kam)?'—':kam}</span></td><td><span class="risk-badge risk-${rk}">${x(r['Nivel de Riesgo']||'—')}</span></td><td class="interp-cell">${x(r['Interpretación']||'—')}</td><td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r['FECHA']||'').split(' ')[0])}</td></tr>`;
+  };
+  const dets=data.filter(r=>+r['NPS (Col G)']<=6).sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
+  document.getElementById('det-count').textContent=dets.length+' clientes';
+  document.getElementById('tbody-det').innerHTML=dets.length?dets.map(row).join(''):'<tr><td colspan="7"><div class="empty-state">Sin detractores ✓</div></td></tr>';
+  const all=[...data].sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
+  document.getElementById('all-count').textContent=all.length+' respuestas';
+  document.getElementById('tbody-all').innerHTML=all.length?all.map(row).join(''):'<tr><td colspan="7"><div class="empty-state">Sin datos</div></td></tr>';
+}
+
+// ══════════════════════════════════════════
+//  CSAT RENDERS
+// ══════════════════════════════════════════
+function getFilteredCSAT(dataset,prefix){
+  const country=document.getElementById(`${prefix}-country`)?.value||'';
+  const period=document.getElementById(`${prefix}-period`)?.value||'';
+  return dataset.filter(r=>{
+    if(country&&r.pais!==country)return false;
+    if(period){const d=parseDate(r.fecha);if(!d)return false;if(dateToPeriod(d)!==period)return false;}
+    return true;
+  });
+}
+function renderCSAT1(){csat1Filtered=getFilteredCSAT(csatAbonoData,'csat1');renderCSATCard('csat1',csat1Filtered,'csat1-based');renderCsatAllTable();}
+function renderCSAT2(){csat2Filtered=getFilteredCSAT(csatReunionData,'csat2');renderCSATCard('csat2',csat2Filtered,'csat2-based');renderCsatAllTable();}
+
+function renderCSATCard(prefix,data,basedId){
+  const n=data.length;
+  document.getElementById(basedId).textContent=n?'BASADO EN '+n+' RESPUESTAS REALES':'SIN DATOS DISPONIBLES';
+  if(!n){['score','alto','medio','bajo','avg','dest'].forEach(k=>{const el=document.getElementById(`${prefix}-${k}`);if(el)el.textContent='—';});destroyChart(prefix);return;}
+  const pro=data.filter(r=>r.nota>=9).length;
+  const neu=data.filter(r=>r.nota>=7&&r.nota<=8).length;
+  const det=data.filter(r=>r.nota<=6).length;
+  const score=Math.round(((pro-det)/n)*100);
+  const avg=(data.reduce((s,r)=>s+r.nota,0)/n).toFixed(1);
+  document.getElementById(`${prefix}-score`).textContent=(score>0?'+':'')+score;
+  document.getElementById(`${prefix}-alto`).textContent=pro;
+  document.getElementById(`${prefix}-medio`).textContent=neu;
+  document.getElementById(`${prefix}-bajo`).textContent=det;
+  document.getElementById(`${prefix}-avg`).textContent=avg;
+  document.getElementById(`${prefix}-dest`).textContent=pro;
+  document.getElementById(`${prefix}-dest-pct`).textContent=Math.round((pro/n)*100)+'% de este corte';
+  destroyChart(prefix);
+  const ctx=document.getElementById(`${prefix}-chart`);
+  if(!ctx)return;
+  charts[prefix]=new Chart(ctx.getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
+      datasets:[{data:[pro,neu,det],
+        backgroundColor:['rgba(16,185,129,.85)','rgba(245,158,11,.85)','rgba(239,68,68,.85)'],
+        borderColor:['#059669','#D97706','#DC2626'],
+        borderWidth:3,hoverOffset:6,hoverBorderWidth:4}]},
+    options:{responsive:false,maintainAspectRatio:false,cutout:'70%',
+      plugins:{legend:{display:false}}}
   });
 }
 
-// ══════════════════════════════════════════
-//  CSAT ALL TABLE
-// ══════════════════════════════════════════
 function renderCsatAllTable(){
-  const all = [
-    ...csatAbonoData.map(r=>({...r, fuente:'🖥️ Abono'})),
-    ...csatReunionData.map(r=>({...r, fuente:'👤 Reunión'}))
-  ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
-
+  const all=[...csatAbonoData.map(r=>({...r,fuente:'🖥️ Abono'})),...csatReunionData.map(r=>({...r,fuente:'👤 Reunión'}))].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
   document.getElementById('csat-all-count').textContent=all.length+' respuestas';
-  if(!all.length){
-    document.getElementById('tbody-csat-all').innerHTML='<tr><td colspan="8"><div class="empty-state">Sin datos CSAT</div></td></tr>';
-    return;
-  }
-  document.getElementById('tbody-csat-all').innerHTML=all.map(r=>{
+  document.getElementById('tbody-csat-all').innerHTML=all.length?all.map(r=>{
     const tipo=r.nota>=9?'promotor':r.nota>=7?'neutro':'detractor';
     const tipoLabel=r.nota>=9?'Promotor':r.nota>=7?'Neutro':'Detractor';
-    return`<tr>
-      <td><span class="company-cell">${x(r.empresa||r.email||'—')}</span></td>
-      <td><span class="country-badge">${flag(r.pais)} ${x(r.pais||'—')}</span></td>
-      <td><span class="score-pill ${tipo}">${r.nota}</span></td>
-      <td><span class="status-badge status-${tipo==='promotor'?'respondido':tipo==='neutro'?'enviado':'bloqueado'}">${tipoLabel}</span></td>
-      <td style="font-size:12px;color:var(--text2)">${x(r.fuente)}</td>
-      <td style="font-size:12px;color:var(--text2)">${x(r.ejecutivo||'—')}</td>
-      <td class="interp-cell">${x(r.comentario||'—')}</td>
-      <td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r.fecha||'').split(' ')[0]||'—')}</td>
-    </tr>`;
-  }).join('');
+    return`<tr><td><span class="company-cell">${x(r.empresa||r.email||'—')}</span></td><td><span class="country-badge">${flag(r.pais)} ${x(r.pais||'—')}</span></td><td><span class="score-pill ${tipo}">${r.nota}</span></td><td><span class="status-badge status-${tipo==='promotor'?'respondido':tipo==='neutro'?'enviado':'bloqueado'}">${tipoLabel}</span></td><td style="font-size:12px;color:var(--text2)">${x(r.fuente)}</td><td style="font-size:12px;color:var(--text2)">${x(r.ejecutivo||'—')}</td><td class="interp-cell">${x(r.comentario||'—')}</td><td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r.fecha||'').split(' ')[0]||'—')}</td></tr>`;
+  }).join(''):'<tr><td colspan="8"><div class="empty-state">Sin datos CSAT</div></td></tr>';
 }
 
 // ══════════════════════════════════════════
-//  EMPRESAS TAB
+//  EMPRESAS (con filtro por estado clickeable)
 // ══════════════════════════════════════════
 function renderEmpresasTab(){
   const resp=empresaData.filter(r=>r['Estado de Link']==='RESPONDIDO').length;
   const env=empresaData.filter(r=>r['Estado de Link']==='CORREO ENVIADO').length;
   const blq=empresaData.filter(r=>(r['Estado de Link']||'').startsWith('BLOQUEADO')).length;
+
   document.getElementById('emp-summary').innerHTML=
-    `<div class="emp-stat respondido">✓ Respondido <strong>${resp}</strong></div>`+
-    `<div class="emp-stat enviado">📨 Enviado <strong>${env}</strong></div>`+
-    `<div class="emp-stat bloqueado">⚠ Bloqueado <strong>${blq}</strong></div>`;
-  document.getElementById('emp-count').textContent=empresaData.length+' empresas';
-  const sorted=[...empresaData].sort((a,b)=>({'RESPONDIDO':0,'CORREO ENVIADO':1}[a['Estado de Link']]??2)-({'RESPONDIDO':0,'CORREO ENVIADO':1}[b['Estado de Link']]??2));
-  document.getElementById('tbody-emp').innerHTML=sorted.map(r=>{
+    `<div class="emp-stat respondido${empActiveFilter==='RESPONDIDO'?' active-filter':''}" onclick="setEmpFilter('RESPONDIDO')" title="Clic para filtrar">✓ Respondido <strong>${resp}</strong></div>`+
+    `<div class="emp-stat enviado${empActiveFilter==='CORREO ENVIADO'?' active-filter':''}" onclick="setEmpFilter('CORREO ENVIADO')" title="Clic para filtrar">📨 Enviado <strong>${env}</strong></div>`+
+    `<div class="emp-stat bloqueado${empActiveFilter==='BLOQUEADO'?' active-filter':''}" onclick="setEmpFilter('BLOQUEADO')" title="Clic para filtrar">⚠ Bloqueado <strong>${blq}</strong></div>`;
+
+  document.getElementById('emp-clear-filter').style.display=empActiveFilter?'block':'none';
+  renderEmpTable();
+}
+
+function setEmpFilter(status){
+  empActiveFilter=empActiveFilter===status?null:status;
+  renderEmpresasTab();
+}
+function clearEmpFilter(){empActiveFilter=null;renderEmpresasTab();}
+
+function renderEmpTable(){
+  let sorted=[...empresaData];
+  if(empActiveFilter){
+    if(empActiveFilter==='BLOQUEADO') sorted=sorted.filter(r=>(r['Estado de Link']||'').startsWith('BLOQUEADO'));
+    else sorted=sorted.filter(r=>r['Estado de Link']===empActiveFilter);
+  }
+  sorted.sort((a,b)=>({'RESPONDIDO':0,'CORREO ENVIADO':1}[a['Estado de Link']]??2)-({'RESPONDIDO':0,'CORREO ENVIADO':1}[b['Estado de Link']]??2));
+  document.getElementById('emp-count').textContent=(empActiveFilter?`${sorted.length} filtradas de `:'')+empresaData.length+' empresas';
+  document.getElementById('tbody-emp').innerHTML=sorted.length?sorted.map(r=>{
     const st=r['Estado de Link']||'';
-    const badge=st==='RESPONDIDO'?'<span class="status-badge status-respondido">✓ Respondido</span>':
-      st==='CORREO ENVIADO'?'<span class="status-badge status-enviado">📨 Enviado</span>':
-      `<span class="status-badge status-bloqueado">⚠ ${x(st)}</span>`;
-    return`<tr>
-      <td><span class="company-cell">${x(r['Nombre de la empresa'])}</span></td>
-      <td><span class="country-badge">${flag(r['País'])} ${x(r['País'])}</span></td>
-      <td style="font-family:var(--mono);font-size:13px">${x(r['Abonos_Trimestre']||'—')}</td>
-      <td>${badge}</td>
-      <td style="font-size:12px;color:var(--text3)">${x(r['Fecha_generado']||'—')}</td>
-      <td style="font-size:12px;color:var(--text3)">${x((r['Fecha_Ultimo_Abono']||'').split(' ')[0]||'—')}</td>
-    </tr>`;
-  }).join('');
+    const isRes=st==='RESPONDIDO',isEnv=st==='CORREO ENVIADO',isBlq=st.startsWith('BLOQUEADO');
+    const cls=isRes?'respondido':isEnv?'enviado':'bloqueado';
+    const lbl=isRes?'✓ Respondido':isEnv?'📨 Enviado':`⚠ ${x(st)}`;
+    const badge=`<span class="status-badge status-${cls} status-btn${empActiveFilter===st||(!isBlq&&empActiveFilter===st)?'':''}" onclick="setEmpFilter('${isBlq?'BLOQUEADO':st}')" title="Filtrar por este estado" style="cursor:pointer">${lbl}</span>`;
+    return`<tr><td><span class="company-cell">${x(r['Nombre de la empresa'])}</span></td><td><span class="country-badge">${flag(r['País'])} ${x(r['País'])}</span></td><td style="font-family:var(--mono);font-size:13px">${x(r['Abonos_Trimestre']||'—')}</td><td>${badge}</td><td style="font-size:12px;color:var(--text3)">${x(r['Fecha_generado']||'—')}</td><td style="font-size:12px;color:var(--text3)">${x((r['Fecha_Ultimo_Abono']||'').split(' ')[0]||'—')}</td></tr>`;
+  }).join(''):'<tr><td colspan="6"><div class="empty-state">Sin resultados para el filtro activo</div></td></tr>';
 }
 
 // ══════════════════════════════════════════
-//  AI — NPS
+//  REPORTE MODAL (nueva pestaña con PDF)
 // ══════════════════════════════════════════
-async function runAI_NPS(prefix){
-  const btn=document.getElementById(`btn-${prefix}-report`);
-  const resultEl=document.getElementById(`ai-result-${prefix}`);
-  btn.disabled=true; btn.innerHTML='<span class="spinner-dark"></span>&nbsp; Analizando...';
-  resultEl.style.display='block';
-  resultEl.innerHTML=`<div style="padding:12px 0;font-size:13px;color:var(--text3);font-style:italic"><span class="spinner-dark"></span> Enviando datos al flujo n8n · Ollama...</div>`;
+async function openReport(prefix){
+  document.getElementById('report-modal').classList.add('open');
+  const titles={nps1:'Reporte NPS · Aplicación Apprecio',nps2:'Reporte NPS · Atención KAM',csat1:'Reporte CSAT · Post Abono Trimestral',csat2:'Reporte CSAT · Post Reunión Comercial'};
+  document.getElementById('modal-title').textContent=titles[prefix]||'Reporte IA';
+  document.getElementById('modal-body').innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)"><span class="spinner-dark"></span>&nbsp; Generando análisis con IA...</div>';
 
-  const data = prefix==='nps1' ? nps1Filtered : nps2Filtered;
-  const scoreKey = prefix==='nps1' ? 'NPS (Col G)' : 'INTENCIÓN PERMANENCIA';
-  const modulo = prefix==='nps1' ? 'NPS_APP' : 'NPS_KAM';
-  const pro=data.filter(r=>+r[scoreKey]>=9).length;
-  const neu=data.filter(r=>{const v=+r[scoreKey];return v>=7&&v<=8;}).length;
-  const det=data.filter(r=>+r[scoreKey]<=6).length;
-  const muestra=data.map(r=>({empresa:r['CLIENTE'],pais:r['PAÍS'],puntuacion:r[scoreKey],riesgo:r['Nivel de Riesgo'],razon:r['Interpretación']}));
+  const btn=document.getElementById(`btn-${prefix}-report`);
+  btn.disabled=true;
+
+  // Obtener datos de respuestas abiertas según fuente
+  let comentariosData=[];
+  let modulo='';
+  if(prefix==='nps1'||prefix==='nps2'){
+    const scoreKey=prefix==='nps1'?'NPS (Col G)':'INTENCIÓN PERMANENCIA';
+    const filtered=prefix==='nps1'?nps1Filtered:nps2Filtered;
+    // Intentar con sheet de respuestas abiertas primero
+    const respAbiertas=npsRespuestasData.length?npsRespuestasData:filtered;
+    comentariosData=respAbiertas.map(r=>({empresa:r['CLIENTE']||r['Empresa']||'',pais:r['PAÍS']||r['País']||'',puntuacion:r[scoreKey]||r['NPS (Col G)']||'',comentario:r['Interpretación']||r['Comentario']||r['Respuesta']||'',riesgo:r['Nivel de Riesgo']||''})).filter(r=>r.comentario);
+    modulo=prefix==='nps1'?'NPS_APP':'NPS_KAM';
+  } else if(prefix==='csat1'){
+    comentariosData=csat1Filtered.map(r=>({empresa:r.empresa,pais:r.pais,puntuacion:r.nota,comentario:r.comentario,ejecutivo:r.ejecutivo})).filter(r=>r.comentario);
+    modulo='CSAT_ABONO';
+  } else {
+    comentariosData=csat2Filtered.map(r=>({empresa:r.empresa,pais:r.pais,puntuacion:r.nota,comentario:r.comentario,ejecutivo:r.ejecutivo})).filter(r=>r.comentario);
+    modulo='CSAT_REUNION';
+  }
 
   const payload={
     modulo,
-    datos:{total:data.length,distribucion:{promotores:pro,neutros:neu,detractores:det},muestra,filtros:{pais:document.getElementById(`${prefix}-country`).value||'todos',periodo:document.getElementById(`${prefix}-period`).value||'todos'}}
+    tipo:'REPORTE_RESPUESTAS_ABIERTAS',
+    datos:{total:comentariosData.length,comentarios:comentariosData,instrucciones:'Agrupa los comentarios en NEGATIVOS, NEUTROS y POSITIVOS. Para cada grupo muestra un resumen de los patrones principales. Al final genera un PLAN DE ACCIÓN concreto con 5 acciones para mejorar el score basándote en los comentarios negativos y neutros.'}
   };
+
   try{
     const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     if(!res.ok)throw new Error('n8n HTTP '+res.status);
     const json=await res.json();
     const texto=json.respuesta||json.text||json.output||JSON.stringify(json);
-    resultEl.innerHTML=`<div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap">${formatMD(texto)}</div>`;
+    renderReportContent(prefix,texto,comentariosData);
   }catch(e){
-    resultEl.innerHTML=`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px;font-size:12px;color:#DC2626">⚠ Error al contactar n8n: ${x(e.message)}<br><span style="color:var(--text3)">Verifica que el webhook esté activo y permita CORS.</span></div>`;
+    renderReportFallback(prefix,comentariosData,e.message);
   }
   btn.disabled=false;
-  btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Generar Reporte de Respuestas Abiertas`;
+}
+
+function renderReportContent(prefix,texto,comentariosData){
+  const neg=comentariosData.filter(r=>+r.puntuacion<=6);
+  const neu=comentariosData.filter(r=>{const v=+r.puntuacion;return v>=7&&v<=8;});
+  const pos=comentariosData.filter(r=>+r.puntuacion>=9);
+
+  let html=`<div style="margin-bottom:20px;padding:16px;background:var(--brand-bg);border:1px solid var(--brand-border);border-radius:10px;">
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--brand);margin-bottom:6px">Resumen ejecutivo IA</div>
+    <div style="font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap">${formatMD(texto)}</div>
+  </div>`;
+
+  if(neg.length){html+=`<div class="report-section"><h3>🔴 Respuestas Negativas (${neg.length})</h3><div class="report-group">${neg.slice(0,20).map(r=>`<div class="report-item negative"><strong>${x(r.empresa||r.email||'—')}</strong> · Nota: ${r.puntuacion}<br>${x(r.comentario)}</div>`).join('')}</div></div>`;}
+  if(neu.length){html+=`<div class="report-section"><h3>🟡 Respuestas Neutras (${neu.length})</h3><div class="report-group">${neu.slice(0,20).map(r=>`<div class="report-item neutral"><strong>${x(r.empresa||'—')}</strong> · Nota: ${r.puntuacion}<br>${x(r.comentario)}</div>`).join('')}</div></div>`;}
+  if(pos.length){html+=`<div class="report-section"><h3>🟢 Respuestas Positivas (${pos.length})</h3><div class="report-group">${pos.slice(0,20).map(r=>`<div class="report-item positive"><strong>${x(r.empresa||'—')}</strong> · Nota: ${r.puntuacion}<br>${x(r.comentario)}</div>`).join('')}</div></div>`;}
+
+  if(neg.length+neu.length>0){
+    html+=`<div class="report-section"><h3>📋 Plan de Acción Sugerido</h3><div class="report-group">
+      <div class="action-item">Contactar en las próximas 48h a los ${neg.length} clientes con nota ≤6 para entender sus fricciones específicas.</div>
+      <div class="action-item">Organizar sesión de revisión con el equipo KAM para abordar los patrones recurrentes en comentarios neutros.</div>
+      <div class="action-item">Implementar seguimiento mensual para clientes con nota 7-8 para prevenir que se conviertan en detractores.</div>
+      <div class="action-item">Documentar las mejores prácticas de los ${pos.length} promotores y replicarlas en cuentas en riesgo.</div>
+      <div class="action-item">Establecer un ciclo de feedback con el equipo de producto basado en los temas negativos recurrentes.</div>
+    </div></div>`;
+  }
+  document.getElementById('modal-body').innerHTML=html;
+}
+
+function renderReportFallback(prefix,comentariosData,errMsg){
+  const neg=comentariosData.filter(r=>+r.puntuacion<=6);
+  const neu=comentariosData.filter(r=>{const v=+r.puntuacion;return v>=7&&v<=8;});
+  const pos=comentariosData.filter(r=>+r.puntuacion>=9);
+  let html=`<div style="margin-bottom:16px;padding:12px 16px;background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;font-size:12px;color:#DC2626">⚠ No se pudo conectar con n8n: ${x(errMsg)}. Mostrando análisis local.</div>`;
+  if(neg.length){html+=`<div class="report-section"><h3>🔴 Respuestas Negativas (${neg.length})</h3><div class="report-group">${neg.slice(0,20).map(r=>`<div class="report-item negative"><strong>${x(r.empresa||'—')}</strong> · Nota: ${r.puntuacion}<br>${x(r.comentario||'Sin comentario')}</div>`).join('')}</div></div>`;}
+  if(neu.length){html+=`<div class="report-section"><h3>🟡 Respuestas Neutras (${neu.length})</h3><div class="report-group">${neu.slice(0,20).map(r=>`<div class="report-item neutral"><strong>${x(r.empresa||'—')}</strong> · Nota: ${r.puntuacion}<br>${x(r.comentario||'Sin comentario')}</div>`).join('')}</div></div>`;}
+  if(pos.length){html+=`<div class="report-section"><h3>🟢 Respuestas Positivas (${pos.length})</h3><div class="report-group">${pos.slice(0,20).map(r=>`<div class="report-item positive"><strong>${x(r.empresa||'—')}</strong> · Nota: ${r.puntuacion}<br>${x(r.comentario||'Sin comentario')}</div>`).join('')}</div></div>`;}
+  if(!neg.length&&!neu.length&&!pos.length){html+='<div class="empty-state">No hay comentarios disponibles en este período.</div>';}
+  document.getElementById('modal-body').innerHTML=html;
+}
+
+function closeModal(){document.getElementById('report-modal').classList.remove('open');}
+
+function printReport(){
+  const title=document.getElementById('modal-title').textContent;
+  const body=document.getElementById('modal-body').innerHTML;
+  const w=window.open('','_blank','width=900,height=700');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>${title}</title><style>
+    body{font-family:'DM Sans',system-ui,sans-serif;max-width:800px;margin:40px auto;color:#1A1A2E;font-size:13px;line-height:1.6}
+    h1{color:#FA345E;font-size:18px;border-bottom:2px solid #FA345E;padding-bottom:8px;margin-bottom:24px}
+    h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#FA345E;margin:24px 0 10px;padding-bottom:5px;border-bottom:2px solid #FFD0DA}
+    .report-item{padding:10px 14px;margin-bottom:8px;border-radius:6px;border:1px solid #E8EAF0;font-size:12px}
+    .report-item.negative{border-left:3px solid #EF4444;background:#FEF2F2}
+    .report-item.neutral{border-left:3px solid #F59E0B;background:#FFFBEB}
+    .report-item.positive{border-left:3px solid #10B981;background:#F0FDF4}
+    .action-item{padding:10px 14px;margin-bottom:6px;border-radius:6px;background:#FFF0F3;border:1px solid #FFD0DA;font-size:12px}
+    .action-item::before{content:'→ ';color:#FA345E;font-weight:700}
+    strong{color:#1A1A2E}
+    @media print{body{margin:20px}}
+  </style></head><body><h1>${title}</h1>${body}<p style="font-size:11px;color:#9CA3AF;margin-top:32px;border-top:1px solid #E8EAF0;padding-top:12px">Generado por Apprecio Beat CX Dashboard · ${new Date().toLocaleString('es-CL')}</p></body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(),800);
 }
 
 // ══════════════════════════════════════════
-//  AI — CSAT
+//  AI CHAT BANNER
 // ══════════════════════════════════════════
-async function runAI_CSAT(prefix){
-  const btn=document.getElementById(`btn-${prefix}-report`);
-  const resultEl=document.getElementById(`ai-result-${prefix}`);
-  btn.disabled=true; btn.innerHTML='<span class="spinner-dark"></span>&nbsp; Analizando...';
-  resultEl.style.display='block';
-  resultEl.innerHTML=`<div style="padding:12px 0;font-size:13px;color:var(--text3);font-style:italic"><span class="spinner-dark"></span> Enviando datos CSAT al flujo n8n · Ollama...</div>`;
+const AI_SCOPE_KEYWORDS=['nps','csat','cliente','churn','riesgo','detractor','promotor','neutro','score','satisf','métrica','metric','mejorar','acción','accion','plan','kpi','encuesta','plataforma','abono','reunión','kam','ejecutivo','retención','abandono','feedback','comentario','negativo','positivo','apprecio'];
+function isInScope(text){return AI_SCOPE_KEYWORDS.some(k=>text.toLowerCase().includes(k));}
 
-  const data = prefix==='csat1' ? csat1Filtered : csat2Filtered;
-  const pro=data.filter(r=>r.nota>=9).length;
-  const neu=data.filter(r=>r.nota>=7&&r.nota<=8).length;
-  const det=data.filter(r=>r.nota<=6).length;
-  const muestra=data.map(r=>({empresa:r.empresa,pais:r.pais,ejecutivo:r.ejecutivo,nota:r.nota,comentario:r.comentario}));
-  const modulo=prefix==='csat1'?'CSAT_ABONO':'CSAT_REUNION';
+function sendSuggestion(tab,text){
+  const input=document.getElementById(`ai-input-${tab}`);
+  if(input){input.value=text;sendAIChat(tab);}
+}
 
+async function sendAIChat(tab){
+  const input=document.getElementById(`ai-input-${tab}`);
+  const sendBtn=document.getElementById(`ai-send-${tab}`);
+  const chatArea=document.getElementById(`ai-chat-${tab}`);
+  const text=input.value.trim();
+  if(!text)return;
+  if(!isInScope(text)){
+    appendMsg(chatArea,'user',text);
+    appendMsg(chatArea,'bot','Lo siento, solo puedo responder preguntas relacionadas con las métricas CX de Apprecio (NPS, CSAT, clientes en riesgo, planes de acción, etc.). Por favor reformula tu pregunta en ese contexto.');
+    input.value='';
+    return;
+  }
+  appendMsg(chatArea,'user',text);
+  input.value='';
+  sendBtn.disabled=true;
+  sendBtn.textContent='Analizando...';
+  aiChatHistory[tab].push({role:'user',content:text});
+
+  // Contexto de datos actuales
+  const ctx=buildContext(tab);
   const payload={
-    modulo,
-    datos:{total:data.length,distribucion:{promotores:pro,neutros:neu,detractores:det},muestra,csatScore:Math.round(((pro-det)/Math.max(data.length,1))*100)}
+    modulo:tab.toUpperCase()+'_CHAT',
+    tipo:'CHAT_CX',
+    datos:{pregunta:text,contexto:ctx,historial:aiChatHistory[tab].slice(-6)},
+    instrucciones:'Eres el asistente de CX de Apprecio Beat. Solo respondes sobre métricas NPS, CSAT, clientes en riesgo, planes de acción y estrategias para mejorar los indicadores. Si la pregunta no está relacionada, declina amablemente. Responde en español, de forma concisa y ejecutiva.'
   };
   try{
     const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(!res.ok)throw new Error('n8n HTTP '+res.status);
+    if(!res.ok)throw new Error('HTTP '+res.status);
     const json=await res.json();
-    const texto=json.respuesta||json.text||json.output||JSON.stringify(json);
-    resultEl.innerHTML=`<div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap">${formatMD(texto)}</div>`;
+    const resp=json.respuesta||json.text||json.output||JSON.stringify(json);
+    aiChatHistory[tab].push({role:'assistant',content:resp});
+    appendMsg(chatArea,'bot',resp);
   }catch(e){
-    resultEl.innerHTML=`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px;font-size:12px;color:#DC2626">⚠ Error al contactar n8n: ${x(e.message)}</div>`;
+    appendMsg(chatArea,'bot',`No pude conectar con el servidor de IA (${e.message}). Verifica que el webhook n8n esté activo.`);
   }
-  btn.disabled=false;
-  btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Generar Reporte de Respuestas Abiertas`;
+  sendBtn.disabled=false;
+  sendBtn.textContent='Enviar ✈';
 }
 
-function formatMD(txt){
-  return x(txt).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>').replace(/\n/g,'<br>');
+function buildContext(tab){
+  if(tab==='nps'){
+    const data=nps1Filtered.length?nps1Filtered:npsData;
+    const pro=data.filter(r=>+r['NPS (Col G)']>=9).length;
+    const det=data.filter(r=>+r['NPS (Col G)']<=6).length;
+    const score=data.length?Math.round(((pro-det)/data.length)*100):0;
+    return{modulo:'NPS',total:data.length,score,promotores:pro,detractores:det,riesgos:data.filter(r=>(r['Nivel de Riesgo']||'').includes('Crít')||r['Nivel de Riesgo']==='Alto').slice(0,10).map(r=>({empresa:r['CLIENTE'],nps:r['NPS (Col G)'],riesgo:r['Nivel de Riesgo'],comentario:r['Interpretación']}))};
+  }
+  const all=[...csatAbonoData,...csatReunionData];
+  const pro=all.filter(r=>r.nota>=9).length;
+  const det=all.filter(r=>r.nota<=6).length;
+  return{modulo:'CSAT',totalAbono:csatAbonoData.length,totalReunion:csatReunionData.length,scoreAbono:csatAbonoData.length?Math.round(((csatAbonoData.filter(r=>r.nota>=9).length-csatAbonoData.filter(r=>r.nota<=6).length)/csatAbonoData.length)*100):0,scoreReunion:csatReunionData.length?Math.round(((csatReunionData.filter(r=>r.nota>=9).length-csatReunionData.filter(r=>r.nota<=6).length)/csatReunionData.length)*100):0};
+}
+
+function appendMsg(area,role,text){
+  area.classList.remove('empty');
+  const div=document.createElement('div');
+  div.className=`ai-msg ${role}`;
+  div.innerHTML=role==='bot'?formatMD(text):x(text);
+  area.appendChild(div);
+  area.scrollTop=area.scrollHeight;
+}
+function clearAIChat(tab){
+  aiChatHistory[tab]=[];
+  const area=document.getElementById(`ai-chat-${tab}`);
+  area.innerHTML='';
+  area.classList.add('empty');
+  area.textContent=tab==='nps'?'Haz una pregunta sobre tus métricas de NPS...':'Haz una pregunta sobre satisfacción de clientes...';
 }
 
 // ══════════════════════════════════════════
@@ -992,12 +1046,20 @@ function showTab(id,btn){
   document.getElementById(id).style.display='block';
 }
 function showComingSoon(btn,name){
-  const id='tab-'+name.toLowerCase();
   document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   ALL_TABS.forEach(t=>document.getElementById(t).style.display='none');
-  document.getElementById(id).style.display='block';
+  document.getElementById('tab-'+name).style.display='block';
 }
+
+// ══════════════════════════════════════════
+//  MISC
+// ══════════════════════════════════════════
+function formatMD(txt){
+  return x(txt).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>').replace(/\n/g,'<br>');
+}
+// Cerrar modal al click afuera
+document.getElementById('report-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 </script>
 </body>
 </html>
