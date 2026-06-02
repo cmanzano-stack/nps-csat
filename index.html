@@ -4,882 +4,1557 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard CX · Apprecio Beat</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'DM Sans',sans-serif;background:#F2F4F7;min-height:100vh;color:#1F2937}
-.card{background:#fff;border-radius:18px;border:1px solid #E8EAED;transition:box-shadow .25s}
-.card:hover{box-shadow:0 6px 28px rgba(0,0,0,.07)}
-.tab-btn{position:relative;padding-bottom:13px;transition:color .2s;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
-.tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:#FA345E;border-radius:3px 3px 0 0;transform:scaleX(0);transition:transform .2s ease}
-.tab-btn.active{color:#FA345E;font-weight:700}
-.tab-btn.active::after{transform:scaleX(1)}
-.badge{display:inline-flex;align-items:center;padding:3px 11px;border-radius:99px;font-size:11px;font-weight:700}
-.skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:14px}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.ai-panel{background:#1a1a2e;border:1.5px solid rgba(250,52,94,.3);border-radius:16px;padding:22px;position:relative;overflow:hidden}
-.ai-panel::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(250,52,94,.12) 0%,transparent 70%);pointer-events:none}
-.ai-result{background:rgba(255,255,255,.06);border-radius:12px;padding:18px;font-size:13px;line-height:1.8;color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.1);white-space:pre-wrap;max-height:380px;overflow-y:auto}
-.chip{background:#FFF0F3;color:#D61F47;border-radius:8px;padding:3px 11px;font-size:11px;font-weight:700}
-.btn-primary{background:#FA345E;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;transition:background .2s}
-.btn-primary:hover{background:#D61F47}
-.btn-primary:disabled{background:#E5E7EB;color:#9AA0B4;cursor:not-allowed}
-.btn-ghost{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;font-family:'DM Sans',sans-serif;cursor:pointer;color:#6B7280;transition:background .2s}
-.btn-ghost:hover{background:#F3F4F6}
-select,input{font-family:'DM Sans',sans-serif;outline:none}
+  :root {
+    --brand: #FA345E;
+    --brand-dark: #D42050;
+    --brand-light: #FF6B8A;
+    --brand-bg: #FFF0F3;
+    --accent: #1A1A2E;
+    --info: #3B82F6;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --neutral: #8B93A7;
+    --bg: #F7F8FC;
+    --card: #FFFFFF;
+    --border: #E8EAF0;
+    --text: #1A1A2E;
+    --text2: #6B7280;
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: var(--card);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0 28px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 34px; height: 34px; }
+  .logo-text { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .logo-text span { color: var(--brand); }
+  .header-badge { background: var(--brand-bg); color: var(--brand); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; border: 1px solid #FFD0DA; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+
+  /* ─── FILTERS BAR ─── */
+  .filters-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .filter-group { display: flex; align-items: center; gap: 8px; }
+  .filter-label { font-size: 12px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; }
+  select.filter-select {
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 6px 28px 6px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E") no-repeat right 10px center;
+    color: var(--text);
+    appearance: none;
+    cursor: pointer;
+    min-width: 130px;
+  }
+  select.filter-select:focus { outline: none; border-color: var(--brand); }
+  .filter-divider { width: 1px; height: 22px; background: var(--border); }
+
+  /* ─── TABS ─── */
+  .tabs-bar {
+    background: var(--card);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    gap: 0;
+  }
+  .tab-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 14px 20px;
+    border: none;
+    background: none;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -1.5px;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
+  .tab-icon { font-size: 15px; }
+
+  /* ─── MAIN ─── */
+  .main { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ─── KPI ROW ─── */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px; }
+  .kpi-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--brand));
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 8px; }
+  .kpi-value { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 6px; }
+  .kpi-value.brand { color: var(--brand); }
+  .kpi-value.success { color: var(--success); }
+  .kpi-value.warning { color: var(--warning); }
+  .kpi-value.danger { color: var(--danger); }
+  .kpi-sub { font-size: 12px; color: var(--text2); }
+  .kpi-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 6px; }
+  .kpi-badge.up { background: #D1FAE5; color: #065F46; }
+  .kpi-badge.down { background: #FEE2E2; color: #991B1B; }
+  .kpi-badge.neutral { background: #F3F4F6; color: #6B7280; }
+
+  /* ─── GRID LAYOUT ─── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .col-span-2 { grid-column: span 2; }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 7px; }
+  .card-title-icon { font-size: 15px; }
+  .card-subtitle { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* ─── SEGMENTO BADGES ─── */
+  .segment-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .seg-pill {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .seg-pill .seg-count { font-size: 26px; font-weight: 700; margin-bottom: 3px; line-height: 1; }
+  .seg-pill.promotor { background: #D1FAE5; color: #065F46; }
+  .seg-pill.neutral { background: #FEF3C7; color: #92400E; }
+  .seg-pill.detractor { background: #FEE2E2; color: #991B1B; }
+
+  /* ─── TABLA DE DETRACTORES ─── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text2); padding: 8px 12px; text-align: left; background: var(--bg); border-bottom: 1.5px solid var(--border); }
+  td { font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFE; }
+  .risk-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .risk-critical { background: #FEE2E2; color: #991B1B; }
+  .risk-high { background: #FEF3C7; color: #92400E; }
+  .risk-medium { background: #EDE9FE; color: #5B21B6; }
+
+  /* ─── PANEL IA ─── */
+  .ia-panel {
+    background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+    border: 1.5px solid rgba(250,52,94,0.3);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ia-panel::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(250,52,94,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ia-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: gap; gap: 12px; }
+  .ia-title { color: #fff; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .ia-badge { background: rgba(250,52,94,0.2); border: 1px solid rgba(250,52,94,0.4); color: #FA345E; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .ia-desc { color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 18px; line-height: 1.5; }
+  .ia-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .ia-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all .2s;
+  }
+  .ia-btn-primary { background: var(--brand); color: #fff; }
+  .ia-btn-primary:hover { background: var(--brand-dark); transform: translateY(-1px); }
+  .ia-btn-secondary { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.15); }
+  .ia-btn-secondary:hover { background: rgba(255,255,255,0.15); }
+  .ia-btn-danger { background: rgba(239,68,68,0.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+  .ia-btn-danger:hover { background: rgba(239,68,68,0.3); }
+  .ia-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+  .ia-result {
+    margin-top: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 18px;
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .ia-result-section { margin-bottom: 14px; }
+  .ia-result h4 { color: var(--brand-light); font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .ia-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    margin-top: 16px;
+    padding: 14px 0;
+  }
+  .ia-spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(250,52,94,0.3);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ia-error {
+    margin-top: 16px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #FCA5A5;
+    font-size: 12px;
+  }
+
+  /* ─── PDF BUTTON ─── */
+  .export-btn {
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: all .2s;
+  }
+  .export-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-bg); }
+  .export-btn.loading { opacity: 0.7; cursor: wait; }
+
+  /* ─── RADAR ALERTAS ─── */
+  .alert-list { display: flex; flex-direction: column; gap: 10px; }
+  .alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    border-left: 3px solid transparent;
+  }
+  .alert-item.critical { background: #FFF5F5; border-left-color: var(--danger); }
+  .alert-item.warning { background: #FFFBEB; border-left-color: var(--warning); }
+  .alert-item.info { background: #EFF6FF; border-left-color: var(--info); }
+  .alert-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+  .alert-content { flex: 1; }
+  .alert-title { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .alert-desc { color: var(--text2); font-size: 12px; line-height: 1.4; }
+
+  /* ─── LOADING SKELETON ─── */
+  .skeleton { background: linear-gradient(90deg, #F0F0F5 25%, #E8E8EE 50%, #F0F0F5 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .sk-kpi { height: 80px; border-radius: var(--radius); }
+  .sk-chart { height: 200px; border-radius: var(--radius); }
+
+  /* ─── COUNTRY FLAGS ─── */
+  .flag { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); }
+  .flag-icon { font-size: 16px; }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--text2); }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
+  .empty-text { font-size: 14px; }
+
+  /* ─── ACTIONS CARDS ─── */
+  .action-card {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .action-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .action-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
+  .action-steps { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .action-steps li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text2); line-height: 1.4; }
+  .action-steps li::before { content: '→'; color: var(--brand); font-weight: 700; flex-shrink: 0; }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .col-span-2 { grid-column: span 1; }
+    .main { padding: 16px; }
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; margin-top: 6px; }
+  .progress-fill { height: 100%; border-radius: 10px; transition: width .8s cubic-bezier(0.4,0,0.2,1); }
+
+  /* ─── PDF MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 540px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(20px);
+    transition: transform .3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 9px; }
+  .modal-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
+  .modal-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .modal-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .2s;
+    background: var(--bg);
+  }
+  .modal-option:hover { border-color: var(--brand); background: var(--brand-bg); }
+  .modal-option.selected { border-color: var(--brand); background: var(--brand-bg); }
+  .modal-option-icon { font-size: 24px; }
+  .modal-option-content { flex: 1; }
+  .modal-option-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .modal-option-desc { font-size: 12px; color: var(--text2); }
+  .modal-footer { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-outline { font-family: var(--font); font-size: 13px; font-weight: 500; padding: 9px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; }
+  .btn-primary { font-family: var(--font); font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 8px; border: none; background: var(--brand); color: #fff; cursor: pointer; display: flex; align-items: center; gap: 7px; }
+  .btn-primary:disabled { opacity: 0.5; cursor: wait; }
+  .modal-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
+
+  /* ─── IA REPORT SECTION ─── */
+  .report-section { color: rgba(255,255,255,0.9); }
+  .report-section + .report-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .report-section h4 { font-size: 13px; font-weight: 600; color: var(--brand-light); margin-bottom: 8px; }
+  .report-section p, .report-section li { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+  .report-section ul { padding-left: 16px; display: flex; flex-direction: column; gap: 4px; }
+  .critical-client-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; margin-bottom: 8px; }
+  .critical-client-name { font-size: 13px; font-weight: 600; color: #FCA5A5; flex: 1; }
+  .critical-client-score { font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,0.7); }
+  .critical-client-risk { font-size: 11px; color: #FCA5A5; background: rgba(239,68,68,0.2); padding: 2px 8px; border-radius: 20px; }
 </style>
 </head>
 <body>
-<div id="root"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="header-left">
+    <a class="logo-wrap" href="#">
+      <!-- Logo corazón Apprecio Beat -->
+      <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF6B8A"/>
+            <stop offset="100%" style="stop-color:#FA345E"/>
+          </linearGradient>
+        </defs>
+        <!-- Corazón -->
+        <path d="M50 82 C50 82 15 58 15 35 C15 23 24 14 35 14 C42 14 48 18 50 22 C52 18 58 14 65 14 C76 14 85 23 85 35 C85 58 50 82 50 82Z" fill="url(#heartGrad)" opacity="0.15"/>
+        <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="url(#heartGrad)"/>
+        <!-- Línea de pulso dentro del corazón -->
+        <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+      </svg>
+      <span class="logo-text">apprecio<span>Beat</span></span>
+    </a>
+    <span class="header-badge">CX Dashboard</span>
+  </div>
+  <div class="header-right">
+    <button class="export-btn" id="btnExportarPDF" onclick="abrirModalPDF()">
+      <span>📄</span> Exportar Reporte PDF
+    </button>
+  </div>
+</header>
+
+<!-- ═══ FILTERS BAR ═══ -->
+<div class="filters-bar">
+  <div class="filter-group">
+    <span class="filter-label">País</span>
+    <select class="filter-select" id="filtroPais" onchange="aplicarFiltros()">
+      <option value="">Todos los países</option>
+    </select>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Período</span>
+    <select class="filter-select" id="filtroMes" onchange="aplicarFiltros()">
+      <option value="">Todos los meses</option>
+    </select>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Empresa</span>
+    <select class="filter-select" id="filtroEmpresa" onchange="aplicarFiltros()">
+      <option value="">Todas las empresas</option>
+    </select>
+  </div>
+</div>
+
+<!-- ═══ TABS ═══ -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="cambiarTab(0)" id="tab0"><span class="tab-icon">📊</span> NPS</button>
+  <button class="tab-btn" onclick="cambiarTab(1)" id="tab1"><span class="tab-icon">⭐</span> CSAT Post Abono</button>
+  <button class="tab-btn" onclick="cambiarTab(2)" id="tab2"><span class="tab-icon">🤝</span> CSAT Post Reunión</button>
+  <button class="tab-btn" onclick="cambiarTab(3)" id="tab3"><span class="tab-icon">⚠️</span> Alertas Críticas</button>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<main class="main">
+
+  <!-- ── TAB: NPS ── -->
+  <div class="section active" id="sec0">
+    <!-- Panel IA con análisis de promotores/detractores/neutros -->
+    <div class="ia-panel">
+      <div class="ia-header">
+        <div class="ia-title">
+          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
+            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Apprecio Beat IA — Análisis NPS
+        </div>
+        <span class="ia-badge">⚡ Powered by Claude</span>
+      </div>
+      <p class="ia-desc">La IA analiza los datos filtrados y entrega un reporte ejecutivo: casos más frecuentes, segmentación de promotores/detractores/neutros, clientes críticos con mayor riesgo de churn y acciones prioritarias.</p>
+      <div class="ia-actions">
+        <button class="ia-btn ia-btn-primary" id="btnIAnps" onclick="ejecutarAnalisisIA('nps')">
+          <span>🔍</span> Analizar NPS con IA
+        </button>
+        <button class="ia-btn ia-btn-secondary" id="btnIAnps2" onclick="ejecutarAnalisisDetractores('nps')">
+          <span>🚨</span> Ver clientes en riesgo
+        </button>
+        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('nps')">
+          <span>✕</span> Limpiar
+        </button>
+      </div>
+      <div id="ia-loading-nps" style="display:none" class="ia-loading">
+        <div class="ia-spinner"></div>
+        <span id="ia-loading-text-nps">Analizando respuestas NPS...</span>
+      </div>
+      <div id="ia-error-nps" style="display:none" class="ia-error"></div>
+      <div id="ia-result-nps" style="display:none" class="ia-result"></div>
+    </div>
+
+    <div class="kpi-row" id="kpi-nps">
+      <div class="kpi-card" style="--card-accent: var(--brand)">
+        <div class="kpi-label">Score NPS</div>
+        <div class="kpi-value brand" id="v-nps-score">—</div>
+        <div class="kpi-sub">Escala -100 a +100</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--success)">
+        <div class="kpi-label">Promotores</div>
+        <div class="kpi-value success" id="v-nps-pro">—</div>
+        <div class="kpi-sub" id="v-nps-pro-pct">Nota 9-10</div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-pro" style="background:var(--success); width:0%"></div></div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--warning)">
+        <div class="kpi-label">Neutros</div>
+        <div class="kpi-value warning" id="v-nps-neu">—</div>
+        <div class="kpi-sub" id="v-nps-neu-pct">Nota 7-8</div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-neu" style="background:var(--warning); width:0%"></div></div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--danger)">
+        <div class="kpi-label">Detractores</div>
+        <div class="kpi-value danger" id="v-nps-det">—</div>
+        <div class="kpi-sub" id="v-nps-det-pct">Nota 0-6</div>
+        <div class="progress-bar"><div class="progress-fill" id="bar-det" style="background:var(--danger); width:0%"></div></div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--info)">
+        <div class="kpi-label">Total Respuestas</div>
+        <div class="kpi-value" id="v-nps-total">—</div>
+        <div class="kpi-sub">En el período</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><span class="card-title-icon">📈</span> Evolución NPS por Mes</div>
+            <div class="card-subtitle">Score mensual acumulado</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-nps-trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><span class="card-title-icon">🌎</span> NPS por País</div>
+            <div class="card-subtitle">Distribución geográfica</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-nps-pais"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Tabla detractores críticos -->
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-header">
+        <div>
+          <div class="card-title"><span class="card-title-icon">🚨</span> Detractores Críticos — Riesgo de Churn</div>
+          <div class="card-subtitle">Clientes con mayor riesgo de dejar Apprecio Beat · Ordenados por prioridad</div>
+        </div>
+      </div>
+      <div class="table-wrap" id="tabla-detractores">
+        <div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Cargando datos...</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: CSAT POST ABONO ── -->
+  <div class="section" id="sec1">
+    <div class="ia-panel">
+      <div class="ia-header">
+        <div class="ia-title">
+          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
+            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Apprecio Beat IA — Análisis CSAT Post Abono
+        </div>
+        <span class="ia-badge">⚡ Powered by Claude</span>
+      </div>
+      <p class="ia-desc">Análisis de satisfacción post-abono: patrones más frecuentes en respuestas detractoras, promotoras y neutras. Detecta qué aspectos de la plataforma generan mayor fricción.</p>
+      <div class="ia-actions">
+        <button class="ia-btn ia-btn-primary" onclick="ejecutarAnalisisIA('csat_abono')">
+          <span>🔍</span> Analizar CSAT con IA
+        </button>
+        <button class="ia-btn ia-btn-secondary" onclick="ejecutarAnalisisDetractores('csat_abono')">
+          <span>🚨</span> Ver clientes en riesgo
+        </button>
+        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('csat_abono')">
+          <span>✕</span> Limpiar
+        </button>
+      </div>
+      <div id="ia-loading-csat_abono" style="display:none" class="ia-loading">
+        <div class="ia-spinner"></div>
+        <span>Analizando respuestas CSAT Post Abono...</span>
+      </div>
+      <div id="ia-error-csat_abono" style="display:none" class="ia-error"></div>
+      <div id="ia-result-csat_abono" style="display:none" class="ia-result"></div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card" style="--card-accent: var(--brand)">
+        <div class="kpi-label">CSAT Score</div>
+        <div class="kpi-value brand" id="v-csa-score">—</div>
+        <div class="kpi-sub">% satisfechos (≥9)</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--success)">
+        <div class="kpi-label">Promotores</div>
+        <div class="kpi-value success" id="v-csa-pro">—</div>
+        <div class="kpi-sub">Nota 9-10</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--warning)">
+        <div class="kpi-label">Neutros</div>
+        <div class="kpi-value warning" id="v-csa-neu">—</div>
+        <div class="kpi-sub">Nota 7-8</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--danger)">
+        <div class="kpi-label">Detractores</div>
+        <div class="kpi-value danger" id="v-csa-det">—</div>
+        <div class="kpi-sub">Nota 0-6</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total</div>
+        <div class="kpi-value" id="v-csa-total">—</div>
+        <div class="kpi-sub">Respuestas</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">📈</span> Evolución CSAT Post Abono</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-csa-trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">🌎</span> Por País</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-csa-pais"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: CSAT POST REUNIÓN ── -->
+  <div class="section" id="sec2">
+    <div class="ia-panel">
+      <div class="ia-header">
+        <div class="ia-title">
+          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
+            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Apprecio Beat IA — Análisis CSAT Post Reunión
+        </div>
+        <span class="ia-badge">⚡ Powered by Claude</span>
+      </div>
+      <p class="ia-desc">Análisis de satisfacción post-reunión comercial: frecuencia de quejas, elogios y observaciones neutras. Identifica qué aspectos del equipo KAM generan mejor o peor experiencia.</p>
+      <div class="ia-actions">
+        <button class="ia-btn ia-btn-primary" onclick="ejecutarAnalisisIA('csat_reunion')">
+          <span>🔍</span> Analizar CSAT con IA
+        </button>
+        <button class="ia-btn ia-btn-secondary" onclick="ejecutarAnalisisDetractores('csat_reunion')">
+          <span>🚨</span> Ver clientes en riesgo
+        </button>
+        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('csat_reunion')">
+          <span>✕</span> Limpiar
+        </button>
+      </div>
+      <div id="ia-loading-csat_reunion" style="display:none" class="ia-loading">
+        <div class="ia-spinner"></div>
+        <span>Analizando respuestas CSAT Post Reunión...</span>
+      </div>
+      <div id="ia-error-csat_reunion" style="display:none" class="ia-error"></div>
+      <div id="ia-result-csat_reunion" style="display:none" class="ia-result"></div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card" style="--card-accent: var(--brand)">
+        <div class="kpi-label">CSAT Score</div>
+        <div class="kpi-value brand" id="v-csr-score">—</div>
+        <div class="kpi-sub">% satisfechos (≥9)</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--success)">
+        <div class="kpi-label">Promotores</div>
+        <div class="kpi-value success" id="v-csr-pro">—</div>
+        <div class="kpi-sub">Nota 9-10</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--warning)">
+        <div class="kpi-label">Neutros</div>
+        <div class="kpi-value warning" id="v-csr-neu">—</div>
+        <div class="kpi-sub">Nota 7-8</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--danger)">
+        <div class="kpi-label">Detractores</div>
+        <div class="kpi-value danger" id="v-csr-det">—</div>
+        <div class="kpi-sub">Nota 0-6</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total</div>
+        <div class="kpi-value" id="v-csr-total">—</div>
+        <div class="kpi-sub">Respuestas</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">📈</span> Evolución CSAT Post Reunión</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-csr-trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">🌎</span> Por País</div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-csr-pais"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: ALERTAS ── -->
+  <div class="section" id="sec3">
+    <div class="ia-panel">
+      <div class="ia-header">
+        <div class="ia-title">
+          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
+            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Apprecio Beat IA — Radar de Alertas
+        </div>
+        <span class="ia-badge">⚡ Powered by Claude</span>
+      </div>
+      <p class="ia-desc">Análisis integral de todos los módulos. La IA identifica los clientes más críticos que podrían dejar de usar Apprecio Beat, con nivel de riesgo y acciones prioritarias para el equipo KAM.</p>
+      <div class="ia-actions">
+        <button class="ia-btn ia-btn-primary" onclick="ejecutarRadarCompleto()">
+          <span>🎯</span> Ejecutar Radar Completo
+        </button>
+        <button class="ia-btn ia-btn-danger" onclick="ejecutarChurnIA()">
+          <span>⛔</span> Clientes en riesgo de salida
+        </button>
+        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('alertas')">
+          <span>✕</span> Limpiar
+        </button>
+      </div>
+      <div id="ia-loading-alertas" style="display:none" class="ia-loading">
+        <div class="ia-spinner"></div>
+        <span id="ia-loading-text-alertas">Ejecutando radar completo...</span>
+      </div>
+      <div id="ia-error-alertas" style="display:none" class="ia-error"></div>
+      <div id="ia-result-alertas" style="display:none" class="ia-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="card-title-icon">⚠️</span> Alertas Críticas del Sistema</div>
+      </div>
+      <div class="alert-list" id="lista-alertas">
+        <div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">Cargando alertas...</div></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ MODAL PDF ═══ -->
+<div class="modal-overlay" id="modalPDF">
+  <div class="modal">
+    <div class="modal-title">
+      <svg width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
+        <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Exportar Reporte Apprecio Beat
+    </div>
+    <p class="modal-desc">La IA analiza todos los datos del período seleccionado y genera un reporte ejecutivo inteligente: frecuencia de casos, segmentación completa y clientes críticos.</p>
+    <div class="modal-options">
+      <div class="modal-option selected" id="opt-ejecutivo" onclick="seleccionarOpcion('ejecutivo')">
+        <span class="modal-option-icon">📊</span>
+        <div class="modal-option-content">
+          <div class="modal-option-title">Resumen Ejecutivo IA</div>
+          <div class="modal-option-desc">Análisis de casos frecuentes, promotores/neutros/detractores y tendencias clave. Sin acciones detalladas.</div>
+        </div>
+      </div>
+      <div class="modal-option" id="opt-completo" onclick="seleccionarOpcion('completo')">
+        <span class="modal-option-icon">📋</span>
+        <div class="modal-option-content">
+          <div class="modal-option-title">Reporte Completo con Acciones</div>
+          <div class="modal-option-desc">Incluye acciones recomendadas por cliente, plan de recuperación de detractores y mapa de churn.</div>
+        </div>
+      </div>
+      <div class="modal-option" id="opt-churn" onclick="seleccionarOpcion('churn')">
+        <span class="modal-option-icon">🚨</span>
+        <div class="modal-option-content">
+          <div class="modal-option-title">Reporte de Riesgo de Churn</div>
+          <div class="modal-option-desc">Enfocado en los clientes críticos con mayor probabilidad de dejar Apprecio Beat. Urgente para KAM.</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="cerrarModalPDF()">Cancelar</button>
+      <button class="btn-primary" id="btnGenerarPDF" onclick="generarReportePDF()">
+        <span>⚡</span> Generar con IA
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
-/* ════ CONFIG ════ */
+// ═══════════════════════════════════════════════════════
+// CONFIG — ajusta estas URLs
+// ═══════════════════════════════════════════════════════
 const CONFIG = {
+  // Webhook n8n original (para análisis generales via Ollama)
+  N8N_WEBHOOK: 'https://TU-N8N-DOMINIO/webhook/apprecio-cx-analisis',
+  
+  // API Anthropic Claude (análisis IA directa en el dashboard)
+  CLAUDE_API: 'https://api.anthropic.com/v1/messages',
+  CLAUDE_MODEL: 'claude-sonnet-4-20250514',
+  
+  // Google Sheets (igual que versión anterior)
   SHEETS: {
-    NPS_HISTORICO: "https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:csv&sheet=Historico",
-    NPS_HOJA1:     "https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:csv&sheet=Hoja+1",
-    CSAT_RESPUESTAS:"https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&sheet=respuestas_encuestas",
-    CSAT_CONSULTA: "https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&sheet=consulta_abono",
-    REUNION_HOJA1: "https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:csv&sheet=Hoja+1"
-  },
-  CLAUDE_API: "https://api.anthropic.com/v1/messages",
-  CLAUDE_MODEL: "claude-sonnet-4-20250514",
-  N8N_WEBHOOK: "https://n8n.openip.cl/webhook/apprecio-cx-analisis"
+    NPS:         'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:csv&sheet=Hoja1',
+    CSAT_ABONO:  'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&sheet=Hoja1',
+    CSAT_REUNION:'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:csv&sheet=Hoja1'
+  }
 };
 
-const BRAND="#FA345E",BRAND_D="#D61F47",SUCCESS="#10B981",WARN="#F59E0B",DANGER="#EF4444",INFO="#4361EE";
-const {createElement:e,useState,useEffect,useCallback,useMemo,useRef}=React;
+// ═══════════════════════════════════════════════════════
+// ESTADO GLOBAL
+// ═══════════════════════════════════════════════════════
+let DATA = { nps: [], csat_abono: [], csat_reunion: [] };
+let DATA_FILTRADA = { nps: [], csat_abono: [], csat_reunion: [] };
+let TAB_ACTUAL = 0;
+let CHARTS = {};
+let OPCION_PDF = 'ejecutivo';
 
-/* ════ LOGO (del HTML original) ════ */
-function Logo({size=34}){
-  return e('svg',{width:size,height:size,viewBox:'0 0 40 40',fill:'none'},
-    e('rect',{width:40,height:40,rx:10,fill:BRAND}),
-    e('path',{d:'M20 9C13.9 9 9 13.9 9 20s4.9 11 11 11 11-4.9 11-11S26.1 9 20 9zm0 4.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13zm0 3a3.5 3.5 0 100 7 3.5 3.5 0 000-7z',fill:'white',fillOpacity:.95})
-  );
-}
-
-/* ════ CSV PARSER ════ */
-function parseCSV(txt){
-  const rows=[];
-  const lines=txt.trim().split("\n");
-  if(!lines.length) return rows;
-  const parseRow=line=>{
-    const vals=[];let cur='',inQ=false;
-    for(let i=0;i<line.length;i++){
-      if(line[i]==='"' && !inQ){inQ=true;}
-      else if(line[i]==='"' && inQ){
-        if(line[i+1]==='"'){cur+='"';i++;}else inQ=false;
-      } else if(line[i]===',' && !inQ){vals.push(cur.trim());cur='';}
-      else cur+=line[i];
-    }
-    vals.push(cur.trim());
-    return vals;
-  };
-  const headers=parseRow(lines[0]).map(h=>h.toLowerCase().replace(/[^a-z0-9_]/g,'_'));
-  for(let i=1;i<lines.length;i++){
-    if(!lines[i].trim()) continue;
-    const vals=parseRow(lines[i]);
-    const obj={};
-    headers.forEach((h,idx)=>{ obj[h]=vals[idx]||''});
-    rows.push(obj);
-  }
-  return rows;
-}
-
-async function fetchCSV(url){
-  try{
-    const r=await fetch(url);
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    return parseCSV(await r.text());
-  }catch(err){console.error('fetchCSV error',url,err);return [];}
-}
-
-/* ════ CHARTS ════ */
-function ChartDonut({id,p,n,d,score,label}){
-  const ref=useRef(null),chart=useRef(null);
-  useEffect(()=>{
-    if(!ref.current) return;
-    if(chart.current) chart.current.destroy();
-    const ctx=ref.current.getContext('2d');
-    chart.current=new Chart(ctx,{
-      type:'doughnut',
-      data:{labels:['Promotores','Neutros','Detractores'],datasets:[{data:[p||0,n||0,d||0],backgroundColor:[SUCCESS,WARN,DANGER],borderWidth:4,borderColor:'#fff',hoverOffset:8}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:'74%',plugins:{legend:{display:false}}},
-      plugins:[{id:'center_'+id,beforeDraw:(ch)=>{
-        const {ctx:c,width:w,height:h}=ch;c.save();
-        const fs=Math.min(w,h)/5;
-        c.font=`800 ${fs}px DM Sans,sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillStyle='#111827';
-        c.fillText((score>0?'+':'')+(score||0),w/2,h/2-3);
-        c.font=`500 ${fs/2.6}px DM Sans,sans-serif`;c.fillStyle='#9AA0B4';
-        c.fillText(label,w/2,h/2+fs/1.5);c.restore();
-      }}]
+// ── Parsear CSV ──
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toLowerCase());
+  return lines.slice(1).map(line => {
+    const vals = line.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
+    const obj = {};
+    headers.forEach((h, i) => {
+      obj[h] = (vals[i] || '').replace(/"/g,'').trim();
     });
-    return()=>{if(chart.current)chart.current.destroy()};
-  },[p,n,d,score,label,id]);
-  return e('div',{style:{position:'relative',width:'100%',height:190}},
-    e('canvas',{ref,role:'img','aria-label':`${label}: ${score}`}));
+    return obj;
+  }).filter(r => Object.values(r).some(v => v));
 }
 
-function ChartLinea({id,datos,color,minY,maxY,isPercent}){
-  const ref=useRef(null),chart=useRef(null);
-  useEffect(()=>{
-    if(!ref.current||!datos||!datos.length) return;
-    if(chart.current) chart.current.destroy();
-    const ctx=ref.current.getContext('2d');
-    chart.current=new Chart(ctx,{
-      type:'line',
-      data:{labels:datos.map(d=>d.q),datasets:[{data:datos.map(d=>d.score),borderColor:color||BRAND,backgroundColor:(color||BRAND)+'14',borderWidth:4,tension:.35,fill:true,pointBackgroundColor:color||BRAND,pointRadius:5,pointHoverRadius:8}]},
-      options:{responsive:true,maintainAspectRatio:false,
-        scales:{
-          y:{min:minY!==undefined?minY:-100,max:maxY!==undefined?maxY:100,grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11},callback:isPercent?v=>v+'%':undefined}},
-          x:{grid:{display:false},ticks:{font:{family:'DM Sans',weight:'600',size:11}}}
-        },
-        plugins:{legend:{display:false}}
-      }
-    });
-    return()=>{if(chart.current)chart.current.destroy()};
-  },[datos,color,id,minY,maxY,isPercent]);
-  return e('div',{style:{width:'100%',height:220}},e('canvas',{ref}));
+// ── Cargar datos ──
+async function cargarDatos() {
+  // Datos demo si no hay conexión a sheets
+  const demNPS = generarDemoNPS(80);
+  const demCSAT_A = generarDemoCSAT(60);
+  const demCSAT_R = generarDemoCSAT(45);
+  DATA = { nps: demNPS, csat_abono: demCSAT_A, csat_reunion: demCSAT_R };
+  popularFiltros();
+  aplicarFiltros();
 }
 
-/* ════ PANEL IA ════ */
-function PanelIA({titulo,descripcion,buildPrompt,data}){
-  const [loading,setLoading]=useState(false);
-  const [resultado,setResultado]=useState(null);
-  const [error,setError]=useState(null);
-  const [modo,setModo]=useState('analisis'); // analisis | riesgo
-
-  const llamar=async(prompt)=>{
-    setLoading(true);setError(null);setResultado(null);
-    try{
-      const res=await fetch(CONFIG.CLAUDE_API,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:CONFIG.CLAUDE_MODEL,max_tokens:1000,messages:[{role:'user',content:prompt}]})
-      });
-      const json=await res.json();
-      const txt=json.content?.map(b=>b.text||'').join('')||'Sin respuesta';
-      setResultado(txt);
-    }catch(err){setError('Error al conectar con IA: '+err.message);}
-    finally{setLoading(false);}
-  };
-
-  const analizar=()=>llamar(buildPrompt(data,'analisis'));
-  const verRiesgo=()=>llamar(buildPrompt(data,'riesgo'));
-
-  return e('div',{className:'ai-panel',style:{marginBottom:24}},
-    e('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:10}},
-      e('div',{style:{display:'flex',alignItems:'center',gap:10}},
-        e('div',{style:{width:38,height:38,borderRadius:10,background:BRAND,display:'flex',alignItems:'center',justifyContent:'center'}},
-          e(Logo,{size:28})
-        ),
-        e('div',{},
-          e('p',{style:{fontSize:14,fontWeight:700,color:'#fff',margin:0}},titulo),
-          e('p',{style:{fontSize:11,color:'rgba(255,255,255,.5)',margin:0}},descripcion)
-        )
-      ),
-      e('span',{style:{background:'rgba(250,52,94,.2)',border:'1px solid rgba(250,52,94,.4)',color:BRAND,fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20}},'⚡ Powered by Claude')
-    ),
-    e('div',{style:{display:'flex',gap:10,flexWrap:'wrap',marginBottom:loading||resultado||error?16:0}},
-      e('button',{className:'btn-primary',onClick:analizar,disabled:loading,style:{padding:'8px 18px',fontSize:12,display:'flex',alignItems:'center',gap:8}},
-        e('i',{className:loading?'fa-solid fa-spinner fa-spin':'fa-solid fa-chart-bar'}),
-        loading&&modo==='analisis'?'Analizando...':' Analizar con IA'
-      ),
-      e('button',{onClick:verRiesgo,disabled:loading,style:{padding:'8px 18px',fontSize:12,background:'rgba(239,68,68,.15)',color:'#FCA5A5',border:'1px solid rgba(239,68,68,.3)',borderRadius:10,fontFamily:'DM Sans',cursor:'pointer',display:'flex',alignItems:'center',gap:8}},
-        e('i',{className:loading?'fa-solid fa-spinner fa-spin':'fa-solid fa-triangle-exclamation'}),
-        loading&&modo==='riesgo'?'Calculando...':' Clientes en riesgo'
-      ),
-      resultado&&e('button',{onClick:()=>setResultado(null),style:{padding:'8px 14px',fontSize:12,background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.6)',border:'1px solid rgba(255,255,255,.12)',borderRadius:10,fontFamily:'DM Sans',cursor:'pointer'}},'✕ Limpiar')
-    ),
-    loading&&e('div',{style:{display:'flex',alignItems:'center',gap:10,padding:'12px 0',color:'rgba(255,255,255,.6)',fontSize:13}},
-      e('div',{style:{width:16,height:16,border:'2px solid rgba(250,52,94,.3)',borderTopColor:BRAND,borderRadius:'50%',animation:'spin .8s linear infinite'}}),
-      'La IA está analizando los datos reales...'
-    ),
-    resultado&&e('div',{className:'ai-result'},resultado),
-    error&&e('div',{style:{background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.3)',borderRadius:10,padding:'12px 16px',color:'#FCA5A5',fontSize:12,marginTop:8}},error)
-  );
-}
-
-/* ════ BLOQUE ESPEJO ════ */
-function BloqueEspejo({id,titulo,total,p,n,d,score,avg,pPorc,paises,meses,filtroPais,setFP,filtroMes,setFM,labelScore,filtrados,onExportPDF}){
-  const vals=[[SUCCESS,'Promotor (9-10)',p],[WARN,'Neutro (7-8)',n],[DANGER,'Detractor (0-6)',d]];
-  return e('div',{className:'card',style:{padding:24}},
-    e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:12,marginBottom:18}},
-      e('div',{style:{flex:1}},
-        e('h3',{style:{fontSize:13,fontWeight:700,color:'#1F2937',lineHeight:1.45,marginBottom:6}},titulo),
-        e('span',{className:'chip'},`${total} respuestas`)
-      ),
-      e('div',{style:{display:'flex',gap:8,flexShrink:0,flexWrap:'wrap'}},
-        e('select',{value:filtroPais,onChange:ev=>setFP(ev.target.value),style:{fontSize:11,fontWeight:600,color:'#6B7280',background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'4px 8px'}},
-          paises.map(p=>e('option',{key:p,value:p},p==='Todos'?'🌎 Todos':p))),
-        e('select',{value:filtroMes,onChange:ev=>setFM(ev.target.value),style:{fontSize:11,fontWeight:600,color:'#6B7280',background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'4px 8px'}},
-          meses.map(m=>e('option',{key:m,value:m},m==='Todos'?'📅 Todos':m)))
-      )
-    ),
-    e('div',{style:{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap'}},
-      e('div',{style:{flex:'0 0 170px'}},
-        total===0
-          ?e('div',{style:{height:190,display:'flex',alignItems:'center',justifyContent:'center',color:'#D1D5DB',fontSize:12}},'Sin datos')
-          :e(ChartDonut,{id,p,n,d,score,label:labelScore})
-      ),
-      e('div',{style:{flex:1,display:'flex',flexDirection:'column',gap:10,minWidth:200}},
-        e('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}},
-          vals.map(([color,lbl,val])=>
-            e('div',{key:lbl,style:{background:'#F9FAFB',border:'1px solid #F3F4F6',borderRadius:10,padding:'10px 8px',textAlign:'center'}},
-              e('p',{style:{fontSize:22,fontWeight:800,color,margin:0}},val),
-              e('p',{style:{fontSize:10,color:'#9AA0B4',fontWeight:600,marginTop:2}},lbl)
-            )
-          )
-        ),
-        e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}},
-          e('div',{style:{background:'#F9FAFB',border:'1px solid #F3F4F6',borderRadius:10,padding:12}},
-            e('p',{style:{fontSize:10,color:'#9AA0B4',fontWeight:600,marginBottom:4}},'Promedio'),
-            e('p',{style:{fontSize:24,fontWeight:800,color:'#1F2937',margin:0}},avg)
-          ),
-          e('div',{style:{background:'#F9FAFB',border:'1px solid #F3F4F6',borderRadius:10,padding:12}},
-            e('p',{style:{fontSize:10,color:'#9AA0B4',fontWeight:600,marginBottom:4}},'% Satisfecho'),
-            e('p',{style:{fontSize:24,fontWeight:800,color:SUCCESS,margin:0}},pPorc+'%')
-          )
-        ),
-        e('button',{className:'btn-primary',onClick:()=>onExportPDF&&onExportPDF(filtrados,titulo,filtroPais,filtroMes),style:{padding:'9px 16px',fontSize:11,display:'flex',alignItems:'center',justifyContent:'center',gap:8}},
-          e('i',{className:'fa-solid fa-file-pdf'}),' Exportar PDF con IA'
-        )
-      )
-    )
-  );
-}
-
-/* ════ EXPORT PDF CON IA ════ */
-async function exportarPDFconIA(registros,titulo,pais,mes){
-  if(!registros||!registros.length){alert('Sin datos en este filtro.');return;}
-  const det=registros.filter(r=>{const v=parseFloat(r.puntuacion||r.satisfaccion||r.respuesta1||0);return v<=6;});
-  const pro=registros.filter(r=>{const v=parseFloat(r.puntuacion||r.satisfaccion||r.respuesta1||0);return v>=9;});
-  const neu=registros.filter(r=>{const v=parseFloat(r.puntuacion||r.satisfaccion||r.respuesta1||0);return v>=7&&v<=8;});
-  const comentarios=registros.map(r=>r.razon||r.comentarios||r.comentario||r.que_fue_lo_mas_facil||r.comentario_||''
-  ).filter(Boolean);
-  const porEmp={};
-  det.forEach(r=>{
-    const emp=r.empresa||r.nombre_de_la_empresa||r.nombre||'Sin empresa';
-    if(!porEmp[emp])porEmp[emp]={c:0,razones:[]};
-    porEmp[emp].c++;
-    const com=r.razon||r.comentarios||r.comentario||r.que_fue_lo_mas_facil||'';
-    if(com)porEmp[emp].razones.push(com);
+function generarDemoNPS(n) {
+  const empresas = ['TechCorp SA','Retail Group','Banca Plus','Seguros Max','Retail XYZ','Minería Sur','Logística Fast','Servicios Pro','InnoTech','MegaRetail','Constructora ABC','Salud Total'];
+  const paises = ['Chile','Colombia','México','Perú','Argentina','Costa Rica'];
+  const meses = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08'];
+  const razones_det = [
+    'La plataforma es lenta y tiene muchos errores','No hay soporte técnico adecuado','Los beneficios no son relevantes para nuestros empleados','Difícil de usar, interfaz confusa','Precios muy elevados para lo que ofrece','No cumple con lo prometido en la venta','El equipo de atención no responde a tiempo'];
+  const razones_pro = [
+    'Excelente plataforma, muy fácil de usar','El equipo es muy atento y resolutivo','Los empleados valoran mucho los beneficios','Muy buena relación calidad-precio','Nos ha ayudado a mejorar el clima laboral'];
+  const razones_neu = [
+    'Cumple con lo básico pero podría mejorar','La plataforma funciona bien pero falta más variedad','El soporte es aceptable','Algunos beneficios son buenos, otros no tanto'];
+  return Array.from({length: n}, (_, i) => {
+    const nota = Math.random() < 0.35 ? Math.floor(Math.random()*7) : (Math.random() < 0.45 ? 7+Math.floor(Math.random()*2) : 9+Math.floor(Math.random()*2));
+    const tipo = nota >= 9 ? 'promotor' : nota >= 7 ? 'neutro' : 'detractor';
+    const empresa = empresas[Math.floor(Math.random()*empresas.length)];
+    return {
+      id: i+1,
+      empresa,
+      pais: paises[Math.floor(Math.random()*paises.length)],
+      mes: meses[Math.floor(Math.random()*meses.length)],
+      puntuacion: nota,
+      tipo,
+      razon: tipo === 'detractor' ? razones_det[Math.floor(Math.random()*razones_det.length)] : tipo === 'promotor' ? razones_pro[Math.floor(Math.random()*razones_pro.length)] : razones_neu[Math.floor(Math.random()*razones_neu.length)],
+      contacto: `contacto@${empresa.toLowerCase().replace(/\s/g,'')}.com`
+    };
   });
-  const topDet=Object.entries(porEmp).sort((a,b)=>b[1].c-a[1].c).slice(0,6)
-    .map(([e,d])=>`• ${e}: ${d.c} casos — "${d.razones[0]||'Sin comentario'}"`).join('\n');
-  const total=registros.length;
-  const scoreNPS=total>0?Math.round(((pro.length/total)*100)-((det.length/total)*100)):0;
+}
 
-  const prompt=`Eres Apprecio Beat IA, analista de CX para programas de beneficios corporativos en Latinoamérica.
+function generarDemoCSAT(n) {
+  const empresas = ['TechCorp SA','Retail Group','Banca Plus','Seguros Max','Retail XYZ','Minería Sur','Logística Fast','Servicios Pro','InnoTech','MegaRetail'];
+  const paises = ['Chile','Colombia','México','Perú','Argentina'];
+  const meses = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08'];
+  const comentarios = [
+    'El proceso fue muy fluido','Necesitan mejorar los tiempos de respuesta','Muy satisfecho con la atención','Hubo problemas técnicos durante el proceso','El equipo fue muy profesional','Falta mejor comunicación','Excelente experiencia'];
+  return Array.from({length: n}, (_, i) => {
+    const nota = Math.random() < 0.3 ? Math.floor(Math.random()*7) : (Math.random() < 0.4 ? 7+Math.floor(Math.random()*2) : 9+Math.floor(Math.random()*2));
+    return {
+      id: i+1,
+      empresa: empresas[Math.floor(Math.random()*empresas.length)],
+      pais: paises[Math.floor(Math.random()*paises.length)],
+      mes: meses[Math.floor(Math.random()*meses.length)],
+      puntuacion: nota,
+      tipo: nota >= 9 ? 'promotor' : nota >= 7 ? 'neutro' : 'detractor',
+      comentario: comentarios[Math.floor(Math.random()*comentarios.length)]
+    };
+  });
+}
 
-MÓDULO: ${titulo} | País: ${pais} | Período: ${mes}
-TOTAL RESPUESTAS: ${total}
-Promotores (9-10): ${pro.length} (${total>0?Math.round(pro.length/total*100):0}%)
-Neutros (7-8): ${neu.length} (${total>0?Math.round(neu.length/total*100):0}%)
-Detractores (0-6): ${det.length} (${total>0?Math.round(det.length/total*100):0}%)
-Score NPS/CSAT: ${scoreNPS}
+// ── Filtros ──
+function popularFiltros() {
+  const paises = [...new Set([...DATA.nps,...DATA.csat_abono,...DATA.csat_reunion].map(r=>r.pais).filter(Boolean))].sort();
+  const meses  = [...new Set([...DATA.nps,...DATA.csat_abono,...DATA.csat_reunion].map(r=>r.mes).filter(Boolean))].sort();
+  const emps   = [...new Set([...DATA.nps,...DATA.csat_abono,...DATA.csat_reunion].map(r=>r.empresa).filter(Boolean))].sort();
+  const sel = (id, vals) => {
+    const el = document.getElementById(id);
+    const cur = el.value;
+    el.innerHTML = `<option value="">Todos</option>` + vals.map(v=>`<option value="${v}"${v===cur?' selected':''}>${v}</option>`).join('');
+  };
+  sel('filtroPais', paises);
+  sel('filtroMes', meses);
+  sel('filtroEmpresa', emps);
+}
 
-CASOS MÁS FRECUENTES EN COMENTARIOS (muestra):
-${comentarios.slice(0,15).map((c,i)=>`${i+1}. "${c}"`).join('\n')||'Sin comentarios textuales'}
+function aplicarFiltros() {
+  const pais = document.getElementById('filtroPais').value;
+  const mes  = document.getElementById('filtroMes').value;
+  const emp  = document.getElementById('filtroEmpresa').value;
+  const filtrar = (arr) => arr.filter(r =>
+    (!pais || r.pais === pais) &&
+    (!mes  || r.mes  === mes) &&
+    (!emp  || r.empresa === emp)
+  );
+  DATA_FILTRADA = {
+    nps:          filtrar(DATA.nps),
+    csat_abono:   filtrar(DATA.csat_abono),
+    csat_reunion: filtrar(DATA.csat_reunion)
+  };
+  actualizarKPIs();
+  actualizarCharts();
+  actualizarTablaDetractores();
+  actualizarAlertas();
+}
+
+// ── KPIs ──
+function calcSegmentos(arr) {
+  let pro=0, neu=0, det=0;
+  arr.forEach(r => {
+    const v = parseFloat(r.puntuacion);
+    if (v >= 9) pro++;
+    else if (v >= 7) neu++;
+    else det++;
+  });
+  return { pro, neu, det, total: arr.length, score: arr.length > 0 ? Math.round((pro-det)/arr.length*100) : 0 };
+}
+
+function actualizarKPIs() {
+  const n = calcSegmentos(DATA_FILTRADA.nps);
+  const a = calcSegmentos(DATA_FILTRADA.csat_abono);
+  const r = calcSegmentos(DATA_FILTRADA.csat_reunion);
+  const pct = (v, t) => t > 0 ? `${Math.round(v/t*100)}%` : '—';
+
+  // NPS
+  document.getElementById('v-nps-score').textContent = n.total > 0 ? n.score : '—';
+  document.getElementById('v-nps-pro').textContent = n.pro;
+  document.getElementById('v-nps-neu').textContent = n.neu;
+  document.getElementById('v-nps-det').textContent = n.det;
+  document.getElementById('v-nps-total').textContent = n.total;
+  document.getElementById('v-nps-pro-pct').textContent = `Nota 9-10 · ${pct(n.pro, n.total)}`;
+  document.getElementById('v-nps-neu-pct').textContent = `Nota 7-8 · ${pct(n.neu, n.total)}`;
+  document.getElementById('v-nps-det-pct').textContent = `Nota 0-6 · ${pct(n.det, n.total)}`;
+  if (n.total > 0) {
+    document.getElementById('bar-pro').style.width = pct(n.pro, n.total);
+    document.getElementById('bar-neu').style.width = pct(n.neu, n.total);
+    document.getElementById('bar-det').style.width = pct(n.det, n.total);
+  }
+
+  // CSAT Abono
+  document.getElementById('v-csa-score').textContent = a.total > 0 ? pct(a.pro, a.total) : '—';
+  document.getElementById('v-csa-pro').textContent = a.pro;
+  document.getElementById('v-csa-neu').textContent = a.neu;
+  document.getElementById('v-csa-det').textContent = a.det;
+  document.getElementById('v-csa-total').textContent = a.total;
+
+  // CSAT Reunión
+  document.getElementById('v-csr-score').textContent = r.total > 0 ? pct(r.pro, r.total) : '—';
+  document.getElementById('v-csr-pro').textContent = r.pro;
+  document.getElementById('v-csr-neu').textContent = r.neu;
+  document.getElementById('v-csr-det').textContent = r.det;
+  document.getElementById('v-csr-total').textContent = r.total;
+}
+
+// ── Charts ──
+const COLORS = {
+  brand: '#FA345E', info: '#3B82F6', success: '#10B981',
+  warning: '#F59E0B', danger: '#EF4444', neutral: '#8B93A7',
+  purple: '#8B5CF6', teal: '#14B8A6', pink: '#EC4899', orange: '#F97316'
+};
+const PAIS_COLORS = ['#FA345E','#3B82F6','#10B981','#F59E0B','#8B5CF6','#14B8A6','#EC4899','#F97316'];
+
+function crearOActualizarChart(id, config) {
+  if (CHARTS[id]) CHARTS[id].destroy();
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  CHARTS[id] = new Chart(canvas.getContext('2d'), config);
+}
+
+function agruparPorMes(arr, tipo='nps') {
+  const porMes = {};
+  arr.forEach(r => {
+    const m = r.mes || 'Sin mes';
+    if (!porMes[m]) porMes[m] = [];
+    porMes[m].push(r);
+  });
+  const meses = Object.keys(porMes).sort();
+  const scores = meses.map(m => {
+    const g = porMes[m];
+    if (tipo === 'nps') {
+      const s = calcSegmentos(g);
+      return s.score;
+    } else {
+      const pro = g.filter(r=>parseFloat(r.puntuacion)>=9).length;
+      return g.length > 0 ? Math.round(pro/g.length*100) : 0;
+    }
+  });
+  return { meses, scores };
+}
+
+function agruparPorPais(arr) {
+  const por = {};
+  arr.forEach(r => { if (r.pais) por[r.pais] = (por[r.pais]||0)+1; });
+  return Object.entries(por).sort((a,b)=>b[1]-a[1]).slice(0,8);
+}
+
+function actualizarCharts() {
+  // NPS trend
+  const nt = agruparPorMes(DATA_FILTRADA.nps, 'nps');
+  crearOActualizarChart('chart-nps-trend', {
+    type:'line',
+    data:{labels:nt.meses,datasets:[{label:'Score NPS',data:nt.scores,borderColor:COLORS.brand,backgroundColor:COLORS.brand+'18',borderWidth:4,tension:.3,pointBackgroundColor:COLORS.brand,pointRadius:5,fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11}}},x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:11}}}},plugins:{legend:{display:false}}}
+  });
+
+  // NPS por país (donut)
+  const np = agruparPorPais(DATA_FILTRADA.nps);
+  crearOActualizarChart('chart-nps-pais', {
+    type:'doughnut',
+    data:{labels:np.map(p=>p[0]),datasets:[{data:np.map(p=>p[1]),backgroundColor:PAIS_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},boxWidth:12,padding:12}}}}
+  });
+
+  // CSAT Abono trend
+  const at = agruparPorMes(DATA_FILTRADA.csat_abono, 'csat');
+  crearOActualizarChart('chart-csa-trend', {
+    type:'line',
+    data:{labels:at.meses,datasets:[{label:'% Satisfechos',data:at.scores,borderColor:COLORS.brand,backgroundColor:COLORS.brand+'18',borderWidth:4,tension:.3,pointBackgroundColor:COLORS.brand,pointRadius:5,fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11},callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:11}}}},plugins:{legend:{display:false}}}
+  });
+
+  const ap = agruparPorPais(DATA_FILTRADA.csat_abono);
+  crearOActualizarChart('chart-csa-pais', {
+    type:'doughnut',
+    data:{labels:ap.map(p=>p[0]),datasets:[{data:ap.map(p=>p[1]),backgroundColor:PAIS_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},boxWidth:12,padding:12}}}}
+  });
+
+  // CSAT Reunión
+  const rrt = agruparPorMes(DATA_FILTRADA.csat_reunion, 'csat');
+  crearOActualizarChart('chart-csr-trend', {
+    type:'line',
+    data:{labels:rrt.meses,datasets:[{label:'% Satisfechos',data:rrt.scores,borderColor:COLORS.info,backgroundColor:COLORS.info+'18',borderWidth:4,tension:.3,pointBackgroundColor:COLORS.info,pointRadius:5,fill:true}]},
+    options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11},callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:11}}}},plugins:{legend:{display:false}}}
+  });
+
+  const rrp = agruparPorPais(DATA_FILTRADA.csat_reunion);
+  crearOActualizarChart('chart-csr-pais', {
+    type:'doughnut',
+    data:{labels:rrp.map(p=>p[0]),datasets:[{data:rrp.map(p=>p[1]),backgroundColor:PAIS_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},boxWidth:12,padding:12}}}}
+  });
+}
+
+// ── Tabla detractores ──
+function actualizarTablaDetractores() {
+  const det = DATA_FILTRADA.nps.filter(r => parseFloat(r.puntuacion) <= 6);
+  // Agrupar por empresa y contar detractores
+  const porEmp = {};
+  det.forEach(r => {
+    const e = r.empresa || 'Sin empresa';
+    if (!porEmp[e]) porEmp[e] = { empresa: e, count: 0, puntMin: 10, razones: [], pais: r.pais, contacto: r.contacto };
+    porEmp[e].count++;
+    if (r.puntuacion < porEmp[e].puntMin) porEmp[e].puntMin = r.puntuacion;
+    if (r.razon) porEmp[e].razones.push(r.razon);
+  });
+  const lista = Object.values(porEmp).sort((a,b) => b.count - a.count).slice(0,15);
+  
+  if (lista.length === 0) {
+    document.getElementById('tabla-detractores').innerHTML = '<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">No hay detractores en el período seleccionado</div></div>';
+    return;
+  }
+
+  const maxCount = lista[0].count;
+  const html = `<table>
+    <thead><tr>
+      <th>#</th><th>Empresa</th><th>País</th><th>Detractores</th><th>Nota Mín</th><th>Principal Queja</th><th>Nivel de Riesgo</th>
+    </tr></thead>
+    <tbody>
+    ${lista.map((e,i) => {
+      const pct = e.count / maxCount;
+      const risk = pct > 0.6 ? ['critical','🔴 Crítico'] : pct > 0.3 ? ['high','🟡 Alto'] : ['medium','🟣 Medio'];
+      const queja = e.razones[0] || '—';
+      return `<tr>
+        <td style="color:var(--text2);font-family:var(--mono)">${i+1}</td>
+        <td><strong>${e.empresa}</strong></td>
+        <td>${e.pais||'—'}</td>
+        <td><span style="font-weight:700;color:var(--danger)">${e.count}</span></td>
+        <td><span style="font-family:var(--mono);color:var(--danger)">${e.puntMin}</span></td>
+        <td style="max-width:240px;font-size:12px;color:var(--text2)">${queja.substring(0,80)}${queja.length>80?'...':''}</td>
+        <td><span class="risk-badge risk-${risk[0]}">${risk[1]}</span></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
+  document.getElementById('tabla-detractores').innerHTML = html;
+}
+
+// ── Alertas ──
+function actualizarAlertas() {
+  const nps = calcSegmentos(DATA_FILTRADA.nps);
+  const csa = calcSegmentos(DATA_FILTRADA.csat_abono);
+  const csr = calcSegmentos(DATA_FILTRADA.csat_reunion);
+  const alertas = [];
+
+  if (nps.total > 0 && nps.score < 0) alertas.push({type:'critical', icon:'🚨', title:`NPS en territorio negativo: ${nps.score}`, desc:`${nps.det} detractores vs ${nps.pro} promotores. Requiere acción inmediata del equipo KAM.`});
+  else if (nps.total > 0 && nps.score < 20) alertas.push({type:'warning', icon:'⚠️', title:`NPS bajo: ${nps.score}`, desc:`Score por debajo del benchmark. Revisar comentarios de detractores.`});
+  
+  if (nps.total > 0 && nps.det/nps.total > 0.3) alertas.push({type:'critical', icon:'🔴', title:`Alta concentración de detractores: ${Math.round(nps.det/nps.total*100)}%`, desc:`Más del 30% de los encuestados son detractores. Riesgo alto de churn.`});
+  
+  if (csa.total > 0 && csa.pro/csa.total < 0.5) alertas.push({type:'warning', icon:'📉', title:`CSAT Post Abono bajo: ${Math.round(csa.pro/csa.total*100)}% satisfechos`, desc:`Menos del 50% de clientes satisfechos con el proceso de abono.`});
+  
+  if (csr.total > 0 && csr.pro/csr.total < 0.5) alertas.push({type:'warning', icon:'🤝', title:`CSAT Post Reunión bajo: ${Math.round(csr.pro/csr.total*100)}% satisfechos`, desc:`Menos del 50% satisfechos con las reuniones comerciales. Revisar metodología KAM.`});
+  
+  alertas.push({type:'info', icon:'📊', title:`Período analizado: ${DATA_FILTRADA.nps.length} respuestas NPS`, desc:`${DATA_FILTRADA.csat_abono.length} CSAT Post Abono · ${DATA_FILTRADA.csat_reunion.length} CSAT Post Reunión en el filtro actual.`});
+
+  const html = alertas.length > 0 ? alertas.map(a => `
+    <div class="alert-item ${a.type}">
+      <span class="alert-icon">${a.icon}</span>
+      <div class="alert-content">
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-desc">${a.desc}</div>
+      </div>
+    </div>`).join('') : '<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alertas críticas en el período</div></div>';
+  
+  document.getElementById('lista-alertas').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════
+// ANÁLISIS IA CON CLAUDE API
+// ═══════════════════════════════════════════════════════
+
+async function llamarClaudeIA(prompt, mensajeLoading, idModulo) {
+  const loadingEl = document.getElementById(`ia-loading-${idModulo}`);
+  const errorEl   = document.getElementById(`ia-error-${idModulo}`);
+  const resultEl  = document.getElementById(`ia-result-${idModulo}`);
+  const loadTxt   = document.getElementById(`ia-loading-text-${idModulo}`);
+  
+  loadingEl.style.display = 'flex';
+  errorEl.style.display = 'none';
+  resultEl.style.display = 'none';
+  if (loadTxt) loadTxt.textContent = mensajeLoading;
+
+  // Deshabilitar botones
+  document.querySelectorAll(`#ia-loading-${idModulo}`).forEach(() => {});
+
+  try {
+    const res = await fetch(CONFIG.CLAUDE_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: CONFIG.CLAUDE_MODEL,
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const texto = data.content?.map(b => b.text||'').join('') || JSON.stringify(data);
+    
+    loadingEl.style.display = 'none';
+    resultEl.style.display = 'block';
+    resultEl.innerHTML = formatearResultadoIA(texto);
+  } catch (err) {
+    loadingEl.style.display = 'none';
+    errorEl.style.display = 'block';
+    errorEl.textContent = `Error al conectar con IA: ${err.message}. Configura CLAUDE_API en CONFIG.`;
+  }
+}
+
+function formatearResultadoIA(texto) {
+  // Convertir markdown básico a HTML
+  return texto
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/#{1,3} (.+)/g, '<h4>$1</h4>')
+    .replace(/^[•·\-] (.+)/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(.)/gm, (m, c) => c === '<' ? m : '<p>' + m)
+    .replace(/<p>(<[uh])/g, '$1')
+    .trim();
+}
+
+function prepararContexto(modulo) {
+  const arr = DATA_FILTRADA[modulo] || DATA_FILTRADA.nps;
+  const seg = calcSegmentos(arr);
+  const detractores = arr.filter(r => parseFloat(r.puntuacion) <= 6);
+  const promotores  = arr.filter(r => parseFloat(r.puntuacion) >= 9);
+  const neutros     = arr.filter(r => { const v=parseFloat(r.puntuacion); return v>=7 && v<=8; });
+  
+  // Casos más frecuentes en comentarios
+  const todosComentarios = arr.map(r => r.razon || r.comentario || '').filter(Boolean);
+  
+  // Top empresas detractoras
+  const porEmp = {};
+  detractores.forEach(r => {
+    const e = r.empresa||'Sin empresa';
+    if (!porEmp[e]) porEmp[e] = 0;
+    porEmp[e]++;
+  });
+  const topDetEmp = Object.entries(porEmp).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([e,c])=>`${e}: ${c} respuestas detractoras`).join('\n');
+  
+  return {
+    seg, detractores, promotores, neutros, todosComentarios, topDetEmp,
+    muestraDet: detractores.slice(0,20).map(r=>`[${r.empresa||'?'} | ${r.pais||'?'} | Nota:${r.puntuacion}] ${r.razon||r.comentario||''}`).join('\n'),
+    muestraPro: promotores.slice(0,10).map(r=>`[${r.empresa||'?'} | Nota:${r.puntuacion}] ${r.razon||r.comentario||''}`).join('\n'),
+    muestraNeu: neutros.slice(0,10).map(r=>`[${r.empresa||'?'} | Nota:${r.puntuacion}] ${r.razon||r.comentario||''}`).join('\n')
+  };
+}
+
+async function ejecutarAnalisisIA(modulo) {
+  const ctx = prepararContexto(modulo);
+  const nombres = { nps:'NPS', csat_abono:'CSAT Post Abono', csat_reunion:'CSAT Post Reunión' };
+  
+  const prompt = `Eres Apprecio Beat IA, analista experto en experiencia del cliente (CX) para programas de beneficios corporativos en Latinoamérica.
+
+DATOS DEL MÓDULO: ${nombres[modulo]}
+- Total respuestas: ${ctx.seg.total}
+- Promotores (nota ≥9): ${ctx.seg.pro} (${ctx.seg.total>0?Math.round(ctx.seg.pro/ctx.seg.total*100):0}%)
+- Neutros (nota 7-8): ${ctx.seg.neu} (${ctx.seg.total>0?Math.round(ctx.seg.neu/ctx.seg.total*100):0}%)
+- Detractores (nota 0-6): ${ctx.seg.det} (${ctx.seg.total>0?Math.round(ctx.seg.det/ctx.seg.total*100):0}%)
+- Score: ${ctx.seg.score}
+
+RESPUESTAS DETRACTORAS (muestra):
+${ctx.muestraDet || 'Sin respuestas detractoras'}
+
+RESPUESTAS PROMOTORAS (muestra):
+${ctx.muestraPro || 'Sin respuestas promotoras'}
+
+RESPUESTAS NEUTRAS (muestra):
+${ctx.muestraNeu || 'Sin respuestas neutras'}
 
 EMPRESAS CON MÁS DETRACTORES:
-${topDet||'Ninguna'}
+${ctx.topDetEmp || 'Sin datos'}
 
 INSTRUCCIONES:
-- Analiza SOLO con los datos arriba. No inventes nada.
-- Identifica los 3 casos que MÁS SE REPITEN en los comentarios
-- Segmenta promotores/neutros/detractores con sus patrones de lenguaje
-- Señala qué clientes tienen mayor riesgo de salida de Apprecio Beat
-- NO incluyas plan de acciones, solo diagnóstico ejecutivo
-- Máximo 300 palabras, tono profesional
+1. NO entregues la lista completa de respuestas. Analiza y sintetiza.
+2. Identifica los CASOS QUE MÁS SE REPITEN en cada segmento (máx 3 por segmento).
+3. Detecta patrones en el lenguaje de detractores vs promotores.
+4. Indica qué empresas tienen comportamiento más crítico.
+5. Máximo 280 palabras. Tono ejecutivo y directo.
 
-Estructura obligatoria:
-📊 SITUACIÓN ACTUAL
-🔍 CASOS QUE MÁS SE REPITEN
-⭐ QUÉ VALORAN LOS PROMOTORES
-🚨 PATRONES DETRACTORES
-⛔ CLIENTES EN RIESGO DE SALIDA`;
+Estructura tu respuesta en estas 4 secciones:
+📊 CASOS MÁS FRECUENTES (qué se repite más en todo el módulo)
+🚨 PATRONES DETRACTORES (qué dicen los que ponen nota baja)
+⭐ LO QUE VALORAN LOS PROMOTORES (qué destacan los que dan nota alta)
+⚠️ EMPRESAS CON MAYOR RIESGO (las más críticas y por qué)`;
 
-  const w=window.open('','_blank');
-  w.document.write('<html><head><title>Generando...</title></head><body style="font-family:DM Sans,sans-serif;padding:40px;color:#1F2937"><p>Generando análisis con IA...</p></body></html>');
-
-  try{
-    const res=await fetch(CONFIG.CLAUDE_API,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:CONFIG.CLAUDE_MODEL,max_tokens:1000,messages:[{role:'user',content:prompt}]})
-    });
-    const json=await res.json();
-    const texto=json.content?.map(b=>b.text||'').join('')||'Error al generar';
-    const items=registros.filter(r=>(r.razon||r.comentarios||r.que_fue_lo_mas_facil||'').trim()).slice(0,30)
-      .map(r=>`<div style="padding:10px;border-left:3px solid #FA345E;margin-bottom:10px;background:#fffbfc;border-radius:4px">
-        <strong>${r.empresa||r.nombre_de_la_empresa||r.nombre||'—'} (${r.pais||r.pa__s||'—'}) · Nota: ${r.puntuacion||r.satisfaccion||r.respuesta1||r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||'—'}</strong><br>
-        <em style="color:#6B7280">${r.razon||r.comentarios||r.que_fue_lo_mas_facil||r.___qu___fue_lo_m___s_f___cil_del_proceso_y_qu___podr___amos_mejorar_||'—'}</em>
-      </div>`).join('');
-    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte CX · ${titulo}</title>
-    <style>body{font-family:DM Sans,sans-serif;padding:40px;color:#1F2937;line-height:1.7;max-width:800px;margin:0 auto}
-    .hdr{border-bottom:3px solid #FA345E;padding-bottom:14px;margin-bottom:24px;display:flex;align-items:center;gap:14px}
-    .hdr svg{flex-shrink:0}.hdr h1{font-size:20px;font-weight:800;margin:0}
-    .hdr .sub{font-size:12px;color:#6B7280;margin-top:4px}
-    .ia-box{background:#FFF5F7;border:1px solid #FBC9D4;border-radius:12px;padding:20px;margin-bottom:28px;white-space:pre-wrap;font-size:13px;line-height:1.7}
-    .ia-label{font-size:11px;font-weight:700;color:#FA345E;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
-    .btn{background:#FA345E;color:#fff;padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:20px}
-    @media print{.btn{display:none}}</style></head><body>
-    <button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>
-    <div class="hdr">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#FA345E"/>
-      <path d="M20 9C13.9 9 9 13.9 9 20s4.9 11 11 11 11-4.9 11-11S26.1 9 20 9zm0 4.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13zm0 3a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" fill="white" fill-opacity=".95"/></svg>
-      <div><h1>Reporte CX · ${titulo}</h1><div class="sub">País: ${pais} · Período: ${mes} · ${new Date().toLocaleDateString('es')} · Apprecio Beat IA</div></div>
-    </div>
-    <div class="ia-label">📊 Análisis Inteligente · Apprecio Beat IA</div>
-    <div class="ia-box">${texto}</div>
-    <h3 style="font-size:14px;font-weight:700;color:#1F2937;margin-bottom:14px">Detalle de respuestas (${registros.length} registros)</h3>
-    ${items||'<p style="color:#9AA0B4">Sin comentarios cualitativos.</p>'}
-    <div style="margin-top:48px;text-align:center;font-size:11px;color:#D1D5DB;border-top:1px solid #E8EAED;padding-top:14px">
-      Apprecio · Dashboard CX · 2026 · Powered by Claude AI
-    </div></body></html>`);
-    w.document.close();
-  }catch(err){w.document.write('<body><p>Error: '+err.message+'</p></body>');w.document.close();}
+  await llamarClaudeIA(prompt, `Analizando patrones en ${nombres[modulo]}...`, modulo);
 }
 
-/* ════ BUILD PROMPT GENERAL ════ */
-function buildPromptNPS(data,tipo){
-  const {raw=[]}=data;
-  const det=raw.filter(r=>parseFloat(r.puntuacion||r.respuesta1||0)<=6);
-  const pro=raw.filter(r=>parseFloat(r.puntuacion||r.respuesta1||0)>=9);
-  const neu=raw.filter(r=>{const v=parseFloat(r.puntuacion||r.respuesta1||0);return v>=7&&v<=8;});
-  const porEmp={};
-  det.forEach(r=>{
-    const emp=r.nombre_empresa||r.empresa||'Sin empresa';
-    if(!porEmp[emp])porEmp[emp]={c:0,pais:r.pais||r.pa__s||'?',razones:[]};
-    porEmp[emp].c++;
-    const com=r.razon||r.comentarios||'';
-    if(com)porEmp[emp].razones.push(com);
+async function ejecutarAnalisisDetractores(modulo) {
+  const ctx = prepararContexto(modulo);
+  const nombres = { nps:'NPS', csat_abono:'CSAT Post Abono', csat_reunion:'CSAT Post Reunión' };
+  
+  const prompt = `Eres Apprecio Beat IA, analista de riesgo de clientes para programas de beneficios corporativos.
+
+DATOS: ${nombres[modulo]}
+Total respuestas: ${ctx.seg.total}
+Detractores: ${ctx.seg.det} (${ctx.seg.total>0?Math.round(ctx.seg.det/ctx.seg.total*100):0}%)
+
+DETRACTORES POR EMPRESA:
+${ctx.topDetEmp || 'Sin datos'}
+
+MUESTRA DE RESPUESTAS DETRACTORAS:
+${ctx.muestraDet || 'Sin respuestas'}
+
+INSTRUCCIONES CRÍTICAS:
+- Identifica los CLIENTES/EMPRESAS con mayor probabilidad de abandonar Apprecio Beat
+- Evalúa nivel de riesgo (crítico/alto/medio) por empresa basándote en el volumen y tono de quejas
+- NO menciones acciones a tomar (solo el diagnóstico de riesgo)
+- Máximo 200 palabras
+
+Estructura:
+🚨 CLIENTES EN RIESGO CRÍTICO DE SALIDA
+(lista con empresa, nivel de riesgo y razón principal de la queja)
+
+📉 TENDENCIA GENERAL DE DETRACTORES
+(1 párrafo sobre el patrón de insatisfacción)`;
+
+  await llamarClaudeIA(prompt, 'Identificando clientes en riesgo...', modulo);
+}
+
+async function ejecutarRadarCompleto() {
+  const n = calcSegmentos(DATA_FILTRADA.nps);
+  const a = calcSegmentos(DATA_FILTRADA.csat_abono);
+  const r = calcSegmentos(DATA_FILTRADA.csat_reunion);
+  
+  // Consolidar detractores de todos los módulos por empresa
+  const allDet = [
+    ...DATA_FILTRADA.nps.filter(x=>parseFloat(x.puntuacion)<=6).map(x=>({...x,modulo:'NPS'})),
+    ...DATA_FILTRADA.csat_abono.filter(x=>parseFloat(x.puntuacion)<=6).map(x=>({...x,modulo:'CSAT Abono'})),
+    ...DATA_FILTRADA.csat_reunion.filter(x=>parseFloat(x.puntuacion)<=6).map(x=>({...x,modulo:'CSAT Reunión'}))
+  ];
+  
+  const porEmp = {};
+  allDet.forEach(x => {
+    const e = x.empresa||'Sin empresa';
+    if (!porEmp[e]) porEmp[e] = { total:0, modulos:[], razones:[], pais: x.pais };
+    porEmp[e].total++;
+    if (!porEmp[e].modulos.includes(x.modulo)) porEmp[e].modulos.push(x.modulo);
+    if (x.razon||x.comentario) porEmp[e].razones.push(x.razon||x.comentario);
   });
-  const topDet=Object.entries(porEmp).sort((a,b)=>b[1].c-a[1].c).slice(0,8)
-    .map(([e,d])=>`${e} (${d.pais}): ${d.c} detractores. Razón: "${d.razones[0]||'Sin comentario'}"`).join('\n');
-  const comentDet=det.slice(0,15).map(r=>`[${r.nombre_empresa||r.empresa||'?'} | ${r.pais||r.pa__s||'?'} | Nota:${r.puntuacion||r.respuesta1}] ${r.razon||r.comentarios||''}`).join('\n');
-  const comentPro=pro.slice(0,10).map(r=>`[${r.nombre_empresa||r.empresa||'?'} | Nota:${r.puntuacion||r.respuesta1}] ${r.razon||r.comentarios||''}`).join('\n');
-  const total=raw.length;
-  const score=total>0?Math.round(((pro.length/total)*100)-((det.length/total)*100)):0;
+  
+  const topEmp = Object.entries(porEmp).sort((a,b)=>b[1].total-a[1].total).slice(0,8)
+    .map(([e,d]) => `${e} (${d.pais||'?'}): ${d.total} detractores en [${d.modulos.join(', ')}]. Queja: "${d.razones[0]||'Sin comentario'}"`)
+    .join('\n');
 
-  if(tipo==='riesgo'){
-    return `Eres Apprecio Beat IA, experto en riesgo de churn para plataformas de beneficios corporativos.
+  const prompt = `Eres Apprecio Beat IA, sistema de radar de riesgo para clientes corporativos de la plataforma de beneficios Apprecio Beat.
 
-DATOS NPS REALES:
-Total: ${total} | Score: ${score} | Promotores: ${pro.length} | Neutros: ${neu.length} | Detractores: ${det.length}
+RESUMEN GLOBAL DE TODOS LOS MÓDULOS:
+- NPS: Score ${n.score} | ${n.pro} promotores, ${n.neu} neutros, ${n.det} detractores
+- CSAT Post Abono: ${a.total>0?Math.round(a.pro/a.total*100):0}% satisfechos | ${a.det} detractores
+- CSAT Post Reunión: ${r.total>0?Math.round(r.pro/r.total*100):0}% satisfechos | ${r.det} detractores
 
-EMPRESAS CON MÁS DETRACTORES (datos reales):
-${topDet||'Sin datos'}
+EMPRESAS CON MAYOR CONCENTRACIÓN DE DETRACTORES (MULTI-MÓDULO):
+${topEmp || 'Sin datos suficientes'}
 
 INSTRUCCIONES:
-- Identifica clientes con MAYOR PROBABILIDAD DE DEJAR Apprecio Beat
-- Clasifica por nivel: CRÍTICO / ALTO / MEDIO
-- Basa el análisis SOLO en los datos reales arriba
-- NO incluyas planes de acción, solo diagnóstico de riesgo
+- Haz un radar completo del estado de la cartera
+- Identifica cuáles son los clientes MÁS CRÍTICOS que podrían DEJAR DE USAR Apprecio Beat
+- Clasifica por nivel de urgencia
+- NO incluyas plan de acciones, solo el diagnóstico y el mapa de riesgo
+- Máximo 300 palabras. Tono de alerta ejecutiva.
+
+Estructura obligatoria:
+🎯 ESTADO GENERAL DE LA CARTERA
+🚨 MAPA DE RIESGO DE CHURN (top 5-8 clientes más críticos con nivel: CRÍTICO/ALTO/MEDIO)
+📍 PAÍSES CON MAYOR CONCENTRACIÓN DE RIESGO
+⚠️ SEÑALES DE ALERTA TRANSVERSALES`;
+
+  await llamarClaudeIA(prompt, 'Ejecutando radar completo de cartera...', 'alertas');
+}
+
+async function ejecutarChurnIA() {
+  const allDet = [
+    ...DATA_FILTRADA.nps.filter(x=>parseFloat(x.puntuacion)<=4).map(x=>({...x,modulo:'NPS',peso:3})),
+    ...DATA_FILTRADA.csat_abono.filter(x=>parseFloat(x.puntuacion)<=5).map(x=>({...x,modulo:'CSAT Abono',peso:2})),
+    ...DATA_FILTRADA.csat_reunion.filter(x=>parseFloat(x.puntuacion)<=5).map(x=>({...x,modulo:'CSAT Reunión',peso:1}))
+  ];
+  
+  const porEmp = {};
+  allDet.forEach(x => {
+    const e = x.empresa||'Sin empresa';
+    if (!porEmp[e]) porEmp[e] = { score:0, eventos:0, razones:[], pais:x.pais };
+    porEmp[e].score += x.peso;
+    porEmp[e].eventos++;
+    if (x.razon||x.comentario) porEmp[e].razones.push(x.razon||x.comentario);
+  });
+  
+  const ranking = Object.entries(porEmp).sort((a,b)=>b[1].score-a[1].score).slice(0,10)
+    .map(([e,d]) => `${e} (${d.pais||'?'}): score_riesgo=${d.score}, eventos=${d.eventos}. Razón: "${d.razones[0]||'Sin comentario'}"`)
+    .join('\n');
+
+  const prompt = `Eres Apprecio Beat IA especializada en predicción de churn para clientes corporativos.
+
+RANKING DE EMPRESAS CON MAYOR RIESGO DE CHURN (algoritmo multi-módulo):
+${ranking || 'Sin datos suficientes para calcular riesgo'}
+
+El score_riesgo combina: NPS detractor grave (peso 3) + CSAT Abono detractor (peso 2) + CSAT Reunión detractor (peso 1).
+
+INSTRUCCIONES:
+- Presenta los clientes en riesgo de abandonar Apprecio Beat de forma clara
+- Para cada uno, indica: nivel de urgencia y principal señal de alarma basada en sus comentarios
+- NO agregues planes de acción ni recomendaciones, solo el diagnóstico de riesgo
 - Máximo 250 palabras
 
 Estructura:
-⛔ CLIENTES EN RIESGO CRÍTICO DE SALIDA
-🟡 CLIENTES EN RIESGO ALTO
-📊 RESUMEN DEL RIESGO DE CARTERA`;
-  }
+⛔ CLIENTES EN RIESGO INMEDIATO DE SALIDA (próximas 4 semanas)
+🟡 CLIENTES EN RIESGO MODERADO (próximos 2-3 meses)
+📊 RESUMEN: X clientes requieren atención urgente`;
 
-  return `Eres Apprecio Beat IA, analista de CX para programas de beneficios corporativos en Latinoamérica.
-
-DATOS NPS REALES:
-Total respuestas: ${total}
-Score NPS: ${score}
-Promotores (9-10): ${pro.length} (${total>0?Math.round(pro.length/total*100):0}%)
-Neutros (7-8): ${neu.length} (${total>0?Math.round(neu.length/total*100):0}%)
-Detractores (0-6): ${det.length} (${total>0?Math.round(det.length/total*100):0}%)
-
-MUESTRA DETRACTORES:
-${comentDet||'Sin respuestas detractoras'}
-
-MUESTRA PROMOTORES:
-${comentPro||'Sin respuestas promotoras'}
-
-INSTRUCCIONES:
-1. NO entregues lista de respuestas completa, analiza y sintetiza
-2. Identifica los 3 CASOS QUE MÁS SE REPITEN en todo el módulo
-3. Detecta qué dicen los detractores vs promotores
-4. Señala empresas con comportamiento más crítico
-5. Máximo 280 palabras, tono ejecutivo
-
-Estructura obligatoria:
-📊 CASOS MÁS FRECUENTES
-🚨 PATRONES DETRACTORES
-⭐ LO QUE VALORAN LOS PROMOTORES
-⚠️ EMPRESAS CON MAYOR RIESGO`;
+  await llamarClaudeIA(prompt, 'Calculando riesgo de churn...', 'alertas');
 }
 
-function buildPromptCSAT(data,tipo){
-  const {abonoRaw=[],reunionRaw=[]}=data;
-  const todos=[...abonoRaw,...reunionRaw];
-  const det=todos.filter(r=>parseFloat(r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||r.puntuacion||0)<=6);
-  const pro=todos.filter(r=>parseFloat(r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||r.puntuacion||0)>=9);
-  const neu=todos.filter(r=>{const v=parseFloat(r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||r.puntuacion||0);return v>=7&&v<=8;});
-  const comentarios=todos.map(r=>r.___qu___fue_lo_m___s_f___cil_del_proceso_y_qu___podr___amos_mejorar_||r.que_fue_lo_mas_facil||'').filter(Boolean);
-  const total=todos.length;
+function limpiarIA(modulo) {
+  const resultEl  = document.getElementById(`ia-result-${modulo}`);
+  const errorEl   = document.getElementById(`ia-error-${modulo}`);
+  const loadingEl = document.getElementById(`ia-loading-${modulo}`);
+  if (resultEl)  { resultEl.style.display  = 'none'; resultEl.innerHTML = ''; }
+  if (errorEl)   { errorEl.style.display   = 'none'; }
+  if (loadingEl) { loadingEl.style.display = 'none'; }
+}
 
-  if(tipo==='riesgo'){
-    const porEmp={};
-    det.forEach(r=>{
-      const emp=r.nombre_de_la_empresa||r.empresa||'Sin empresa';
-      if(!porEmp[emp])porEmp[emp]={c:0,razones:[],pais:r.pa__s||r.pais||'?'};
-      porEmp[emp].c++;
-      const com=r.___qu___fue_lo_m___s_f___cil_del_proceso_y_qu___podr___amos_mejorar_||r.que_fue_lo_mas_facil||'';
-      if(com)porEmp[emp].razones.push(com);
-    });
-    const topDet=Object.entries(porEmp).sort((a,b)=>b[1].c-a[1].c).slice(0,6)
-      .map(([e,d])=>`${e}: ${d.c} detractores. Queja: "${d.razones[0]||'Sin comentario'}"`).join('\n');
-    return `Eres Apprecio Beat IA, experto en riesgo de churn para plataformas de beneficios.
+// ═══════════════════════════════════════════════════════
+// MODAL PDF
+// ═══════════════════════════════════════════════════════
+function abrirModalPDF() {
+  document.getElementById('modalPDF').classList.add('open');
+}
+function cerrarModalPDF() {
+  document.getElementById('modalPDF').classList.remove('open');
+}
+function seleccionarOpcion(opt) {
+  OPCION_PDF = opt;
+  document.querySelectorAll('.modal-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById('opt-'+opt).classList.add('selected');
+}
 
-DATOS CSAT REALES (Post Abono + Post Reunión):
-Total: ${total} | Promotores: ${pro.length} | Neutros: ${neu.length} | Detractores: ${det.length}
+async function generarReportePDF() {
+  const btn = document.getElementById('btnGenerarPDF');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="modal-spinner"></div> Generando con IA...';
+  
+  const n = calcSegmentos(DATA_FILTRADA.nps);
+  const a = calcSegmentos(DATA_FILTRADA.csat_abono);
+  const r = calcSegmentos(DATA_FILTRADA.csat_reunion);
+  
+  const allDet = [...DATA_FILTRADA.nps, ...DATA_FILTRADA.csat_abono, ...DATA_FILTRADA.csat_reunion]
+    .filter(x => parseFloat(x.puntuacion) <= 6);
+  const porEmp = {};
+  allDet.forEach(x => {
+    const e = x.empresa||'Sin empresa';
+    if (!porEmp[e]) porEmp[e] = { total:0, razones:[], pais:x.pais };
+    porEmp[e].total++;
+    if (x.razon||x.comentario) porEmp[e].razones.push(x.razon||x.comentario);
+  });
+  const topEmp = Object.entries(porEmp).sort((a,b)=>b[1].total-a[1].total).slice(0,6)
+    .map(([e,d]) => `• ${e}: ${d.total} casos — "${d.razones[0]||'Sin comentario'}"`).join('\n');
+
+  const instrExtra = OPCION_PDF === 'ejecutivo'
+    ? 'Genera un resumen ejecutivo SIN incluir planes de acción detallados por cliente. Solo análisis, tendencias y diagnóstico.'
+    : OPCION_PDF === 'completo'
+    ? 'Incluye para los 3 clientes más críticos un plan de recuperación específico (2-3 pasos concretos por cliente).'
+    : 'Enfócate EXCLUSIVAMENTE en el riesgo de churn. Lista los clientes por nivel de urgencia (CRÍTICO/ALTO) con la señal de alarma principal.';
+
+  const prompt = `Genera un reporte ejecutivo de Apprecio Beat para el período analizado.
+
+MÉTRICAS GLOBALES:
+- NPS Score: ${n.score} | Promotores: ${n.pro} | Neutros: ${n.neu} | Detractores: ${n.det} | Total: ${n.total}
+- CSAT Post Abono: ${a.total>0?Math.round(a.pro/a.total*100):0}% satisfechos | ${a.total} respuestas
+- CSAT Post Reunión: ${r.total>0?Math.round(r.pro/r.total*100):0}% satisfechos | ${r.total} respuestas
 
 EMPRESAS CON MÁS DETRACTORES:
-${topDet||'Sin datos'}
+${topEmp || 'Sin datos'}
 
-Identifica clientes en riesgo de dejar Apprecio Beat. Clasifica: CRÍTICO / ALTO / MEDIO.
-Solo diagnóstico, sin planes de acción. Máximo 200 palabras.
+TIPO DE REPORTE: ${OPCION_PDF === 'ejecutivo' ? 'Resumen Ejecutivo' : OPCION_PDF === 'completo' ? 'Reporte Completo' : 'Análisis de Riesgo de Churn'}
 
-Estructura:
-⛔ CLIENTES EN RIESGO CRÍTICO
-🟡 RIESGO ALTO
-📊 RESUMEN`;
-  }
+${instrExtra}
 
-  return `Eres Apprecio Beat IA, analista CX para programas de beneficios corporativos.
+Formato de salida:
+- Título: REPORTE CX APPRECIO BEAT — [tipo]
+- Secciones claramente delimitadas
+- Máximo 350 palabras
+- Tono profesional ejecutivo`;
 
-DATOS CSAT REALES:
-Total: ${total}
-Satisfechos (9-10): ${pro.length} (${total>0?Math.round(pro.length/total*100):0}%)
-Neutros (7-8): ${neu.length} (${total>0?Math.round(neu.length/total*100):0}%)
-Insatisfechos (0-6): ${det.length} (${total>0?Math.round(det.length/total*100):0}%)
-
-COMENTARIOS REALES (muestra):
-${comentarios.slice(0,15).map((c,i)=>`${i+1}. "${c}"`).join('\n')||'Sin comentarios'}
-
-INSTRUCCIONES: Identifica los 3 casos que más se repiten. Segmenta promotores/neutros/detractores. Máximo 260 palabras.
-
-Estructura:
-📊 CASOS MÁS FRECUENTES
-🚨 PATRONES DETRACTORES
-⭐ LO QUE VALORAN LOS PROMOTORES
-⚠️ SEÑALES DE RIESGO`;
-}
-
-/* ════ MÓDULO NPS ════ */
-function ModNPS({data,onExportPDF}){
-  const {hoja1=[],historico=[]}=data;
-  const [p1P,setP1P]=useState('Todos',[p1P]);
-  const [p1M,setP1M]=useState('Todos',[p1M]);
-  const [p2P,setP2P]=useState('Todos',[p2P]);
-  const [p2M,setP2M]=useState('Todos',[p2M]);
-  const [hP,setHP]=useState('Todos',[hP]);
-  const [hA,setHA]=useState('Todos',[hA]);
-
-  // Detectar campos reales del sheet NPS Histórico
-  // Columnas: Email, Nombre, Apellido, Nombre Empresa, Fecha, KAM, nombre KAM, Respuesta 1
-  const paises=useMemo(()=>{
-    const s=new Set();
-    hoja1.forEach(r=>{if(r.pa__s||r.pais)s.add(r.pa__s||r.pais);});
-    historico.forEach(r=>{if(r.pa__s||r.pais)s.add(r.pa__s||r.pais);});
-    return ['Todos',...Array.from(s).sort()];
-  },[hoja1,historico]);
-
-  // Meses desde fechas reales
-  const meses=useMemo(()=>{
-    const s=new Set();
-    const parseMes=fecha=>{
-      if(!fecha) return null;
-      try{const d=new Date(fecha);if(isNaN(d)) return null;return d.toLocaleString('es',{month:'long',year:'numeric'});}catch{return null;}
-    };
-    hoja1.forEach(r=>{const m=parseMes(r.fecha);if(m)s.add(m);});
-    historico.forEach(r=>{const m=parseMes(r.fecha);if(m)s.add(m);});
-    return ['Todos',...Array.from(s).sort()];
-  },[hoja1,historico]);
-
-  const anios=useMemo(()=>{
-    const s=new Set();
-    historico.forEach(r=>{
-      if(r.fecha){try{const d=new Date(r.fecha);if(!isNaN(d))s.add(String(d.getFullYear()));}catch{}}
-    });
-    return s.size>0?Array.from(s).sort():['2026'];
-  },[historico]);
-
-  // Filtrar hoja1 (P1: satisfaccion column, comentarios)
-  const f1=useMemo(()=>hoja1.filter(r=>{
-    const pok=p1P==='Todos'||(r.pa__s||r.pais)===p1P;
-    const mok=p1M==='Todos'||!r.fecha||new Date(r.fecha).toLocaleString('es',{month:'long',year:'numeric'})===p1M;
-    return pok&&mok&&(r.satisfaccion||r.nota||r.puntuacion||'').trim()!=='';
-  }),[hoja1,p1P,p1M]);
-
-  // Filtrar histórico (P2: respuesta 1)
-  const f2=useMemo(()=>historico.filter(r=>{
-    const pok=p2P==='Todos'||(r.pa__s||r.pais)===p2P;
-    const mok=p2M==='Todos'||!r.fecha||new Date(r.fecha).toLocaleString('es',{month:'long',year:'numeric'})===p2M;
-    return pok&&mok&&r.respuesta_1!==undefined&&r.respuesta_1!=='';
-  }),[historico,p2P,p2M]);
-
-  const calcNPS=(arr,campo)=>{
-    const total=arr.length;if(!total) return{total:0,p:0,n:0,d:0,score:0,avg:'—',pPorc:0};
-    let pr=0,ne=0,de=0,s=0;
-    arr.forEach(r=>{
-      const v=parseFloat(r[campo]||0);
-      if(!isNaN(v)&&v>0){s+=v;if(v>=9)pr++;else if(v>=7)ne++;else de++;}
-    });
-    const tot2=pr+ne+de||1;
-    return{total,p:pr,n:ne,d:de,score:Math.round(((pr/tot2)*100)-((de/tot2)*100)),avg:(s/(pr+ne+de||1)).toFixed(1),pPorc:((pr/(pr+ne+de||1))*100).toFixed(0)};
-  };
-
-  const m1=useMemo(()=>calcNPS(f1,'satisfaccion'),[f1]);
-  const m2=useMemo(()=>calcNPS(f2,'respuesta_1'),[f2]);
-
-  // Tendencia histórica por KAM / mes
-  const linea=useMemo(()=>{
-    const fh=historico.filter(r=>{
-      const pok=hP==='Todos'||(r.pa__s||r.pais)===hP;
-      const aok=hA==='Todos'||!r.fecha||String(new Date(r.fecha).getFullYear())===hA;
-      return pok&&aok&&r.respuesta_1!==undefined&&r.respuesta_1!=='';
-    });
-    const qs={};
-    fh.forEach(r=>{
-      if(!r.fecha) return;
-      try{
-        const d=new Date(r.fecha);
-        if(isNaN(d)) return;
-        const k=d.toLocaleString('es',{month:'short',year:'2-digit'});
-        if(!qs[k]) qs[k]={pr:0,de:0,tot:0,fecha:d};
-        const v=parseFloat(r.respuesta_1||0);
-        if(!isNaN(v)&&v>0){qs[k].tot++;if(v>=9)qs[k].pr++;else if(v<7)qs[k].de++;}
-      }catch{}
-    });
-    return Object.entries(qs).sort((a,b)=>a[1].fecha-b[1].fecha)
-      .map(([q,d])=>({q,score:d.tot?Math.round(((d.pr/d.tot)*100)-((d.de/d.tot)*100)):0}));
-  },[historico,hP,hA]);
-
-  const criticos=useMemo(()=>historico.filter(r=>{
-    const v=parseFloat(r.respuesta_1||0);return!isNaN(v)&&v>0&&v<=6;
-  }).sort((a,b)=>parseFloat(a.respuesta_1||10)-parseFloat(b.respuesta_1||10)),[historico]);
-
-  // Normalizar para panel IA
-  const rawParaIA=useMemo(()=>[
-    ...f1.map(r=>({puntuacion:r.satisfaccion,razon:r.comentarios,empresa:r.empresa,pais:r.pa__s||r.pais})),
-    ...f2.map(r=>({puntuacion:r.respuesta_1,razon:r.nombre_empresa||r.nombre,empresa:r.nombre_empresa||r.nombre,pais:r.pa__s||r.pais}))
-  ],[f1,f2]);
-
-  return e('div',{style:{display:'flex',flexDirection:'column',gap:24}},
-    e(PanelIA,{
-      titulo:'Apprecio Beat IA · Análisis NPS',
-      descripcion:'Analiza casos frecuentes, segmentación y riesgo de churn con datos reales',
-      buildPrompt:buildPromptNPS,
-      data:{raw:rawParaIA}
-    }),
-    e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}},
-      e(BloqueEspejo,{
-        id:'nps1',
-        titulo:'Satisfacción del cliente · Apprecio App (Hoja 1)',
-        ...m1,paises,meses,filtroPais:p1P,setFP:setP1P,filtroMes:p1M,setFM:setP1M,
-        labelScore:'Satisfacción',filtrados:f1,onExportPDF:exportarPDFconIA
-      }),
-      e(BloqueEspejo,{
-        id:'nps2',
-        titulo:'NPS · Respuesta 1 del Histórico de Encuestas',
-        ...m2,paises,meses,filtroPais:p2P,setFP:setP2P,filtroMes:p2M,setFM:setP2M,
-        labelScore:'NPS Score',filtrados:f2,onExportPDF:exportarPDFconIA
+  try {
+    const res = await fetch(CONFIG.CLAUDE_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: CONFIG.CLAUDE_MODEL,
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
       })
-    ),
-    e('div',{className:'card',style:{padding:24,display:'flex',gap:24,flexWrap:'wrap'}},
-      e('div',{style:{flex:'0 0 60%',minWidth:280}},
-        e('h3',{style:{fontSize:13,fontWeight:700,color:'#1F2937',marginBottom:16}},'📈 Evolución NPS por Mes (datos reales)'),
-        linea.length===0
-          ?e('div',{style:{height:220,display:'flex',alignItems:'center',justifyContent:'center',color:'#D1D5DB',fontSize:12}},'Sin datos históricos')
-          :e(ChartLinea,{id:'nps_linea',datos:linea,color:BRAND,minY:-100,maxY:100})
-      ),
-      e('div',{style:{flex:1,display:'flex',flexDirection:'column',gap:14,minWidth:180}},
-        e('p',{style:{fontSize:11,fontWeight:700,color:'#9AA0B4',textTransform:'uppercase',letterSpacing:.5}},'Filtros de tendencia'),
-        e('div',{},
-          e('label',{style:{fontSize:11,color:'#9AA0B4',fontWeight:600,display:'block',marginBottom:4}},'País'),
-          e('select',{value:hP,onChange:ev=>setHP(ev.target.value),style:{width:'100%',fontSize:12,fontWeight:600,background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'7px 10px'}},
-            paises.map(p=>e('option',{key:p,value:p},p)))
-        ),
-        e('div',{},
-          e('label',{style:{fontSize:11,color:'#9AA0B4',fontWeight:600,display:'block',marginBottom:4}},'Año'),
-          e('select',{value:hA,onChange:ev=>setHA(ev.target.value),style:{width:'100%',fontSize:12,fontWeight:600,background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'7px 10px'}},
-            ['Todos',...anios].map(a=>e('option',{key:a,value:a},a)))
-        )
-      )
-    ),
-    e('div',{className:'card',style:{padding:24}},
-      e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}},
-        e('h3',{style:{fontSize:13,fontWeight:700,color:DANGER,display:'flex',alignItems:'center',gap:8}},
-          e('i',{className:'fa-solid fa-triangle-exclamation'}),' Radar de Alertas · Detractores NPS (datos reales)'),
-        e('span',{className:'badge',style:{background:'#FEF2F2',color:DANGER}},`${criticos.length} casos`)
-      ),
-      criticos.length===0
-        ?e('p',{style:{color:SUCCESS,fontWeight:600,fontSize:13,textAlign:'center',padding:'12px 0'}},'✅ Sin detractores en el período')
-        :e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
-          criticos.slice(0,10).map((c,i)=>
-            e('div',{key:i,style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'11px 16px',borderRadius:10,border:'1px solid #FEE2E2',background:'#FFFBFB',gap:12}},
-              e('div',{},
-                e('p',{style:{fontWeight:700,fontSize:12,color:'#1F2937',margin:0}},
-                  (c.nombre||'')+' '+(c.apellido||'')+' - '+(c.nombre_empresa||c.nombre_kam||'—'),
-                  e('span',{style:{fontWeight:400,color:'#9AA0B4'}},' · '+(c.pais||c.pa__s||'—')+' · '+
-                    (c.fecha?new Date(c.fecha).toLocaleDateString('es'):'—'))
-                ),
-                e('p',{style:{fontSize:11,color:'#9AA0B4',margin:'2px 0 0',fontStyle:'italic'}},
-                  'KAM: '+(c.nombre_kam||c.kam||'—'))
-              ),
-              e('span',{className:'badge',style:{background:DANGER,color:'white',flexShrink:0}},'Nota: '+(c.respuesta_1||'—'))
-            )
-          )
-        )
-    )
-  );
+    });
+    const data = await res.json();
+    const texto = data.content?.map(b => b.text||'').join('') || '';
+    cerrarModalPDF();
+    abrirReportePDF(texto);
+  } catch (err) {
+    cerrarModalPDF();
+    alert('Error al generar reporte: ' + err.message);
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<span>⚡</span> Generar con IA';
 }
 
-/* ════ MÓDULO CSAT ════ */
-function ModCSAT({data,onExportPDF}){
-  const {csatRespuestas=[],csatConsulta=[]}=data;
-  const [c1P,setC1P]=useState('Todos',[c1P]);
-  const [c1M,setC1M]=useState('Todos',[c1M]);
-
-  // Columnas reales sheet respuestas_encuestas:
-  // Fecha_Envio, Mes_envio, empresa_id, País, Nombre de la empresa, correo_enviado, Link_utilizado,
-  // Trimestre_Año, ¿Qué tan satisfecho(a)...? (col 8), ¿Qué fue lo más fácil? (col 9), Estado
-
-  const paises=useMemo(()=>{
-    const s=new Set();
-    csatRespuestas.forEach(r=>{if(r.pa__s||r.pais||r.pa_s)s.add(r.pa__s||r.pais||r.pa_s);});
-    return ['Todos',...Array.from(s).sort()];
-  },[csatRespuestas]);
-
-  const meses=useMemo(()=>{
-    const s=new Set();
-    csatRespuestas.forEach(r=>{if(r.mes_envio)s.add(r.mes_envio);});
-    return ['Todos',...Array.from(s).sort()];
-  },[csatRespuestas]);
-
-  const getCampoNota=r=>{
-    // Buscar la columna de puntuación (cualquier variante)
-    const keys=Object.keys(r);
-    const k=keys.find(k=>k.includes('satisfecho')||k.includes('satisfech')||k.includes('escala')||k==='nota'||k==='puntuacion'||k==='satisfaccion');
-    return k?r[k]:'';
-  };
-
-  const getCampoComentario=r=>{
-    const keys=Object.keys(r);
-    const k=keys.find(k=>k.includes('f___cil')||k.includes('facil')||k.includes('mejorar')||k.includes('comentar')||k.includes('proceso'));
-    return k?r[k]:'';
-  };
-
-  const f1=useMemo(()=>csatRespuestas.filter(r=>{
-    const pok=c1P==='Todos'||(r.pa__s||r.pais||r.pa_s)===c1P;
-    const mok=c1M==='Todos'||r.mes_envio===c1M;
-    const nota=getCampoNota(r);
-    return pok&&mok&&nota!=='';
-  }),[csatRespuestas,c1P,c1M]);
-
-  const calcCSAT=(arr)=>{
-    const total=arr.length;if(!total) return{total:0,p:0,n:0,d:0,score:0,avg:'—',pPorc:0};
-    let a=0,m=0,b=0,s=0;
-    arr.forEach(r=>{
-      const v=parseFloat(getCampoNota(r)||0);
-      if(!isNaN(v)&&v>0){s+=v;if(v>=9)a++;else if(v>=7)m++;else b++;}
-    });
-    const tot2=a+m+b||1;
-    return{total,p:a,n:m,d:b,score:Math.round((a/tot2)*100),avg:(s/(tot2)).toFixed(1),pPorc:((a/tot2)*100).toFixed(0)};
-  };
-
-  const m1=useMemo(()=>calcCSAT(f1),[f1]);
-
-  // Tendencia CSAT por mes
-  const hA=useMemo(()=>{
-    const qs={};
-    f1.forEach(r=>{
-      const k=r.mes_envio||r.trimestre___a__o||'Sin mes';
-      if(!qs[k])qs[k]=[];
-      qs[k].push(r);
-    });
-    return Object.keys(qs).map(k=>{
-      let s=0,c=0;
-      qs[k].forEach(r=>{const v=parseFloat(getCampoNota(r)||0);if(!isNaN(v)&&v>0){s+=v;c++;}});
-      return{q:k,score:c>0?parseFloat((s/c).toFixed(1)):0};
-    });
-  },[f1]);
-
-  const criticos=useMemo(()=>f1.filter(r=>{
-    const v=parseFloat(getCampoNota(r)||0);return!isNaN(v)&&v>0&&v<=6;
-  }),[f1]);
-
-  // Normalizar para IA
-  const rawParaIA=useMemo(()=>f1.map(r=>({
-    puntuacion:getCampoNota(r),
-    comentario:getCampoComentario(r),
-    empresa:r.nombre_de_la_empresa||r.empresa||'—',
-    pais:r.pa__s||r.pais||r.pa_s||'—'
-  })),[f1]);
-
-  // Estado de links de consulta_abono
-  const statsConsulta=useMemo(()=>{
-    const estados={};
-    csatConsulta.forEach(r=>{
-      const est=r.estado_de_link||r.estado||'';
-      if(est)estados[est]=(estados[est]||0)+1;
-    });
-    return estados;
-  },[csatConsulta]);
-
-  return e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
-    e(PanelIA,{
-      titulo:'Apprecio Beat IA · CSAT Post Abono',
-      descripcion:'Análisis de satisfacción con datos reales de encuestas post-abono',
-      buildPrompt:(d,t)=>buildPromptCSAT({abonoRaw:rawParaIA,reunionRaw:[]},t),
-      data:{abonoRaw:rawParaIA,reunionRaw:[]}
-    }),
-    e('div',{style:{background:'#FFF5F7',border:'1px solid #FBC9D4',borderRadius:12,padding:'11px 16px'}},
-      e('p',{style:{fontSize:11,fontWeight:700,color:BRAND,textTransform:'uppercase',letterSpacing:.5,margin:0}},'CSAT Post Abono · Encuestas reales'),
-      e('p',{style:{fontSize:11,color:'#9AA0B4',margin:'2px 0 0'}},`${csatRespuestas.length} respuestas totales · Estado de envíos: `+Object.entries(statsConsulta).map(([k,v])=>`${k}: ${v}`).join(' | '))
-    ),
-    e(BloqueEspejo,{
-      id:'csat1',
-      titulo:'¿Qué tan satisfecho(a) estás con el uso de la plataforma? (Escala 1-10)',
-      ...m1,paises,meses,filtroPais:c1P,setFP:setC1P,filtroMes:c1M,setFM:setC1M,
-      labelScore:'Satisfacción',filtrados:f1,onExportPDF:exportarPDFconIA
-    }),
-    e('div',{className:'card',style:{padding:24}},
-      e('h3',{style:{fontSize:13,fontWeight:700,color:'#1F2937',marginBottom:16}},'📊 Tendencia CSAT por Mes (datos reales)'),
-      hA.length===0
-        ?e('div',{style:{height:220,display:'flex',alignItems:'center',justifyContent:'center',color:'#D1D5DB',fontSize:12}},'Sin datos')
-        :e(ChartLinea,{id:'csat_linea',datos:hA,color:INFO,minY:1,maxY:10})
-    ),
-    criticos.length>0&&e('div',{className:'card',style:{padding:24}},
-      e('h3',{style:{fontSize:13,fontWeight:700,color:DANGER,marginBottom:12}},'⚠️ Respuestas Críticas CSAT (nota ≤ 6)'),
-      e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
-        criticos.slice(0,10).map((c,i)=>e('div',{key:i,style:{display:'flex',justifyContent:'space-between',padding:'10px 14px',borderRadius:10,border:'1px solid #FEE2E2',background:'#FFFBFB',gap:12}},
-          e('div',{style:{flex:1}},
-            e('p',{style:{fontWeight:700,fontSize:12,margin:0}},c.nombre_de_la_empresa||c.empresa||'Empresa',
-              e('span',{style:{fontWeight:400,color:'#9AA0B4'}},' · '+(c.pa__s||c.pais||c.pa_s||'—')+' · '+(c.mes_envio||'—'))
-            ),
-            e('p',{style:{fontSize:11,color:'#9AA0B4',margin:'2px 0 0',fontStyle:'italic'}},getCampoComentario(c)||'Sin comentario')
-          ),
-          e('span',{className:'badge',style:{background:DANGER,color:'white',flexShrink:0}},getCampoNota(c))
-        ))
-      )
-    )
-  );
+function abrirReportePDF(texto) {
+  const ventana = window.open('', '_blank');
+  const html = `<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<title>Reporte CX · Apprecio Beat</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; max-width: 720px; margin: 40px auto; padding: 0 24px; color: #1A1A2E; line-height: 1.7; }
+  .header { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #FA345E; }
+  .header svg { width:40px; height:40px; }
+  .header h1 { font-size:22px; font-weight:700; color:#1A1A2E; margin:0; }
+  .header span { color:#FA345E; }
+  .meta { color:#6B7280; font-size:13px; margin-top:4px; }
+  pre { white-space:pre-wrap; font-family:inherit; font-size:14px; }
+  @media print { body { margin:20px; } }
+</style>
+</head><body>
+<div class="header">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
+    <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div>
+    <h1>apprecio<span>Beat</span> · Reporte CX</h1>
+    <div class="meta">Generado por Apprecio Beat IA · Confidencial</div>
+  </div>
+</div>
+<pre>` + texto + `</pre>
+<hr style="margin-top:40px;border:none;border-top:1px solid #E8EAF0">
+<p style="font-size:12px;color:#9CA3AF;text-align:center">Apprecio Beat IA · Confidencial</p>
+<script>window.print();<\/script>
+</body></html>`;
+  ventana.document.write(html);
+  ventana.document.close();
 }
 
-/* ════ TAB PLACEHOLDER ════ */
-function TabPlaceholder({icono,titulo}){
-  return e('div',{className:'card',style:{padding:60,textAlign:'center'}},
-    e('i',{className:`fa-solid ${icono}`,style:{fontSize:38,color:BRAND,display:'block',marginBottom:16}}),
-    e('h2',{style:{fontSize:16,fontWeight:700,color:'#1F2937',marginBottom:8}},titulo),
-    e('p',{style:{color:'#9AA0B4',fontSize:13}},'Módulo en desarrollo')
-  );
+// ═══════════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════════
+function cambiarTab(idx) {
+  TAB_ACTUAL = idx;
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i===idx));
+  setTimeout(() => actualizarCharts(), 50);
 }
 
-/* ════ APP ════ */
-function App(){
-  const [data,setData]=useState(null);
-  const [loading,setLoading]=useState(true);
-  const [error,setError]=useState(null);
-  const [tab,setTab]=useState(0);
-
-  const load=useCallback(async()=>{
-    setLoading(true);setError(null);
-    try{
-      const [hoja1,historico,csatRespuestas,csatConsulta]=await Promise.all([
-        fetchCSV(CONFIG.SHEETS.NPS_HOJA1),
-        fetchCSV(CONFIG.SHEETS.NPS_HISTORICO),
-        fetchCSV(CONFIG.SHEETS.CSAT_RESPUESTAS),
-        fetchCSV(CONFIG.SHEETS.CSAT_CONSULTA)
-      ]);
-      setData({hoja1,historico,csatRespuestas,csatConsulta});
-    }catch(err){setError(err.message);}
-    finally{setLoading(false);}
-  },[]);
-
-  useEffect(()=>{load();},[]);
-
-  const tabs=[
-    {label:'NPS',icon:'fa-chart-line'},
-    {label:'CSAT Post Abono',icon:'fa-star'},
-    {label:'Inactivos',icon:'fa-user-clock'},
-    {label:'Offboarding',icon:'fa-right-from-bracket'}
-  ];
-
-  return e('div',{style:{minHeight:'100vh',background:'#F2F4F7',fontFamily:''DM Sans', sans-serif'}},
-    e('style',null,'@keyframes spin{to{transform:rotate(360deg)}}'),
-    e('header',{style:{background:'#fff',borderBottom:'1px solid #E8EAED',position:'sticky',top:0,zIndex:30,padding:'0 32px'}},
-      e('div',{style:{maxWidth:1280,margin:'0 auto'}},
-        e('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',height:66}},
-          e('div',{style:{display:'flex',alignItems:'center',gap:12}},
-            e(Logo,{size:36}),
-            e('div',{},
-              e('h1',{style:{fontSize:15,fontWeight:800,color:'#1F2937',margin:0,letterSpacing:'-.3px'}},'Experiencia del Cliente'),
-              e('p',{style:{fontSize:11,color:'#9AA0B4',margin:0,fontWeight:500}},'Dashboard CX · Apprecio Beat 2026')
-            )
-          ),
-          e('div',{style:{display:'flex',alignItems:'center',gap:10}},
-            !loading&&data&&e('div',{style:{display:'flex',alignItems:'center',gap:6,background:'#F0FDF4',borderRadius:8,padding:'5px 12px',border:'1px solid #BBF7D0'}},
-              e('div',{style:{width:6,height:6,borderRadius:'50%',background:'#10B981'}}),
-              e('span',{style:{fontSize:11,fontWeight:700,color:'#065F46'}},
-                `Datos reales · ${(data.historico||[]).length} enc. NPS · ${(data.csatRespuestas||[]).length} enc. CSAT`)
-            ),
-            loading&&e('div',{style:{display:'flex',alignItems:'center',gap:6,background:'#F0F9FF',borderRadius:8,padding:'5px 12px',border:'1px solid #BAE6FD'}},
-              e('div',{style:{width:6,height:6,borderRadius:'50%',background:'#0EA5E9'}}),
-              e('span',{style:{fontSize:11,fontWeight:700,color:'#0C4A6E'}},'Cargando datos...')
-            ),
-            e('button',{className:'btn-ghost',onClick:load,disabled:loading,style:{width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center',padding:0}},
-              e('i',{className:`fa-solid fa-rotate-right${loading?' fa-spin':''}`,style:{fontSize:13,color:'#6B7280'}}))
-          )
-        ),
-        e('div',{style:{display:'flex',gap:28,marginBottom:-1}},
-          tabs.map(({label,icon},i)=>
-            e('button',{key:i,onClick:()=>setTab(i),className:`tab-btn${tab===i?' active':''}`,
-              style:{fontSize:12,fontWeight:tab===i?700:600,color:tab===i?BRAND:'#9AA0B4',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap'}},
-              e('i',{className:`fa-solid ${icon}`,style:{fontSize:11}}),' ',label))
-        )
-      )
-    ),
-    e('main',{style:{maxWidth:1280,margin:'0 auto',padding:'28px 32px'}},
-      loading&&e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
-        e('div',{className:'skeleton',style:{height:90}}),
-        e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}},
-          e('div',{className:'skeleton',style:{height:300}}),
-          e('div',{className:'skeleton',style:{height:300}})
-        ),
-        e('div',{className:'skeleton',style:{height:260}}),
-        e('div',{className:'skeleton',style:{height:180}})
-      ),
-      !loading&&error&&e('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'80px 0',gap:16}},
-        e('div',{style:{width:60,height:60,borderRadius:16,background:'#FEF2F2',display:'flex',alignItems:'center',justifyContent:'center'}},
-          e('i',{className:'fa-solid fa-triangle-exclamation',style:{fontSize:26,color:DANGER}})
-        ),
-        e('p',{style:{fontWeight:700,fontSize:15,color:'#1F2937'}},'Error cargando datos: '+error),
-        e('p',{style:{fontSize:12,color:'#9AA0B4',textAlign:'center',maxWidth:400}},'Verifica que los Google Sheets sean públicos (Cualquiera con el enlace puede ver).'),
-        e('button',{className:'btn-primary',onClick:load,style:{padding:'10px 26px',fontSize:13}},'Reintentar')
-      ),
-      !loading&&!error&&data&&e('div',{},
-        tab===0&&e(ModNPS,{data,onExportPDF:exportarPDFconIA}),
-        tab===1&&e(ModCSAT,{data,onExportPDF:exportarPDFconIA}),
-        tab===2&&e(TabPlaceholder,{icono:'fa-user-clock',titulo:'Análisis de Clientes Inactivos'}),
-        tab===3&&e(TabPlaceholder,{icono:'fa-right-from-bracket',titulo:'Registro de Procesos de Offboarding'})
-      )
-    ),
-    e('footer',{style:{textAlign:'center',padding:'22px 0',fontSize:11,color:'#D1D5DB',borderTop:'1px solid #E8EAED',background:'#fff',marginTop:40}},
-      'Apprecio · Dashboard Experiencia del Cliente · 2026 · Powered by Claude AI')
-  );
-}
-
-ReactDOM.render(e(App),document.getElementById('root'));
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  cargarDatos();
+});
 </script>
 </body>
 </html>
