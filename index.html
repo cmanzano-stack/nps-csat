@@ -6,7 +6,6 @@
 <title>Dashboard CX · Apprecio Beat</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 :root {
   --brand:#FA345E; --brand-dark:#D42050; --brand-light:#FF6B8A;
@@ -23,10 +22,9 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
-
 #loading-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand-light),var(--brand),var(--brand-dark));width:0%;transition:width .4s ease;z-index:300}
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .topbar{background:var(--card);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:100;padding:0 28px;display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
 .logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;padding:12px 0}
 .logo-icon{width:34px;height:34px}
@@ -38,8 +36,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .filter-divider{width:1px;height:22px;background:var(--border);margin:0 4px}
 select{font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 30px 7px 12px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .15s}
 select:focus,select:hover{border-color:var(--brand)}
-
-/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap}
 .btn-brand{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(250,52,94,.25)}
 .btn-brand:hover{background:var(--brand-dark);box-shadow:0 4px 14px rgba(250,52,94,.35)}
@@ -50,7 +46,7 @@ select:focus,select:hover{border-color:var(--brand)}
 .btn-ai:hover{box-shadow:0 4px 16px rgba(26,26,46,.4)}
 .btn-ai:disabled{opacity:.55;cursor:not-allowed}
 
-/* ── STATUS BANNER ── */
+/* STATUS BANNER */
 #status-banner{display:none;align-items:center;gap:10px;padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;margin-bottom:20px}
 .status-loading{background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8}
 .status-error{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626}
@@ -60,13 +56,13 @@ select:focus,select:hover{border-color:var(--brand)}
 .section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* ── TABS ── */
+/* TABS */
 .tabs-bar{background:var(--card);border-bottom:1.5px solid var(--border);display:flex;gap:0;margin-bottom:28px;overflow-x:auto}
 .tab-btn{padding:14px 22px;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;background:none;border:none;border-bottom:2.5px solid transparent;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:7px}
 .tab-btn:hover{color:var(--text);background:var(--bg)}
 .tab-btn.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
 
-/* ── KPI CARDS ── */
+/* KPI CARDS */
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:24px}
 .kpi-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,box-shadow .18s}
 .kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
@@ -81,7 +77,7 @@ select:focus,select:hover{border-color:var(--brand)}
 .kpi-value.info{color:var(--info)}
 .kpi-sub{font-size:12px;color:var(--text3)}
 
-/* ── CHARTS ── */
+/* CHARTS */
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
 @media(max-width:880px){.charts-grid{grid-template-columns:1fr}}
 .chart-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
@@ -90,7 +86,7 @@ select:focus,select:hover{border-color:var(--brand)}
 .card-subtitle{font-size:12px;color:var(--text2);margin-top:3px}
 .chart-wrap{position:relative;height:210px}
 
-/* ── TABLES ── */
+/* TABLES */
 .table-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
 .table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1.5px solid var(--border);gap:12px;flex-wrap:wrap}
 .table-scroll{overflow-x:auto}
@@ -116,7 +112,7 @@ tr:hover td{background:#FAFBFE}
 .company-cell{font-weight:500;color:var(--text)}
 .interp-cell{font-size:12px;color:var(--text2);max-width:280px;line-height:1.45}
 
-/* ── EMPRESA STATS ── */
+/* EMPRESA STATS */
 .emp-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
 .emp-stat{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500}
 .emp-stat strong{font-weight:700;font-size:15px}
@@ -124,7 +120,7 @@ tr:hover td{background:#FAFBFE}
 .emp-stat.enviado{background:#DBEAFE;color:#1E40AF}
 .emp-stat.bloqueado{background:#FEF3C7;color:#92400E}
 
-/* ── AI PANEL ── */
+/* AI PANEL */
 .ai-panel{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);border-radius:var(--radius);padding:24px;margin-bottom:24px;position:relative;overflow:hidden}
 .ai-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(250,52,94,.12) 0%,transparent 65%);pointer-events:none}
 .ai-panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
@@ -133,14 +129,36 @@ tr:hover td{background:#FAFBFE}
 .ai-badge{background:rgba(250,52,94,.2);border:1px solid rgba(250,52,94,.4);color:#FA345E;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
 .ai-desc{color:rgba(255,255,255,.55);font-size:12px;line-height:1.55;margin-top:6px}
 .ai-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-
-/* Result markdown */
 .ai-result{display:none}
 .ai-result.visible{display:block;margin-top:4px}
 .ai-result-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);padding:18px 20px;font-size:13px;color:rgba(255,255,255,.82);line-height:1.7;white-space:pre-wrap;font-family:var(--font)}
 .ai-result-box strong{color:#fff;font-weight:700}
 
-/* ── MISC ── */
+/* CSAT SCORE VISUAL */
+.csat-gauge-wrap{display:flex;align-items:center;gap:20px;padding:20px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:24px}
+.csat-gauge-circle{position:relative;width:110px;height:110px;flex-shrink:0}
+.csat-gauge-circle svg{transform:rotate(-90deg)}
+.csat-gauge-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.csat-gauge-pct{font-size:24px;font-weight:700;color:var(--text)}
+.csat-gauge-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
+.csat-gauge-info{flex:1}
+.csat-gauge-title{font-size:15px;font-weight:600;margin-bottom:4px}
+.csat-gauge-sub{font-size:13px;color:var(--text2)}
+
+/* CSAT comment cards */
+.csat-comments-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:24px}
+.csat-comment-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
+.csat-comment-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.csat-comment-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.csat-score-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.csat-score-badge.promotor{background:#D1FAE5;color:#065F46}
+.csat-score-badge.neutro{background:#FEF3C7;color:#92400E}
+.csat-score-badge.detractor{background:#FEE2E2;color:#991B1B}
+.csat-comment-company{font-weight:600;font-size:13px;color:var(--text)}
+.csat-comment-meta{font-size:11px;color:var(--text3);margin-top:1px}
+.csat-comment-text{font-size:12px;color:var(--text2);line-height:1.55;font-style:italic;border-left:3px solid var(--border2);padding-left:10px}
+
+/* MISC */
 .section{margin-bottom:32px}
 .empty-state{text-align:center;padding:36px 20px;color:var(--text3);font-size:13px}
 .skeleton{background:linear-gradient(90deg,#F3F4F6 25%,#E5E7EB 50%,#F3F4F6 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
@@ -197,13 +215,12 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
   <!-- TABS -->
   <div class="tabs-bar">
     <button class="tab-btn active" onclick="showTab('tab-nps',this)">📊 NPS</button>
+    <button class="tab-btn"        onclick="showTab('tab-csat',this)">⭐ CSAT</button>
     <button class="tab-btn"        onclick="showTab('tab-empresas',this)">🏢 Encuestas enviadas</button>
   </div>
 
   <!-- ══════════ TAB NPS ══════════ -->
   <div id="tab-nps">
-
-    <!-- KPIs -->
     <div class="section">
       <div class="section-title">Resumen NPS</div>
       <div class="kpi-grid">
@@ -215,13 +232,11 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
       </div>
     </div>
 
-    <!-- CHARTS -->
     <div class="charts-grid section">
       <div class="chart-card"><div class="card-header"><div class="card-title">📈 Distribución NPS</div><div class="card-subtitle">Promotores · Neutros · Detractores</div></div><div class="chart-wrap"><canvas id="chart-dist"></canvas></div></div>
       <div class="chart-card"><div class="card-header"><div class="card-title">🌎 NPS por País</div><div class="card-subtitle">Score calculado por región</div></div><div class="chart-wrap"><canvas id="chart-pais"></canvas></div></div>
     </div>
 
-    <!-- IA PANEL -->
     <div class="section">
       <div class="section-title">Análisis con IA · n8n + Ollama</div>
       <div class="ai-panel">
@@ -236,14 +251,13 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
           </div>
           <div class="ai-actions">
             <button class="btn btn-brand" id="btn-ai" onclick="runAI()">✨ Generar Reporte</button>
-            <button class="btn btn-ghost" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)" onclick="clearAI()">✕ Limpiar</button>
+            <button class="btn btn-ghost" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)" onclick="clearAI('ai-result')">✕ Limpiar</button>
           </div>
         </div>
         <div id="ai-result" class="ai-result"></div>
       </div>
     </div>
 
-    <!-- DETRACTORES TABLE -->
     <div class="section">
       <div class="table-card">
         <div class="table-head"><div class="card-title">🚨 Detractores Críticos — Riesgo de Churn</div><span id="det-count" style="font-size:12px;color:var(--text3)"></span></div>
@@ -251,15 +265,86 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
       </div>
     </div>
 
-    <!-- ALL TABLE -->
     <div class="section">
       <div class="table-card">
         <div class="table-head"><div class="card-title">📋 Todas las respuestas NPS</div><span id="all-count" style="font-size:12px;color:var(--text3)"></span></div>
         <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-all"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
       </div>
     </div>
-
   </div><!-- /tab-nps -->
+
+  <!-- ══════════ TAB CSAT ══════════ -->
+  <div id="tab-csat" style="display:none">
+
+    <!-- KPIs CSAT -->
+    <div class="section">
+      <div class="section-title">Resumen CSAT · Satisfacción de plataforma</div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--brand)"></div><div class="kpi-body"><div class="kpi-label">CSAT Score</div><div class="kpi-value brand" id="csat-kpi-score">—</div><div class="kpi-sub">% satisfechos (≥9)</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--success)"></div><div class="kpi-body"><div class="kpi-label">Promotores</div><div class="kpi-value success" id="csat-kpi-pro">—</div><div class="kpi-sub">Nota 9–10</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--warning)"></div><div class="kpi-body"><div class="kpi-label">Neutros</div><div class="kpi-value warning" id="csat-kpi-neu">—</div><div class="kpi-sub">Nota 7–8</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--danger)"></div><div class="kpi-body"><div class="kpi-label">Detractores</div><div class="kpi-value danger" id="csat-kpi-det">—</div><div class="kpi-sub">Nota 0–6</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--info)"></div><div class="kpi-body"><div class="kpi-label">Total</div><div class="kpi-value info" id="csat-kpi-tot">—</div><div class="kpi-sub">Respuestas</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:#8B5CF6"></div><div class="kpi-body"><div class="kpi-label">Promedio</div><div class="kpi-value" style="color:#8B5CF6" id="csat-kpi-avg">—</div><div class="kpi-sub">Nota promedio</div></div></div>
+      </div>
+    </div>
+
+    <!-- CHARTS CSAT -->
+    <div class="charts-grid section">
+      <div class="chart-card"><div class="card-header"><div class="card-title">📈 Distribución CSAT</div><div class="card-subtitle">Promotores · Neutros · Detractores</div></div><div class="chart-wrap"><canvas id="csat-chart-dist"></canvas></div></div>
+      <div class="chart-card"><div class="card-header"><div class="card-title">🌎 CSAT por País</div><div class="card-subtitle">Score % satisfechos por región</div></div><div class="chart-wrap"><canvas id="csat-chart-pais"></canvas></div></div>
+    </div>
+
+    <!-- CSAT por ejecutivo -->
+    <div class="charts-grid section">
+      <div class="chart-card"><div class="card-header"><div class="card-title">👤 CSAT por Ejecutivo</div><div class="card-subtitle">Score promedio por KAM</div></div><div class="chart-wrap" style="height:240px"><canvas id="csat-chart-exec"></canvas></div></div>
+      <div class="chart-card"><div class="card-header"><div class="card-title">📅 Evolución CSAT</div><div class="card-subtitle">Score por mes</div></div><div class="chart-wrap"><canvas id="csat-chart-evol"></canvas></div></div>
+    </div>
+
+    <!-- AI PANEL CSAT -->
+    <div class="section">
+      <div class="section-title">Análisis con IA · n8n + Ollama</div>
+      <div class="ai-panel">
+        <div class="ai-panel-top">
+          <div>
+            <div class="ai-title-row">
+              <span style="font-size:20px">🤖</span>
+              <span class="ai-title">Apprecio Beat IA — Reporte CSAT</span>
+              <span class="ai-badge">⚡ Powered by n8n · Ollama</span>
+            </div>
+            <div class="ai-desc">Análisis de satisfacción de plataforma: detecta patrones en los comentarios de clientes, aspectos de fricción y mejores prácticas reportadas por los usuarios.</div>
+          </div>
+          <div class="ai-actions">
+            <button class="btn btn-brand" id="btn-ai-csat" onclick="runAI_CSAT()">✨ Generar Reporte</button>
+            <button class="btn btn-ghost" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)" onclick="clearAI('ai-result-csat')">✕ Limpiar</button>
+          </div>
+        </div>
+        <div id="ai-result-csat" class="ai-result"></div>
+      </div>
+    </div>
+
+    <!-- COMENTARIOS CARDS -->
+    <div class="section">
+      <div class="section-title">Comentarios recientes</div>
+      <div class="csat-comments-grid" id="csat-comments-grid">
+        <div class="skeleton" style="height:120px;border-radius:14px"></div>
+        <div class="skeleton" style="height:120px;border-radius:14px"></div>
+        <div class="skeleton" style="height:120px;border-radius:14px"></div>
+      </div>
+    </div>
+
+    <!-- TABLA CSAT -->
+    <div class="section">
+      <div class="table-card">
+        <div class="table-head"><div class="card-title">📋 Todas las respuestas CSAT</div><span id="csat-count" style="font-size:12px;color:var(--text3)"></span></div>
+        <div class="table-scroll">
+          <table><thead><tr><th>Empresa</th><th>País</th><th>Nota</th><th>Tipo</th><th>Ejecutivo</th><th>Comentario</th><th>Fecha</th></tr></thead>
+          <tbody id="tbody-csat"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-csat -->
 
   <!-- ══════════ TAB EMPRESAS ══════════ -->
   <div id="tab-empresas" style="display:none">
@@ -278,19 +363,31 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
 
 <script>
 // ══════════════════════════════════════════
-//  CONFIG — webhook n8n embebido
+//  CONFIG
 // ══════════════════════════════════════════
-const N8N_WEBHOOK = 'https://TU-N8N.com/webhook/apprecio-cx-analisis';
-// ↑ Cambia esta URL por la de tu instancia n8n
+const N8N_WEBHOOK = 'https://n8n.openip.cl/webhook/apprecio-cx-analisis';
 
-const SHEET_NPS      = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&gid=749991184';
-const SHEET_EMPRESAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:csv&gid=527249897';
+// SHEET NPS (respuestas NPS de clientes B2B)
+const SHEET_NPS = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:json&gid=749991184';
+
+// SHEET EMPRESAS (estado de encuestas enviadas)
+const SHEET_EMPRESAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
+
+// SHEET CSAT - respuestas_encuestas (satisfacción de plataforma, escala 1-10)
+// Columnas clave: Fecha_Envio, empresa_id, País, Nombre de la empresa, correo_enviado,
+//                 ¿Qué tan satisfecho(a)...? (nota), ¿Qué fue lo más fácil...? (comentario)
+const SHEET_CSAT_RESPUESTAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
+
+// SHEET CSAT - Hoja 1 (CSAT de reuniones/atención, con ejecutivo comercial)
+// Columnas clave: Fecha, Email, Satisfaccion (1-10), Comentarios, ejecutivo comercial, País
+const SHEET_CSAT_REUNIONES = 'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:json&gid=0';
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
-let npsData=[], empresaData=[], filteredNps=[];
+let npsData=[], empresaData=[], csatData=[], filteredNps=[], filteredCsat=[];
 let chartDist=null, chartPais=null;
+let csatChartDist=null, csatChartPais=null, csatChartExec=null, csatChartEvol=null;
 
 // ══════════════════════════════════════════
 //  INIT
@@ -309,14 +406,24 @@ function showBanner(msg,type){
 }
 
 // ══════════════════════════════════════════
-//  CSV FETCH
+//  GOOGLE SHEETS FETCH
 // ══════════════════════════════════════════
-async function fetchCSV(url){
+async function fetchSheet(url){
   const res=await fetch(url);
   if(!res.ok) throw new Error('HTTP '+res.status);
   const text=await res.text();
-  return new Promise((resolve,reject)=>{
-    Papa.parse(text,{header:true,skipEmptyLines:true,complete:r=>resolve(r.data),error:e=>reject(e)});
+  const match=text.match(/setResponse\((\{[\s\S]+\})\)/);
+  if(!match) throw new Error('Respuesta inesperada de Google Sheets');
+  const data=JSON.parse(match[1]);
+  if(data.status==='error') throw new Error(data.errors?.[0]?.message||'Error en Google Sheets');
+  const cols=data.table.cols.map(c=>c.label);
+  return data.table.rows.map(row=>{
+    const obj={};
+    row.c.forEach((cell,i)=>{
+      if(!cols[i]) return;
+      obj[cols[i]]=cell==null?'':(cell.f!=null?cell.f:String(cell.v??''));
+    });
+    return obj;
   });
 }
 
@@ -325,29 +432,86 @@ async function fetchCSV(url){
 // ══════════════════════════════════════════
 async function refreshData(){
   showBanner('<span class="spinner"></span>&nbsp; Cargando datos desde Google Sheets...','loading');
-  setProgress(20);
+  setProgress(15);
   try{
-    const [nps,emp]=await Promise.all([fetchCSV(SHEET_NPS),fetchCSV(SHEET_EMPRESAS)]);
-    setProgress(75);
-    npsData=nps.filter(r=>r['CLIENTE']?.trim());
-    empresaData=emp.filter(r=>r['empresa_id']?.trim());
+    // Cargamos en paralelo: NPS, Empresas (estado encuestas), CSAT plataforma, CSAT reuniones
+    const [npsRaw, empRaw, csatPlatRaw, csatReuRaw] = await Promise.all([
+      fetchSheet(SHEET_NPS),
+      fetchSheet(SHEET_EMPRESAS),
+      fetchSheet(SHEET_CSAT_RESPUESTAS),
+      fetchSheet(SHEET_CSAT_REUNIONES)
+    ]);
+    setProgress(70);
+
+    npsData = npsRaw.filter(r=>r['CLIENTE']?.trim());
+    empresaData = empRaw.filter(r=>r['empresa_id']?.trim());
+
+    // Normalizar CSAT plataforma (respuestas_encuestas)
+    // La nota está en la columna con el nombre largo
+    const csatPlat = csatPlatRaw
+      .filter(r=>r['Estado']==='COMPLETADO' || r['Estado']==='completado' || !r['Estado'])
+      .map(r=>{
+        // Buscar la columna de satisfacción (contiene "satisfecho")
+        const notaKey = Object.keys(r).find(k=>k.toLowerCase().includes('satisfech'));
+        const comentKey = Object.keys(r).find(k=>k.toLowerCase().includes('f\u00e1cil') || k.toLowerCase().includes('facil') || k.toLowerCase().includes('mejorar'));
+        const nota = notaKey ? +r[notaKey] : NaN;
+        const fechaKey = Object.keys(r).find(k=>k.toLowerCase().includes('fecha'));
+        return {
+          fuente: 'plataforma',
+          empresa: r['Nombre de la empresa']||r['empresa_id']||'',
+          pais: r['Pa\u00eds']||r['Pais']||'',
+          ejecutivo: '',
+          nota: nota,
+          comentario: comentKey ? r[comentKey] : '',
+          fecha: fechaKey ? r[fechaKey] : '',
+          email: r['correo_enviado']||''
+        };
+      })
+      .filter(r=>!isNaN(r.nota) && r.nota>0);
+
+    // Normalizar CSAT reuniones (Hoja 1)
+    const csatReu = csatReuRaw
+      .filter(r=>{
+        const s = +r['Satisfaccion'];
+        return !isNaN(s) && s>0;
+      })
+      .map(r=>({
+        fuente: 'reunion',
+        empresa: r['Empresa']||'',
+        pais: r['Pa\u00eds']||r['Pais']||'',
+        ejecutivo: r['ejecutivo comercial']||'',
+        nota: +r['Satisfaccion'],
+        comentario: r['Comentarios']||'',
+        fecha: r['Fecha']||'',
+        email: r['Email']||''
+      }));
+
+    // Combinar ambas fuentes CSAT
+    csatData = [...csatPlat, ...csatReu];
+
+    setProgress(90);
     buildFilters();
     applyFilters();
     renderEmpresasTab();
+    renderCsatTab();
     setProgress(100);
     document.getElementById('last-update').textContent='Actualizado: '+new Date().toLocaleString('es-CL');
-    showBanner('✓ Datos cargados correctamente','success');
+    showBanner('✓ Datos cargados correctamente (NPS + CSAT plataforma + CSAT reuniones)','success');
   }catch(e){
     setProgress(100);
     showBanner('⚠ Error al cargar datos: '+e.message,'error');
+    console.error(e);
   }
 }
 
 // ══════════════════════════════════════════
-//  FILTERS
+//  FILTERS (basados en NPS para sincronía)
 // ══════════════════════════════════════════
 function buildFilters(){
-  const countries=[...new Set(npsData.map(r=>r['PAÍS']).filter(Boolean))].sort();
+  const countries=[...new Set([
+    ...npsData.map(r=>r['PAÍS']),
+    ...csatData.map(r=>r.pais)
+  ].filter(Boolean))].sort();
   const cEl=document.getElementById('filter-country');
   cEl.innerHTML='<option value="">Todos los países</option>'+
     countries.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('');
@@ -368,17 +532,29 @@ function applyFilters(){
   const country=document.getElementById('filter-country').value;
   const period=document.getElementById('filter-period').value;
   const risk=document.getElementById('filter-risk').value;
+
   filteredNps=npsData.filter(r=>{
     if(country&&r['PAÍS']!==country) return false;
     if(period){const d=parseDate(r['FECHA']);if(!d)return false;if(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`!==period)return false;}
     if(risk&&r['Nivel de Riesgo']!==risk) return false;
     return true;
   });
-  renderKpis(); renderCharts(); renderDetTable(); renderAllTable();
+
+  filteredCsat=csatData.filter(r=>{
+    if(country&&r.pais!==country) return false;
+    // Para CSAT no aplicamos filtro de período estricto (fechas mixtas)
+    return true;
+  });
+
+  renderKpis();
+  renderCharts();
+  renderDetTable();
+  renderAllTable();
+  renderCsatTab();
 }
 
 // ══════════════════════════════════════════
-//  KPIs
+//  NPS KPIs
 // ══════════════════════════════════════════
 function renderKpis(){
   const n=filteredNps.length;
@@ -395,7 +571,7 @@ function renderKpis(){
 }
 
 // ══════════════════════════════════════════
-//  CHARTS
+//  NPS CHARTS
 // ══════════════════════════════════════════
 function renderCharts(){
   const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
@@ -420,7 +596,144 @@ function renderCharts(){
 }
 
 // ══════════════════════════════════════════
-//  TABLES
+//  CSAT TAB — KPIs + Charts + Tabla + Cards
+// ══════════════════════════════════════════
+function renderCsatTab(){
+  const data = filteredCsat.length ? filteredCsat : csatData;
+  const n = data.length;
+
+  if(!n){
+    ['csat-kpi-score','csat-kpi-pro','csat-kpi-neu','csat-kpi-det','csat-kpi-tot','csat-kpi-avg']
+      .forEach(id=>document.getElementById(id).textContent='—');
+    document.getElementById('csat-count').textContent='0 respuestas';
+    document.getElementById('tbody-csat').innerHTML='<tr><td colspan="7"><div class="empty-state">Sin datos CSAT aún</div></td></tr>';
+    document.getElementById('csat-comments-grid').innerHTML='<div class="empty-state">Sin comentarios disponibles</div>';
+    return;
+  }
+
+  const pro = data.filter(r=>r.nota>=9).length;
+  const neu = data.filter(r=>r.nota>=7&&r.nota<=8).length;
+  const det = data.filter(r=>r.nota<=6).length;
+  const csatScore = Math.round((pro/n)*100);
+  const avg = (data.reduce((s,r)=>s+r.nota,0)/n).toFixed(1);
+
+  document.getElementById('csat-kpi-score').textContent=csatScore+'%';
+  document.getElementById('csat-kpi-pro').textContent=pro;
+  document.getElementById('csat-kpi-neu').textContent=neu;
+  document.getElementById('csat-kpi-det').textContent=det;
+  document.getElementById('csat-kpi-tot').textContent=n;
+  document.getElementById('csat-kpi-avg').textContent=avg;
+  document.getElementById('csat-count').textContent=n+' respuestas';
+
+  // Chart distribución donut
+  if(csatChartDist)csatChartDist.destroy();
+  csatChartDist=new Chart(document.getElementById('csat-chart-dist').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Promotores (9-10)','Neutros (7-8)','Detractores (1-6)'],datasets:[{data:[pro,neu,det],backgroundColor:['#D1FAE5','#FEF3C7','#FEE2E2'],borderColor:['#10B981','#F59E0B','#EF4444'],borderWidth:2,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'#6B7280',font:{family:'DM Sans',size:12},padding:14}}}}
+  });
+
+  // Chart por país
+  const byPais={};
+  data.forEach(r=>{
+    const p=r.pais||'N/A';
+    if(!byPais[p])byPais[p]={pro:0,tot:0};
+    byPais[p].tot++;
+    if(r.nota>=9)byPais[p].pro++;
+  });
+  const paisKeys=Object.keys(byPais).sort();
+  const paisScores=paisKeys.map(p=>byPais[p].tot?Math.round((byPais[p].pro/byPais[p].tot)*100):0);
+  if(csatChartPais)csatChartPais.destroy();
+  csatChartPais=new Chart(document.getElementById('csat-chart-pais').getContext('2d'),{
+    type:'bar',
+    data:{labels:paisKeys.map(c=>flag(c)+' '+c),datasets:[{label:'CSAT %',data:paisScores,backgroundColor:paisScores.map(v=>v>=70?'rgba(16,185,129,.7)':v>=50?'rgba(245,158,11,.7)':'rgba(239,68,68,.7)'),borderColor:paisScores.map(v=>v>=70?'#10B981':v>=50?'#F59E0B':'#EF4444'),borderWidth:2,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{family:'DM Sans',size:11}},grid:{color:'#F3F4F6'}},y:{ticks:{color:'#6B7280',callback:v=>v+'%'},grid:{color:'#F3F4F6'},min:0,max:100}}}
+  });
+
+  // Chart por ejecutivo
+  const byExec={};
+  data.filter(r=>r.ejecutivo).forEach(r=>{
+    const e=r.ejecutivo.trim();
+    if(!e)return;
+    if(!byExec[e])byExec[e]={sum:0,cnt:0};
+    byExec[e].sum+=r.nota;
+    byExec[e].cnt++;
+  });
+  const execKeys=Object.keys(byExec).sort((a,b)=>(byExec[b].sum/byExec[b].cnt)-(byExec[a].sum/byExec[a].cnt));
+  const execAvgs=execKeys.map(e=>(byExec[e].sum/byExec[e].cnt).toFixed(1));
+  if(csatChartExec)csatChartExec.destroy();
+  csatChartExec=new Chart(document.getElementById('csat-chart-exec').getContext('2d'),{
+    type:'bar',
+    data:{labels:execKeys,datasets:[{label:'Nota promedio',data:execAvgs,backgroundColor:'rgba(250,52,94,.15)',borderColor:'#FA345E',borderWidth:2,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280'},grid:{color:'#F3F4F6'},min:0,max:10},y:{ticks:{color:'#6B7280',font:{size:11}},grid:{display:false}}}}
+  });
+
+  // Chart evolución por mes
+  const byMes={};
+  data.forEach(r=>{
+    const d=parseDateFlex(r.fecha);
+    if(!d)return;
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    if(!byMes[key])byMes[key]={sum:0,cnt:0,pro:0};
+    byMes[key].sum+=r.nota;
+    byMes[key].cnt++;
+    if(r.nota>=9)byMes[key].pro++;
+  });
+  const mesKeys=Object.keys(byMes).sort();
+  const mesLabels=mesKeys.map(k=>{const[y,m]=k.split('-');return monthName(+m)+' '+y;});
+  const mesScores=mesKeys.map(k=>byMes[k].cnt?Math.round((byMes[k].pro/byMes[k].cnt)*100):0);
+  if(csatChartEvol)csatChartEvol.destroy();
+  csatChartEvol=new Chart(document.getElementById('csat-chart-evol').getContext('2d'),{
+    type:'line',
+    data:{labels:mesLabels,datasets:[{label:'CSAT %',data:mesScores,borderColor:'#FA345E',backgroundColor:'rgba(250,52,94,.08)',fill:true,tension:0.4,pointBackgroundColor:'#FA345E',pointRadius:5,pointHoverRadius:7}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{size:11}},grid:{color:'#F3F4F6'}},y:{ticks:{color:'#6B7280',callback:v=>v+'%'},grid:{color:'#F3F4F6'},min:0,max:100}}}
+  });
+
+  // Comment cards (últimas 9, con comentario)
+  const conComentario=data.filter(r=>r.comentario&&r.comentario.trim().length>5)
+    .sort((a,b)=>parseDateFlex(b.fecha)-parseDateFlex(a.fecha))
+    .slice(0,9);
+  const grid=document.getElementById('csat-comments-grid');
+  if(conComentario.length===0){
+    grid.innerHTML='<div class="empty-state">Sin comentarios disponibles aún</div>';
+  } else {
+    grid.innerHTML=conComentario.map(r=>{
+      const tipo=r.nota>=9?'promotor':r.nota>=7?'neutro':'detractor';
+      const tipoLabel=r.nota>=9?'Promotor':r.nota>=7?'Neutro':'Detractor';
+      const fuenteIcon=r.fuente==='reunion'?'👤 Reunión':'🖥️ Plataforma';
+      return `<div class="csat-comment-card">
+        <div class="csat-comment-header">
+          <div class="csat-score-badge ${tipo}">${r.nota}</div>
+          <div>
+            <div class="csat-comment-company">${x(r.empresa||r.email||'—')}</div>
+            <div class="csat-comment-meta">${flag(r.pais)} ${x(r.pais||'—')} · ${fuenteIcon}${r.ejecutivo?' · '+x(r.ejecutivo):''}</div>
+          </div>
+        </div>
+        <div class="csat-comment-text">"${x(r.comentario)}"</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Tabla completa CSAT
+  const sorted=[...data].sort((a,b)=>a.nota-b.nota);
+  document.getElementById('tbody-csat').innerHTML=sorted.map(r=>{
+    const tipo=r.nota>=9?'promotor':r.nota>=7?'neutro':'detractor';
+    const tipoLabel=r.nota>=9?'Promotor':r.nota>=7?'Neutro':'Detractor';
+    const fuenteIcon=r.fuente==='reunion'?'👤':'🖥️';
+    return`<tr>
+      <td><span class="company-cell">${x(r.empresa||r.email||'—')}</span></td>
+      <td><span class="country-badge">${flag(r.pais)} ${x(r.pais||'—')}</span></td>
+      <td><span class="score-pill ${tipo}">${r.nota}</span></td>
+      <td><span class="status-badge status-${tipo==='promotor'?'respondido':tipo==='neutro'?'enviado':'bloqueado'}">${fuenteIcon} ${tipoLabel}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${x(r.ejecutivo||'—')}</td>
+      <td class="interp-cell">${x(r.comentario||'—')}</td>
+      <td style="font-size:12px;color:var(--text3);white-space:nowrap">${x(r.fecha.split(' ')[0]||'—')}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+//  NPS TABLES
 // ══════════════════════════════════════════
 function rowHTML(r){
   const nps=+r['NPS (Col G)'],per=+r['INTENCIÓN PERMANENCIA'];
@@ -458,79 +771,60 @@ function renderEmpresasTab(){
 }
 
 // ══════════════════════════════════════════
-//  AI — payload adaptado al flujo n8n real
-//  El flujo espera: { modulo, datos }
-//  datos.muestraNPS = array de { empresa, pais, puntuacion, razon }
+//  AI NPS
 // ══════════════════════════════════════════
 async function runAI(){
   const btn=document.getElementById('btn-ai');
   btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Analizando...';
-
   const resultEl=document.getElementById('ai-result');
   resultEl.className='ai-result visible';
-  resultEl.innerHTML=`<div class="ai-result-box" style="color:rgba(255,255,255,.4);font-style:italic">Enviando ${filteredNps.length} respuestas al flujo n8n · Ollama...</div>`;
-
-  // Construir muestraNPS en el formato que espera el nodo "Preparar Prompt CX"
-  const muestraNPS=filteredNps.map(r=>({
-    empresa:   r['CLIENTE']||'',
-    pais:      r['PAÍS']||'',
-    puntuacion:r['NPS (Col G)']||'',
-    permanencia:r['INTENCIÓN PERMANENCIA']||'',
-    riesgo:    r['Nivel de Riesgo']||'',
-    razon:     r['Interpretación']||''   // el nodo usa r.razon para comentarios cualitativos
-  }));
-
+  resultEl.innerHTML=`<div class="ai-result-box" style="color:rgba(255,255,255,.4);font-style:italic">Enviando ${filteredNps.length} respuestas NPS al flujo n8n · Ollama...</div>`;
+  const muestraNPS=filteredNps.map(r=>({empresa:r['CLIENTE']||'',pais:r['PAÍS']||'',puntuacion:r['NPS (Col G)']||'',permanencia:r['INTENCIÓN PERMANENCIA']||'',riesgo:r['Nivel de Riesgo']||'',razon:r['Interpretación']||''}));
   const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
   const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
   const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
-
-  const payload={
-    modulo:'NPS',
-    datos:{
-      totalNPS:       filteredNps.length,
-      totalCSAT_abono:0,
-      totalCSAT_reunion:0,
-      muestraNPS,
-      muestraCSAT:[],
-      filtros:{
-        pais:    document.getElementById('filter-country').value||'todos',
-        periodo: document.getElementById('filter-period').value||'todos',
-        riesgo:  document.getElementById('filter-risk').value||'todos'
-      },
-      distribucion:{ promotores:pro, neutros:neu, detractores:det }
-    }
-  };
-
+  const payload={modulo:'NPS',datos:{totalNPS:filteredNps.length,totalCSAT_abono:0,totalCSAT_reunion:0,muestraNPS,muestraCSAT:[],filtros:{pais:document.getElementById('filter-country').value||'todos',periodo:document.getElementById('filter-period').value||'todos',riesgo:document.getElementById('filter-risk').value||'todos'},distribucion:{promotores:pro,neutros:neu,detractores:det}}};
   try{
-    const res=await fetch(N8N_WEBHOOK,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(payload)
-    });
+    const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     if(!res.ok) throw new Error('n8n respondió HTTP '+res.status);
     const data=await res.json();
-
-    // El nodo "Responde al Dashboard" devuelve { respuesta, ok }
     const texto=data.respuesta||data.text||data.output||JSON.stringify(data);
     resultEl.innerHTML=`<div class="ai-result-box">${formatMD(texto)}</div>`;
   }catch(e){
-    resultEl.innerHTML=`
-      <div class="ai-result-box" style="border-color:rgba(239,68,68,.4)">
-        <strong style="color:#FC8181">⚠ Error al contactar n8n:</strong> ${x(e.message)}\n\nVerifica que:\n• El webhook esté activo en n8n\n• La URL N8N_WEBHOOK en el código sea la correcta\n• El flujo permita CORS (Access-Control-Allow-Origin: *)\n\n<span style="color:rgba(255,255,255,.35);font-size:11px">Payload enviado (debug):\n${x(JSON.stringify(payload,null,2))}</span>
-      </div>`;
+    resultEl.innerHTML=`<div class="ai-result-box" style="border-color:rgba(239,68,68,.4)"><strong style="color:#FC8181">⚠ Error al contactar n8n:</strong> ${x(e.message)}\n\nVerifica que:\n• El webhook esté activo en n8n\n• La URL N8N_WEBHOOK sea la correcta\n• El flujo permita CORS (Access-Control-Allow-Origin: *)\n\n<span style="color:rgba(255,255,255,.35);font-size:11px">Payload enviado (debug):\n${x(JSON.stringify(payload,null,2))}</span></div>`;
   }
   btn.disabled=false; btn.innerHTML='✨ Generar Reporte';
 }
 
-function clearAI(){const el=document.getElementById('ai-result');el.className='ai-result';el.innerHTML='';}
-
-// Convierte Markdown simple a HTML (negritas, emojis, saltos)
-function formatMD(txt){
-  return x(txt)
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>')
-    .replace(/\n/g,'<br>');
+// ══════════════════════════════════════════
+//  AI CSAT
+// ══════════════════════════════════════════
+async function runAI_CSAT(){
+  const btn=document.getElementById('btn-ai-csat');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Analizando...';
+  const resultEl=document.getElementById('ai-result-csat');
+  resultEl.className='ai-result visible';
+  resultEl.innerHTML=`<div class="ai-result-box" style="color:rgba(255,255,255,.4);font-style:italic">Enviando ${filteredCsat.length||csatData.length} respuestas CSAT al flujo n8n · Ollama...</div>`;
+  const data = filteredCsat.length ? filteredCsat : csatData;
+  const muestraCSAT=data.map(r=>({empresa:r.empresa,pais:r.pais,ejecutivo:r.ejecutivo,nota:r.nota,comentario:r.comentario,fuente:r.fuente}));
+  const pro=data.filter(r=>r.nota>=9).length;
+  const neu=data.filter(r=>r.nota>=7&&r.nota<=8).length;
+  const det=data.filter(r=>r.nota<=6).length;
+  const payload={modulo:'CSAT',datos:{totalCSAT:data.length,muestraCSAT,filtros:{pais:document.getElementById('filter-country').value||'todos'},distribucion:{promotores:pro,neutros:neu,detractores:det},csatScore:Math.round((pro/data.length)*100)}};
+  try{
+    const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!res.ok) throw new Error('n8n respondió HTTP '+res.status);
+    const json=await res.json();
+    const texto=json.respuesta||json.text||json.output||JSON.stringify(json);
+    resultEl.innerHTML=`<div class="ai-result-box">${formatMD(texto)}</div>`;
+  }catch(e){
+    resultEl.innerHTML=`<div class="ai-result-box" style="border-color:rgba(239,68,68,.4)"><strong style="color:#FC8181">⚠ Error al contactar n8n:</strong> ${x(e.message)}\n\n<span style="color:rgba(255,255,255,.35);font-size:11px">Payload CSAT (debug):\n${x(JSON.stringify(payload,null,2))}</span></div>`;
+  }
+  btn.disabled=false; btn.innerHTML='✨ Generar Reporte';
 }
+
+function clearAI(id){const el=document.getElementById(id);if(el){el.className='ai-result';el.innerHTML='';}}
+function formatMD(txt){return x(txt).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>').replace(/\n/g,'<br>');}
 
 // ══════════════════════════════════════════
 //  TAB SWITCH
@@ -538,17 +832,31 @@ function formatMD(txt){
 function showTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('tab-nps').style.display      =id==='tab-nps'?'block':'none';
-  document.getElementById('tab-empresas').style.display =id==='tab-empresas'?'block':'none';
+  ['tab-nps','tab-csat','tab-empresas'].forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
 }
 
 // ══════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════
-function parseDate(s){if(!s)return null;const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);return m?new Date(+m[3],+m[2]-1,+m[1]):null;}
+function parseDate(s){
+  if(!s)return null;
+  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  return m?new Date(+m[3],+m[2]-1,+m[1]):null;
+}
+function parseDateFlex(s){
+  if(!s)return null;
+  // Intentar varios formatos: DD/MM/YYYY, YYYY-MM-DD, "1/06/2026 ..."
+  const m1=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(m1)return new Date(+m1[3],+m1[2]-1,+m1[1]);
+  const m2=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m2)return new Date(+m2[1],+m2[2]-1,+m2[3]);
+  const d=new Date(s);
+  return isNaN(d)?null:d;
+}
 function monthName(m){return['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m-1];}
 function riskOrd(r){return{'Crítico':0,'Alto':1,'Medio':2,'Sano':3}[r]??4;}
-function flag(c){return{'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Argentina':'🇦🇷'}[c]||'🌎';}
+function flag(c){return{'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Argentina':'🇦🇷','Perú':'🇵🇪'}[c]||'🌎';}
 function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
