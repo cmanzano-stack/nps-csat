@@ -3,44 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard CX · Apprecio</title>
+<title>Dashboard CX · Apprecio Beat</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
-
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{font-family:'DM Sans',sans-serif;background:#F2F4F7;min-height:100vh;color:#1F2937}
-
-/* ── Cards ── */
 .card{background:#fff;border-radius:18px;border:1px solid #E8EAED;transition:box-shadow .25s}
 .card:hover{box-shadow:0 6px 28px rgba(0,0,0,.07)}
-
-/* ── Tabs ── */
 .tab-btn{position:relative;padding-bottom:13px;transition:color .2s;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
 .tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:#FA345E;border-radius:3px 3px 0 0;transform:scaleX(0);transition:transform .2s ease}
 .tab-btn.active{color:#FA345E;font-weight:700}
 .tab-btn.active::after{transform:scaleX(1)}
-
-/* ── Badge ── */
 .badge{display:inline-flex;align-items:center;padding:3px 11px;border-radius:99px;font-size:11px;font-weight:700}
-
-/* ── Skeleton ── */
 .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:14px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* ── Panel IA ── */
-.ai-panel{background:#fffbfc;border:1.5px solid #fbc9d4;border-radius:16px;padding:22px}
-.ai-result{background:#fff;border-radius:12px;padding:18px;font-size:13px;line-height:1.8;color:#374151;border:1px solid #fbc9d4;white-space:pre-wrap}
-
-/* ── Chip ── */
+.ai-panel{background:#1a1a2e;border:1.5px solid rgba(250,52,94,.3);border-radius:16px;padding:22px;position:relative;overflow:hidden}
+.ai-panel::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(250,52,94,.12) 0%,transparent 70%);pointer-events:none}
+.ai-result{background:rgba(255,255,255,.06);border-radius:12px;padding:18px;font-size:13px;line-height:1.8;color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.1);white-space:pre-wrap;max-height:380px;overflow-y:auto}
 .chip{background:#FFF0F3;color:#D61F47;border-radius:8px;padding:3px 11px;font-size:11px;font-weight:700}
-
-/* ── Botones ── */
 .btn-primary{background:#FA345E;color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;transition:background .2s}
 .btn-primary:hover{background:#D61F47}
 .btn-primary:disabled{background:#E5E7EB;color:#9AA0B4;cursor:not-allowed}
@@ -51,647 +36,850 @@ select,input{font-family:'DM Sans',sans-serif;outline:none}
 </head>
 <body>
 <div id="root"></div>
-
 <script>
-/* ════════════════════════════════════════════════════════════
-   CONFIGURACIÓN
-   ════════════════════════════════════════════════════════════ */
+/* ════ CONFIG ════ */
 const CONFIG = {
-  API_BACKEND: "https://script.google.com/macros/s/AKfycbx3TEMFdxbYGKZFhF5GSZstiiV6vivCCbLq9L7A2iq5oq6DgrVyM6Q3a5Wd_JLAhbT1Wg/exec",
-  // ⬇ Reemplaza con la URL de tu webhook de n8n después de importar el flujo
+  SHEETS: {
+    NPS_HISTORICO: "https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:csv&sheet=Historico",
+    NPS_HOJA1:     "https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:csv&sheet=Hoja+1",
+    CSAT_RESPUESTAS:"https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&sheet=respuestas_encuestas",
+    CSAT_CONSULTA: "https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&sheet=consulta_abono",
+    REUNION_HOJA1: "https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:csv&sheet=Hoja+1"
+  },
+  CLAUDE_API: "https://api.anthropic.com/v1/messages",
+  CLAUDE_MODEL: "claude-sonnet-4-20250514",
   N8N_WEBHOOK: "https://n8n.openip.cl/webhook/apprecio-cx-analisis"
 };
 
-const BRAND   = '#FA345E';
-const BRAND_D = '#D61F47';
-const SUCCESS = '#10B981';
-const WARN    = '#F59E0B';
-const DANGER  = '#EF4444';
-const INFO    = '#4361EE';
+const BRAND="#FA345E",BRAND_D="#D61F47",SUCCESS="#10B981",WARN="#F59E0B",DANGER="#EF4444",INFO="#4361EE";
+const {createElement:e,useState,useEffect,useCallback,useMemo,useRef}=React;
 
-const { createElement: e, useState, useEffect, useCallback, useMemo, useRef } = React;
-
-/* ════════════════════════════════════════════════════════════
-   LOGO APPRECIO
-   ════════════════════════════════════════════════════════════ */
-function Logo({ size = 34 }) {
-  return e('svg', { width: size, height: size, viewBox: '0 0 40 40', fill: 'none' },
-    e('rect', { width: 40, height: 40, rx: 10, fill: BRAND }),
-    e('path', {
-      d: 'M20 9C13.9 9 9 13.9 9 20s4.9 11 11 11 11-4.9 11-11S26.1 9 20 9zm0 4.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13zm0 3a3.5 3.5 0 100 7 3.5 3.5 0 000-7z',
-      fill: 'white', fillOpacity: .95
-    })
+/* ════ LOGO (del HTML original) ════ */
+function Logo({size=34}){
+  return e('svg',{width:size,height:size,viewBox:'0 0 40 40',fill:'none'},
+    e('rect',{width:40,height:40,rx:10,fill:BRAND}),
+    e('path',{d:'M20 9C13.9 9 9 13.9 9 20s4.9 11 11 11 11-4.9 11-11S26.1 9 20 9zm0 4.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13zm0 3a3.5 3.5 0 100 7 3.5 3.5 0 000-7z',fill:'white',fillOpacity:.95})
   );
 }
 
-/* ════════════════════════════════════════════════════════════
-   GRÁFICO DONUT — línea 4px, cutout 74%
-   ════════════════════════════════════════════════════════════ */
-function ChartDonut({ id, p, n, d, score, label }) {
-  const ref = useRef(null);
-  const chart = useRef(null);
-  useEffect(() => {
-    if (!ref.current) return;
-    if (chart.current) chart.current.destroy();
-    const ctx = ref.current.getContext('2d');
-    chart.current = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Promotores', 'Neutrales', 'Detractores'],
-        datasets: [{
-          data: [p || 0, n || 0, d || 0],
-          backgroundColor: [SUCCESS, WARN, DANGER],
-          borderWidth: 4,
-          borderColor: '#fff',
-          hoverOffset: 8
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '74%',
-        plugins: { legend: { display: false }, tooltip: { enabled: true } }
-      },
-      plugins: [{
-        id: 'center_' + id,
-        beforeDraw: (ch) => {
-          const { ctx: c, width: w, height: h } = ch;
-          c.save();
-          const fs = Math.min(w, h) / 5;
-          c.font = `800 ${fs}px DM Sans,sans-serif`;
-          c.textAlign = 'center'; c.textBaseline = 'middle';
-          c.fillStyle = '#111827';
-          c.fillText((score > 0 ? '+' : '') + score, w / 2, h / 2 - 3);
-          c.font = `500 ${fs / 2.6}px DM Sans,sans-serif`;
-          c.fillStyle = '#9AA0B4';
-          c.fillText(label, w / 2, h / 2 + fs / 1.5);
-          c.restore();
-        }
-      }]
-    });
-    return () => { if (chart.current) chart.current.destroy() };
-  }, [p, n, d, score, label, id]);
-  return e('div', { style: { position: 'relative', width: '100%', height: 190 } },
-    e('canvas', { ref, role: 'img', 'aria-label': `${label}: ${score}` }, 'Gráfico donut')
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   GRÁFICO LÍNEA SIMPLE — grosor 4px
-   ════════════════════════════════════════════════════════════ */
-function ChartLinea({ id, datos, color }) {
-  const ref = useRef(null);
-  const chart = useRef(null);
-  useEffect(() => {
-    if (!ref.current || !datos || !datos.length) return;
-    if (chart.current) chart.current.destroy();
-    const ctx = ref.current.getContext('2d');
-    chart.current = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: datos.map(d => d.q),
-        datasets: [{
-          data: datos.map(d => d.score),
-          borderColor: color || BRAND,
-          backgroundColor: (color || BRAND) + '14',
-          borderWidth: 4,
-          tension: 0.35,
-          fill: true,
-          pointBackgroundColor: color || BRAND,
-          pointRadius: 5,
-          pointHoverRadius: 8
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-          y: { min: -100, max: 100, grid: { color: '#F3F4F6' }, ticks: { font: { family: 'DM Sans', size: 11 } } },
-          x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', weight: '600', size: 11 } } }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-    return () => { if (chart.current) chart.current.destroy() };
-  }, [datos, color, id]);
-  return e('div', { style: { width: '100%', height: 220 } },
-    e('canvas', { ref, role: 'img', 'aria-label': 'Tendencia' }, 'Tendencia')
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   GRÁFICO DOBLE LÍNEA CSAT — grosor 4px
-   ════════════════════════════════════════════════════════════ */
-function ChartDobleLinea({ datosA, datosR }) {
-  const ref = useRef(null);
-  const chart = useRef(null);
-  useEffect(() => {
-    if (!ref.current) return;
-    if (chart.current) chart.current.destroy();
-    const qs = new Set([...(datosA || []).map(d => d.q), ...(datosR || []).map(d => d.q)]);
-    const labels = Array.from(qs).sort();
-    const dA = labels.map(l => { const f = (datosA || []).find(d => d.q === l); return f ? f.score : null });
-    const dR = labels.map(l => { const f = (datosR || []).find(d => d.q === l); return f ? f.score : null });
-    const ctx = ref.current.getContext('2d');
-    chart.current = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'CSAT Post Abonos (Plataforma)',
-            data: dA, borderColor: INFO, backgroundColor: INFO + '14',
-            borderWidth: 4, tension: 0.3, fill: true,
-            pointBackgroundColor: INFO, pointRadius: 5
-          },
-          {
-            label: 'CSAT Post Reuniones (Comercial)',
-            data: dR, borderColor: BRAND, backgroundColor: BRAND + '14',
-            borderWidth: 4, tension: 0.3, fill: true,
-            pointBackgroundColor: BRAND, pointRadius: 5
-          }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-          y: { min: 1, max: 10, grid: { color: '#F3F4F6' }, ticks: { font: { family: 'DM Sans', size: 11 } } },
-          x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', weight: '600', size: 11 } } }
-        },
-        plugins: {
-          legend: {
-            display: true, position: 'top',
-            labels: { font: { family: 'DM Sans', size: 12, weight: '600' }, boxWidth: 12, boxHeight: 12, usePointStyle: true }
-          }
-        }
-      }
-    });
-    return () => { if (chart.current) chart.current.destroy() };
-  }, [datosA, datosR]);
-  return e('div', { style: { width: '100%', height: 250 } },
-    e('canvas', { ref, role: 'img', 'aria-label': 'Comparativa CSAT' }, 'CSAT comparativo')
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   PANEL IA — conecta con n8n + qwen2 via Ollama
-   ════════════════════════════════════════════════════════════ */
-function PanelIA({ data, tab }) {
-  const [loading, setLoading] = useState(false);
-  const [resultado, setResultado] = useState(null);
-  const [error, setError] = useState(null);
-
-  const analizar = async () => {
-    setLoading(true); setError(null); setResultado(null);
-    const modulo = tab === 0 ? 'NPS' : tab === 1 ? 'CSAT' : 'General';
-    const payload = {
-      modulo,
-      datos: {
-        totalNPS: (data?.nps || []).length,
-        totalCSAT_abono: (data?.csat_abono || []).length,
-        totalCSAT_reunion: (data?.csat_reunion || []).length,
-        muestraNPS: (data?.nps || []).slice(0, 18).map(r => ({
-          puntuacion: r.puntuacion, pais: r.pais, razon: r.razon, mes: r.mes
-        })),
-        muestraCSAT: (data?.csat_abono || []).slice(0, 12).map(r => ({
-          puntuacion: r.puntuacion, comentario: r.comentario, pais: r.pais
-        }))
-      }
-    };
-    try {
-      const resp = await fetch(CONFIG.N8N_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      const json = await resp.json();
-      const texto = json.respuesta || json.resumen || json.output || json.text || JSON.stringify(json);
-      setResultado(texto);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+/* ════ CSV PARSER ════ */
+function parseCSV(txt){
+  const rows=[];
+  const lines=txt.trim().split("\n");
+  if(!lines.length) return rows;
+  const parseRow=line=>{
+    const vals=[];let cur='',inQ=false;
+    for(let i=0;i<line.length;i++){
+      if(line[i]==='"' && !inQ){inQ=true;}
+      else if(line[i]==='"' && inQ){
+        if(line[i+1]==='"'){cur+='"';i++;}else inQ=false;
+      } else if(line[i]===',' && !inQ){vals.push(cur.trim());cur='';}
+      else cur+=line[i];
     }
+    vals.push(cur.trim());
+    return vals;
   };
-
-  return e('div', { className: 'ai-panel' },
-    e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 } },
-      e('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
-        e('div', { style: { width: 38, height: 38, borderRadius: 10, background: BRAND, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
-          e('i', { className: 'fa-solid fa-brain', style: { color: 'white', fontSize: 15 } })
-        ),
-        e('div', {},
-          e('p', { style: { fontSize: 14, fontWeight: 700, color: '#1F2937', margin: 0 } }, 'Análisis IA · Qwen2'),
-          e('p', { style: { fontSize: 11, color: '#9AA0B4', margin: 0 } }, 'Vía n8n + Ollama (qwen2:latest)')
-        )
-      ),
-      e('button', {
-        className: 'btn-primary',
-        onClick: analizar,
-        disabled: loading,
-        style: { padding: '8px 20px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 8 }
-      },
-        e('i', { className: loading ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-sparkles' }),
-        loading ? 'Analizando...' : 'Generar Análisis'
-      )
-    ),
-    resultado && e('div', { className: 'ai-result' },
-      e('p', { style: { fontWeight: 700, color: BRAND, fontSize: 11, textTransform: 'uppercase', letterSpacing: .5, marginBottom: 10 } }, '📊 Resumen Ejecutivo · Apprecio IA CX'),
-      e('div', {}, resultado)
-    ),
-    error && e('div', { style: { background: '#FEF2F2', borderRadius: 12, padding: 16, border: '1px solid #FECACA' } },
-      e('p', { style: { fontWeight: 700, color: '#991B1B', fontSize: 13, marginBottom: 6 } }, '⚠️ No se pudo conectar con n8n'),
-      e('p', { style: { fontSize: 12, color: '#7F1D1D' } }, error),
-      e('div', { style: { marginTop: 12, background: '#FFF7F7', borderRadius: 8, padding: 12, fontSize: 11, color: '#7F1D1D', lineHeight: 2 } },
-        e('p', { style: { fontWeight: 700, marginBottom: 4 } }, 'Para configurar:'),
-        e('ol', { style: { paddingLeft: 16 } },
-          e('li', {}, 'Importa el JSON del workflow en n8n'),
-          e('li', {}, 'Activa el workflow y copia la URL del webhook'),
-          e('li', {}, 'Reemplaza CONFIG.N8N_WEBHOOK en este HTML'),
-          e('li', {}, 'Verifica que Ollama corra con: ollama run qwen2')
-        )
-      )
-    ),
-    !resultado && !error && !loading && e('p', { style: { fontSize: 12, color: '#9AA0B4', textAlign: 'center', padding: '10px 0' } },
-      'El modelo qwen2 analizará los datos del módulo activo y entregará diagnóstico + recomendaciones accionables.'
-    )
-  );
+  const headers=parseRow(lines[0]).map(h=>h.toLowerCase().replace(/[^a-z0-9_]/g,'_'));
+  for(let i=1;i<lines.length;i++){
+    if(!lines[i].trim()) continue;
+    const vals=parseRow(lines[i]);
+    const obj={};
+    headers.forEach((h,idx)=>{ obj[h]=vals[idx]||''});
+    rows.push(obj);
+  }
+  return rows;
 }
 
-/* ════════════════════════════════════════════════════════════
-   FUNCIÓN PDF
-   ════════════════════════════════════════════════════════════ */
-function exportarPDF(registros, modulo, spec) {
-  if (!registros || !registros.length) { alert('Sin datos cualitativos en este filtro.'); return; }
-  const w = window.open('', '_blank');
-  const items = registros
-    .filter(r => (r.razon || r.comentario || '').trim())
-    .map(r => `<div style="padding:10px;border-left:3px solid #FA345E;margin-bottom:10px;background:#fffbfc;border-radius:4px"><strong>${r.cliente || r.empresa || '—'} (${r.pais || '—'})</strong><br><em style="color:#6B7280">${r.razon || r.comentario}</em></div>`)
-    .join('');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte ${modulo}</title>
-  <style>body{font-family:DM Sans,sans-serif;padding:40px;color:#1F2937;line-height:1.6}
-  .h{border-bottom:3px solid #FA345E;padding-bottom:14px;margin-bottom:24px}
-  .t{font-size:22px;font-weight:800;color:#111}.m{font-size:12px;color:#6B7280;margin-top:4px}
-  .btn{background:#FA345E;color:#fff;padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:20px}
-  @media print{.btn{display:none}}</style></head><body>
-  <button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>
-  <div class="h"><div class="t">Reporte Ejecutivo · ${modulo}</div>
-  <div class="m">Segmento: ${spec} · Fecha: ${new Date().toLocaleDateString('es')} · Apprecio CX</div></div>
-  <p style="font-size:13px;margin-bottom:16px"><strong>${registros.length}</strong> registros en este corte</p>
-  ${items || '<p style="color:#9AA0B4">Sin comentarios cualitativos.</p>'}
-  <div style="margin-top:48px;text-align:center;font-size:11px;color:#D1D5DB;border-top:1px solid #E8EAED;padding-top:14px">
-    Apprecio · Dashboard Experiencia del Cliente · 2026
-  </div></body></html>`);
-  w.document.close();
+async function fetchCSV(url){
+  try{
+    const r=await fetch(url);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return parseCSV(await r.text());
+  }catch(err){console.error('fetchCSV error',url,err);return [];}
 }
 
-/* ════════════════════════════════════════════════════════════
-   BLOQUE ESPEJO (NPS o CSAT)
-   ════════════════════════════════════════════════════════════ */
-function BloqueEspejo({ id, titulo, total, p, n, d, score, avg, pPorc, paises, meses, filtroPais, setFP, filtroMes, setFM, labelScore, filtrados }) {
-  const vals = [
-    [SUCCESS, 'Alto / Promotor', p],
-    [WARN, 'Medio / Neutral', n],
-    [DANGER, 'Bajo / Crítico', d]
-  ];
-  return e('div', { className: 'card', style: { padding: 24 } },
-    /* Cabecera */
-    e('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 18 } },
-      e('div', { style: { flex: 1 } },
-        e('h3', { style: { fontSize: 13, fontWeight: 700, color: '#1F2937', lineHeight: 1.45, marginBottom: 6 } }, titulo),
-        e('span', { className: 'chip' }, `${total} respuestas`)
-      ),
-      e('div', { style: { display: 'flex', gap: 8, flexShrink: 0 } },
-        e('select', {
-          value: filtroPais, onChange: ev => setFP(ev.target.value),
-          style: { fontSize: 11, fontWeight: 600, color: '#6B7280', background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8, padding: '4px 8px' }
-        }, paises.map(p => e('option', { key: p, value: p }, p === 'Todos' ? '🌎 Todos' : p))),
-        e('select', {
-          value: filtroMes, onChange: ev => setFM(ev.target.value),
-          style: { fontSize: 11, fontWeight: 600, color: '#6B7280', background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8, padding: '4px 8px' }
-        }, meses.map(m => e('option', { key: m, value: m }, m === 'Todos' ? '📅 Todos' : m)))
-      )
-    ),
-    /* Cuerpo: donut + métricas */
-    e('div', { style: { display: 'flex', gap: 24, alignItems: 'center' } },
-      e('div', { style: { flex: '0 0 170px' } },
-        total === 0
-          ? e('div', { style: { height: 190, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#D1D5DB', fontSize: 12 } }, 'Sin datos')
-          : e(ChartDonut, { id, p, n, d, score, label: labelScore })
-      ),
-      e('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', gap: 10 } },
-        /* Contadores por nivel */
-        e('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 } },
-          vals.map(([color, lbl, val]) =>
-            e('div', { key: lbl, style: { background: '#F9FAFB', border: '1px solid #F3F4F6', borderRadius: 10, padding: '10px 8px', textAlign: 'center' } },
-              e('p', { style: { fontSize: 22, fontWeight: 800, color, margin: 0 } }, val),
-              e('p', { style: { fontSize: 10, color: '#9AA0B4', fontWeight: 600, marginTop: 2 } }, lbl)
-            )
-          )
-        ),
-        /* Promedio y % satisfacción */
-        e('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 } },
-          e('div', { style: { background: '#F9FAFB', border: '1px solid #F3F4F6', borderRadius: 10, padding: '12px' } },
-            e('p', { style: { fontSize: 10, color: '#9AA0B4', fontWeight: 600, marginBottom: 4 } }, 'Promedio métrica'),
-            e('p', { style: { fontSize: 24, fontWeight: 800, color: '#1F2937', margin: 0 } }, avg)
-          ),
-          e('div', { style: { background: '#F9FAFB', border: '1px solid #F3F4F6', borderRadius: 10, padding: '12px' } },
-            e('p', { style: { fontSize: 10, color: '#9AA0B4', fontWeight: 600, marginBottom: 4 } }, '% Alto / Satisfecho'),
-            e('p', { style: { fontSize: 24, fontWeight: 800, color: SUCCESS, margin: 0 } }, pPorc + '%')
-          )
-        ),
-        /* Botón exportar */
-        e('button', {
-          className: 'btn-primary',
-          onClick: () => exportarPDF(filtrados, titulo.slice(0, 30), `${filtroPais} / ${filtroMes}`),
-          style: { padding: '9px 16px', fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, letterSpacing: .4 }
-        },
-          e('i', { className: 'fa-solid fa-file-pdf' }),
-          'Exportar reporte PDF'
-        )
-      )
-    )
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   MÓDULO NPS
-   ════════════════════════════════════════════════════════════ */
-function ModNPS({ raw, data }) {
-  const [p1P, setP1P] = useState('Todos'); const [p1M, setP1M] = useState('Todos');
-  const [p2P, setP2P] = useState('Todos'); const [p2M, setP2M] = useState('Todos');
-  const [hP, setHP] = useState('Todos');   const [hA, setHA] = useState('2026');
-
-  const { paises, meses, anios } = useMemo(() => {
-    const p = new Set(), m = new Set(), a = new Set();
-    raw.forEach(r => { if (r.pais) p.add(r.pais); if (r.mes) m.add(r.mes); if (r.anio) a.add(String(r.anio)) });
-    return { paises: ['Todos', ...Array.from(p)], meses: ['Todos', ...Array.from(m)], anios: Array.from(a).length ? Array.from(a) : ['2026'] };
-  }, [raw]);
-
-  const calcNPS = (arr, key) => {
-    const total = arr.length; if (!total) return { total: 0, p: 0, n: 0, d: 0, score: 0, avg: '—', pPorc: 0 };
-    let pr = 0, ne = 0, de = 0, s = 0;
-    arr.forEach(r => { const v = parseFloat(r[key]); if (!isNaN(v)) { s += v; if (v >= 9) pr++; else if (v >= 7) ne++; else de++ } });
-    return { total, p: pr, n: ne, d: de, score: Math.round(((pr / total) * 100) - ((de / total) * 100)), avg: (s / total).toFixed(1), pPorc: ((pr / total) * 100).toFixed(0) };
-  };
-
-  const f1 = useMemo(() => raw.filter(r => (p1P === 'Todos' || r.pais === p1P) && (p1M === 'Todos' || r.mes === p1M)), [raw, p1P, p1M]);
-  const f2 = useMemo(() => raw.filter(r => (p2P === 'Todos' || r.pais === p2P) && (p2M === 'Todos' || r.mes === p2M) && r.pregunta2 != null && r.pregunta2 !== ''), [raw, p2P, p2M]);
-  const m1 = useMemo(() => calcNPS(f1, 'puntuacion'), [f1]);
-  const m2 = useMemo(() => calcNPS(f2, 'pregunta2'), [f2]);
-
-  const linea = useMemo(() => {
-    const fh = raw.filter(r => (hP === 'Todos' || r.pais === hP) && String(r.anio) === hA);
-    const qs = {};
-    fh.forEach(r => { if (r.periodoQ) { if (!qs[r.periodoQ]) qs[r.periodoQ] = []; qs[r.periodoQ].push(r) } });
-    return Object.keys(qs).sort().map(q => {
-      const arr = qs[q]; let pr = 0, de = 0, tot = arr.length;
-      arr.forEach(r => { const v = parseFloat(r.puntuacion); if (!isNaN(v)) { if (v >= 9) pr++; else if (v < 7) de++ } });
-      return { q, score: tot ? Math.round(((pr / tot) * 100) - ((de / tot) * 100)) : 0 };
+/* ════ CHARTS ════ */
+function ChartDonut({id,p,n,d,score,label}){
+  const ref=useRef(null),chart=useRef(null);
+  useEffect(()=>{
+    if(!ref.current) return;
+    if(chart.current) chart.current.destroy();
+    const ctx=ref.current.getContext('2d');
+    chart.current=new Chart(ctx,{
+      type:'doughnut',
+      data:{labels:['Promotores','Neutros','Detractores'],datasets:[{data:[p||0,n||0,d||0],backgroundColor:[SUCCESS,WARN,DANGER],borderWidth:4,borderColor:'#fff',hoverOffset:8}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'74%',plugins:{legend:{display:false}}},
+      plugins:[{id:'center_'+id,beforeDraw:(ch)=>{
+        const {ctx:c,width:w,height:h}=ch;c.save();
+        const fs=Math.min(w,h)/5;
+        c.font=`800 ${fs}px DM Sans,sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillStyle='#111827';
+        c.fillText((score>0?'+':'')+(score||0),w/2,h/2-3);
+        c.font=`500 ${fs/2.6}px DM Sans,sans-serif`;c.fillStyle='#9AA0B4';
+        c.fillText(label,w/2,h/2+fs/1.5);c.restore();
+      }}]
     });
-  }, [raw, hP, hA]);
+    return()=>{if(chart.current)chart.current.destroy()};
+  },[p,n,d,score,label,id]);
+  return e('div',{style:{position:'relative',width:'100%',height:190}},
+    e('canvas',{ref,role:'img','aria-label':`${label}: ${score}`}));
+}
 
-  const criticos = useMemo(() => raw.filter(r => { const v = parseFloat(r.puntuacion); return !isNaN(v) && v <= 6 }), [raw]);
+function ChartLinea({id,datos,color,minY,maxY,isPercent}){
+  const ref=useRef(null),chart=useRef(null);
+  useEffect(()=>{
+    if(!ref.current||!datos||!datos.length) return;
+    if(chart.current) chart.current.destroy();
+    const ctx=ref.current.getContext('2d');
+    chart.current=new Chart(ctx,{
+      type:'line',
+      data:{labels:datos.map(d=>d.q),datasets:[{data:datos.map(d=>d.score),borderColor:color||BRAND,backgroundColor:(color||BRAND)+'14',borderWidth:4,tension:.35,fill:true,pointBackgroundColor:color||BRAND,pointRadius:5,pointHoverRadius:8}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        scales:{
+          y:{min:minY!==undefined?minY:-100,max:maxY!==undefined?maxY:100,grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11},callback:isPercent?v=>v+'%':undefined}},
+          x:{grid:{display:false},ticks:{font:{family:'DM Sans',weight:'600',size:11}}}
+        },
+        plugins:{legend:{display:false}}
+      }
+    });
+    return()=>{if(chart.current)chart.current.destroy()};
+  },[datos,color,id,minY,maxY,isPercent]);
+  return e('div',{style:{width:'100%',height:220}},e('canvas',{ref}));
+}
 
-  return e('div', { style: { display: 'flex', flexDirection: 'column', gap: 24 } },
-    /* Dos bloques NPS en grid */
-    e('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 } },
-      e(BloqueEspejo, { id: 'nps1', titulo: 'P1 · ¿Qué tanto recomiendas nuestra aplicación Apprecio? (1-10)', total: m1.total, p: m1.p, n: m1.n, d: m1.d, score: m1.score, avg: m1.avg, pPorc: m1.pPorc, paises, meses, filtroPais: p1P, setFP: setP1P, filtroMes: p1M, setFM: setP1M, labelScore: 'NPS Score', filtrados: f1 }),
-      e(BloqueEspejo, { id: 'nps2', titulo: 'P2 · ¿Cómo calificarías la atención del KAM asignado a tu cuenta? (1-10)', total: m2.total, p: m2.p, n: m2.n, d: m2.d, score: m2.score, avg: m2.avg, pPorc: m2.pPorc, paises, meses, filtroPais: p2P, setFP: setP2P, filtroMes: p2M, setFM: setP2M, labelScore: 'KAM Score', filtrados: f2 })
-    ),
-    /* Tendencia histórica */
-    e('div', { className: 'card', style: { padding: 24, display: 'flex', gap: 24 } },
-      e('div', { style: { flex: '0 0 60%' } },
-        e('h3', { style: { fontSize: 13, fontWeight: 700, color: '#1F2937', marginBottom: 16 } }, '📈 Evolución Histórica NPS por Trimestre'),
-        linea.length === 0
-          ? e('div', { style: { height: 220, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#D1D5DB', fontSize: 12 } }, 'Sin históricos en este corte')
-          : e(ChartLinea, { id: 'nps_linea', datos: linea, color: BRAND })
-      ),
-      e('div', { style: { flex: 1, display: 'flex', flexDirection: 'column', gap: 14 } },
-        e('p', { style: { fontSize: 11, fontWeight: 700, color: '#9AA0B4', textTransform: 'uppercase', letterSpacing: .5 } }, 'Filtros de tendencia'),
-        e('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } },
-          e('div', {},
-            e('label', { style: { fontSize: 11, color: '#9AA0B4', fontWeight: 600, display: 'block', marginBottom: 4 } }, 'País'),
-            e('select', { value: hP, onChange: ev => setHP(ev.target.value), style: { width: '100%', fontSize: 12, fontWeight: 600, background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8, padding: '7px 10px' } },
-              paises.map(p => e('option', { key: p, value: p }, p)))
-          ),
-          e('div', {},
-            e('label', { style: { fontSize: 11, color: '#9AA0B4', fontWeight: 600, display: 'block', marginBottom: 4 } }, 'Año fiscal'),
-            e('select', { value: hA, onChange: ev => setHA(ev.target.value), style: { width: '100%', fontSize: 12, fontWeight: 600, background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8, padding: '7px 10px' } },
-              anios.map(a => e('option', { key: a, value: a }, a)))
-          )
-        )
-      )
-    ),
-    /* Radar alertas */
-    e('div', { className: 'card', style: { padding: 24 } },
-      e('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 } },
-        e('h3', { style: { fontSize: 13, fontWeight: 700, color: DANGER, display: 'flex', alignItems: 'center', gap: 8 } },
-          e('i', { className: 'fa-solid fa-triangle-exclamation' }),
-          'Radar de Alertas · Clientes Críticos'
+/* ════ PANEL IA ════ */
+function PanelIA({titulo,descripcion,buildPrompt,data}){
+  const [loading,setLoading]=useState(false);
+  const [resultado,setResultado]=useState(null);
+  const [error,setError]=useState(null);
+  const [modo,setModo]=useState('analisis'); // analisis | riesgo
+
+  const llamar=async(prompt)=>{
+    setLoading(true);setError(null);setResultado(null);
+    try{
+      const res=await fetch(CONFIG.CLAUDE_API,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:CONFIG.CLAUDE_MODEL,max_tokens:1000,messages:[{role:'user',content:prompt}]})
+      });
+      const json=await res.json();
+      const txt=json.content?.map(b=>b.text||'').join('')||'Sin respuesta';
+      setResultado(txt);
+    }catch(err){setError('Error al conectar con IA: '+err.message);}
+    finally{setLoading(false);}
+  };
+
+  const analizar=()=>llamar(buildPrompt(data,'analisis'));
+  const verRiesgo=()=>llamar(buildPrompt(data,'riesgo'));
+
+  return e('div',{className:'ai-panel',style:{marginBottom:24}},
+    e('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:10}},
+      e('div',{style:{display:'flex',alignItems:'center',gap:10}},
+        e('div',{style:{width:38,height:38,borderRadius:10,background:BRAND,display:'flex',alignItems:'center',justifyContent:'center'}},
+          e(Logo,{size:28})
         ),
-        e('span', { className: 'badge', style: { background: '#FEF2F2', color: DANGER } }, `${criticos.length} casos`)
-      ),
-      criticos.length === 0
-        ? e('p', { style: { color: SUCCESS, fontWeight: 600, fontSize: 13, textAlign: 'center', padding: '12px 0' } }, '✅ ¡Sin alertas críticas en este período!')
-        : e('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
-          criticos.slice(0, 10).map((c, i) =>
-            e('div', { key: i, style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '11px 16px', borderRadius: 10, border: '1px solid #FEE2E2', background: '#FFFBFB', gap: 12 } },
-              e('div', {},
-                e('p', { style: { fontWeight: 700, fontSize: 12, color: '#1F2937', margin: 0 } },
-                  c.cliente || c.empresa || 'Empresa',
-                  e('span', { style: { fontWeight: 400, color: '#9AA0B4' } }, ` · ${c.pais || '—'} · ${c.mes || '—'}`)
-                ),
-                e('p', { style: { fontSize: 11, color: '#9AA0B4', margin: '2px 0 0', fontStyle: 'italic' } }, c.razon ? `"${c.razon}"` : '—')
-              ),
-              e('span', { className: 'badge', style: { background: DANGER, color: 'white', flexShrink: 0 } }, `Nota: ${c.puntuacion}`)
-            )
-          )
+        e('div',{},
+          e('p',{style:{fontSize:14,fontWeight:700,color:'#fff',margin:0}},titulo),
+          e('p',{style:{fontSize:11,color:'rgba(255,255,255,.5)',margin:0}},descripcion)
         )
+      ),
+      e('span',{style:{background:'rgba(250,52,94,.2)',border:'1px solid rgba(250,52,94,.4)',color:BRAND,fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20}},'⚡ Powered by Claude')
     ),
-    /* Panel IA */
-    e(PanelIA, { data, tab: 0 })
+    e('div',{style:{display:'flex',gap:10,flexWrap:'wrap',marginBottom:loading||resultado||error?16:0}},
+      e('button',{className:'btn-primary',onClick:analizar,disabled:loading,style:{padding:'8px 18px',fontSize:12,display:'flex',alignItems:'center',gap:8}},
+        e('i',{className:loading?'fa-solid fa-spinner fa-spin':'fa-solid fa-chart-bar'}),
+        loading&&modo==='analisis'?'Analizando...':' Analizar con IA'
+      ),
+      e('button',{onClick:verRiesgo,disabled:loading,style:{padding:'8px 18px',fontSize:12,background:'rgba(239,68,68,.15)',color:'#FCA5A5',border:'1px solid rgba(239,68,68,.3)',borderRadius:10,fontFamily:'DM Sans',cursor:'pointer',display:'flex',alignItems:'center',gap:8}},
+        e('i',{className:loading?'fa-solid fa-spinner fa-spin':'fa-solid fa-triangle-exclamation'}),
+        loading&&modo==='riesgo'?'Calculando...':' Clientes en riesgo'
+      ),
+      resultado&&e('button',{onClick:()=>setResultado(null),style:{padding:'8px 14px',fontSize:12,background:'rgba(255,255,255,.08)',color:'rgba(255,255,255,.6)',border:'1px solid rgba(255,255,255,.12)',borderRadius:10,fontFamily:'DM Sans',cursor:'pointer'}},'✕ Limpiar')
+    ),
+    loading&&e('div',{style:{display:'flex',alignItems:'center',gap:10,padding:'12px 0',color:'rgba(255,255,255,.6)',fontSize:13}},
+      e('div',{style:{width:16,height:16,border:'2px solid rgba(250,52,94,.3)',borderTopColor:BRAND,borderRadius:'50%',animation:'spin .8s linear infinite'}}),
+      'La IA está analizando los datos reales...'
+    ),
+    resultado&&e('div',{className:'ai-result'},resultado),
+    error&&e('div',{style:{background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.3)',borderRadius:10,padding:'12px 16px',color:'#FCA5A5',fontSize:12,marginTop:8}},error)
   );
 }
 
-/* ════════════════════════════════════════════════════════════
-   MÓDULO CSAT
-   ════════════════════════════════════════════════════════════ */
-function ModCSAT({ abonoRaw, reunionRaw, data }) {
-  const [c1P, setC1P] = useState('Todos'); const [c1M, setC1M] = useState('Todos');
-  const [c2P, setC2P] = useState('Todos'); const [c2M, setC2M] = useState('Todos');
-  const listP = ['Todos', 'Colombia', 'México', 'Chile', 'Perú', 'Ecuador'];
-  const listM = ['Todos', 'Mayo', 'Junio', 'Julio', 'Agosto'];
+/* ════ BLOQUE ESPEJO ════ */
+function BloqueEspejo({id,titulo,total,p,n,d,score,avg,pPorc,paises,meses,filtroPais,setFP,filtroMes,setFM,labelScore,filtrados,onExportPDF}){
+  const vals=[[SUCCESS,'Promotor (9-10)',p],[WARN,'Neutro (7-8)',n],[DANGER,'Detractor (0-6)',d]];
+  return e('div',{className:'card',style:{padding:24}},
+    e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:12,marginBottom:18}},
+      e('div',{style:{flex:1}},
+        e('h3',{style:{fontSize:13,fontWeight:700,color:'#1F2937',lineHeight:1.45,marginBottom:6}},titulo),
+        e('span',{className:'chip'},`${total} respuestas`)
+      ),
+      e('div',{style:{display:'flex',gap:8,flexShrink:0,flexWrap:'wrap'}},
+        e('select',{value:filtroPais,onChange:ev=>setFP(ev.target.value),style:{fontSize:11,fontWeight:600,color:'#6B7280',background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'4px 8px'}},
+          paises.map(p=>e('option',{key:p,value:p},p==='Todos'?'🌎 Todos':p))),
+        e('select',{value:filtroMes,onChange:ev=>setFM(ev.target.value),style:{fontSize:11,fontWeight:600,color:'#6B7280',background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'4px 8px'}},
+          meses.map(m=>e('option',{key:m,value:m},m==='Todos'?'📅 Todos':m)))
+      )
+    ),
+    e('div',{style:{display:'flex',gap:24,alignItems:'center',flexWrap:'wrap'}},
+      e('div',{style:{flex:'0 0 170px'}},
+        total===0
+          ?e('div',{style:{height:190,display:'flex',alignItems:'center',justifyContent:'center',color:'#D1D5DB',fontSize:12}},'Sin datos')
+          :e(ChartDonut,{id,p,n,d,score,label:labelScore})
+      ),
+      e('div',{style:{flex:1,display:'flex',flexDirection:'column',gap:10,minWidth:200}},
+        e('div',{style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8}},
+          vals.map(([color,lbl,val])=>
+            e('div',{key:lbl,style:{background:'#F9FAFB',border:'1px solid #F3F4F6',borderRadius:10,padding:'10px 8px',textAlign:'center'}},
+              e('p',{style:{fontSize:22,fontWeight:800,color,margin:0}},val),
+              e('p',{style:{fontSize:10,color:'#9AA0B4',fontWeight:600,marginTop:2}},lbl)
+            )
+          )
+        ),
+        e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}},
+          e('div',{style:{background:'#F9FAFB',border:'1px solid #F3F4F6',borderRadius:10,padding:12}},
+            e('p',{style:{fontSize:10,color:'#9AA0B4',fontWeight:600,marginBottom:4}},'Promedio'),
+            e('p',{style:{fontSize:24,fontWeight:800,color:'#1F2937',margin:0}},avg)
+          ),
+          e('div',{style:{background:'#F9FAFB',border:'1px solid #F3F4F6',borderRadius:10,padding:12}},
+            e('p',{style:{fontSize:10,color:'#9AA0B4',fontWeight:600,marginBottom:4}},'% Satisfecho'),
+            e('p',{style:{fontSize:24,fontWeight:800,color:SUCCESS,margin:0}},pPorc+'%')
+          )
+        ),
+        e('button',{className:'btn-primary',onClick:()=>onExportPDF&&onExportPDF(filtrados,titulo,filtroPais,filtroMes),style:{padding:'9px 16px',fontSize:11,display:'flex',alignItems:'center',justifyContent:'center',gap:8}},
+          e('i',{className:'fa-solid fa-file-pdf'}),' Exportar PDF con IA'
+        )
+      )
+    )
+  );
+}
 
-  const calcCSAT = (arr) => {
-    const total = arr.length; if (!total) return { total: 0, p: 0, n: 0, d: 0, score: 0, avg: '—', pPorc: 0 };
-    let a = 0, m = 0, b = 0, s = 0;
-    arr.forEach(r => { const v = parseFloat(r.puntuacion || 9); s += v; if (v >= 9) a++; else if (v >= 7) m++; else b++ });
-    return { total, p: a, n: m, d: b, score: Math.round((a / total) * 100), avg: (s / total).toFixed(1), pPorc: ((a / total) * 100).toFixed(0) };
+/* ════ EXPORT PDF CON IA ════ */
+async function exportarPDFconIA(registros,titulo,pais,mes){
+  if(!registros||!registros.length){alert('Sin datos en este filtro.');return;}
+  const det=registros.filter(r=>{const v=parseFloat(r.puntuacion||r.satisfaccion||r.respuesta1||0);return v<=6;});
+  const pro=registros.filter(r=>{const v=parseFloat(r.puntuacion||r.satisfaccion||r.respuesta1||0);return v>=9;});
+  const neu=registros.filter(r=>{const v=parseFloat(r.puntuacion||r.satisfaccion||r.respuesta1||0);return v>=7&&v<=8;});
+  const comentarios=registros.map(r=>r.razon||r.comentarios||r.comentario||r.que_fue_lo_mas_facil||r.comentario_||''
+  ).filter(Boolean);
+  const porEmp={};
+  det.forEach(r=>{
+    const emp=r.empresa||r.nombre_de_la_empresa||r.nombre||'Sin empresa';
+    if(!porEmp[emp])porEmp[emp]={c:0,razones:[]};
+    porEmp[emp].c++;
+    const com=r.razon||r.comentarios||r.comentario||r.que_fue_lo_mas_facil||'';
+    if(com)porEmp[emp].razones.push(com);
+  });
+  const topDet=Object.entries(porEmp).sort((a,b)=>b[1].c-a[1].c).slice(0,6)
+    .map(([e,d])=>`• ${e}: ${d.c} casos — "${d.razones[0]||'Sin comentario'}"`).join('\n');
+  const total=registros.length;
+  const scoreNPS=total>0?Math.round(((pro.length/total)*100)-((det.length/total)*100)):0;
+
+  const prompt=`Eres Apprecio Beat IA, analista de CX para programas de beneficios corporativos en Latinoamérica.
+
+MÓDULO: ${titulo} | País: ${pais} | Período: ${mes}
+TOTAL RESPUESTAS: ${total}
+Promotores (9-10): ${pro.length} (${total>0?Math.round(pro.length/total*100):0}%)
+Neutros (7-8): ${neu.length} (${total>0?Math.round(neu.length/total*100):0}%)
+Detractores (0-6): ${det.length} (${total>0?Math.round(det.length/total*100):0}%)
+Score NPS/CSAT: ${scoreNPS}
+
+CASOS MÁS FRECUENTES EN COMENTARIOS (muestra):
+${comentarios.slice(0,15).map((c,i)=>`${i+1}. "${c}"`).join('\n')||'Sin comentarios textuales'}
+
+EMPRESAS CON MÁS DETRACTORES:
+${topDet||'Ninguna'}
+
+INSTRUCCIONES:
+- Analiza SOLO con los datos arriba. No inventes nada.
+- Identifica los 3 casos que MÁS SE REPITEN en los comentarios
+- Segmenta promotores/neutros/detractores con sus patrones de lenguaje
+- Señala qué clientes tienen mayor riesgo de salida de Apprecio Beat
+- NO incluyas plan de acciones, solo diagnóstico ejecutivo
+- Máximo 300 palabras, tono profesional
+
+Estructura obligatoria:
+📊 SITUACIÓN ACTUAL
+🔍 CASOS QUE MÁS SE REPITEN
+⭐ QUÉ VALORAN LOS PROMOTORES
+🚨 PATRONES DETRACTORES
+⛔ CLIENTES EN RIESGO DE SALIDA`;
+
+  const w=window.open('','_blank');
+  w.document.write('<html><head><title>Generando...</title></head><body style="font-family:DM Sans,sans-serif;padding:40px;color:#1F2937"><p>Generando análisis con IA...</p></body></html>');
+
+  try{
+    const res=await fetch(CONFIG.CLAUDE_API,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:CONFIG.CLAUDE_MODEL,max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const json=await res.json();
+    const texto=json.content?.map(b=>b.text||'').join('')||'Error al generar';
+    const items=registros.filter(r=>(r.razon||r.comentarios||r.que_fue_lo_mas_facil||'').trim()).slice(0,30)
+      .map(r=>`<div style="padding:10px;border-left:3px solid #FA345E;margin-bottom:10px;background:#fffbfc;border-radius:4px">
+        <strong>${r.empresa||r.nombre_de_la_empresa||r.nombre||'—'} (${r.pais||r.pa__s||'—'}) · Nota: ${r.puntuacion||r.satisfaccion||r.respuesta1||r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||'—'}</strong><br>
+        <em style="color:#6B7280">${r.razon||r.comentarios||r.que_fue_lo_mas_facil||r.___qu___fue_lo_m___s_f___cil_del_proceso_y_qu___podr___amos_mejorar_||'—'}</em>
+      </div>`).join('');
+    w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte CX · ${titulo}</title>
+    <style>body{font-family:DM Sans,sans-serif;padding:40px;color:#1F2937;line-height:1.7;max-width:800px;margin:0 auto}
+    .hdr{border-bottom:3px solid #FA345E;padding-bottom:14px;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+    .hdr svg{flex-shrink:0}.hdr h1{font-size:20px;font-weight:800;margin:0}
+    .hdr .sub{font-size:12px;color:#6B7280;margin-top:4px}
+    .ia-box{background:#FFF5F7;border:1px solid #FBC9D4;border-radius:12px;padding:20px;margin-bottom:28px;white-space:pre-wrap;font-size:13px;line-height:1.7}
+    .ia-label{font-size:11px;font-weight:700;color:#FA345E;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+    .btn{background:#FA345E;color:#fff;padding:9px 20px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:20px}
+    @media print{.btn{display:none}}</style></head><body>
+    <button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>
+    <div class="hdr">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="10" fill="#FA345E"/>
+      <path d="M20 9C13.9 9 9 13.9 9 20s4.9 11 11 11 11-4.9 11-11S26.1 9 20 9zm0 4.5a6.5 6.5 0 110 13 6.5 6.5 0 010-13zm0 3a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" fill="white" fill-opacity=".95"/></svg>
+      <div><h1>Reporte CX · ${titulo}</h1><div class="sub">País: ${pais} · Período: ${mes} · ${new Date().toLocaleDateString('es')} · Apprecio Beat IA</div></div>
+    </div>
+    <div class="ia-label">📊 Análisis Inteligente · Apprecio Beat IA</div>
+    <div class="ia-box">${texto}</div>
+    <h3 style="font-size:14px;font-weight:700;color:#1F2937;margin-bottom:14px">Detalle de respuestas (${registros.length} registros)</h3>
+    ${items||'<p style="color:#9AA0B4">Sin comentarios cualitativos.</p>'}
+    <div style="margin-top:48px;text-align:center;font-size:11px;color:#D1D5DB;border-top:1px solid #E8EAED;padding-top:14px">
+      Apprecio · Dashboard CX · 2026 · Powered by Claude AI
+    </div></body></html>`);
+    w.document.close();
+  }catch(err){w.document.write('<body><p>Error: '+err.message+'</p></body>');w.document.close();}
+}
+
+/* ════ BUILD PROMPT GENERAL ════ */
+function buildPromptNPS(data,tipo){
+  const {raw=[]}=data;
+  const det=raw.filter(r=>parseFloat(r.puntuacion||r.respuesta1||0)<=6);
+  const pro=raw.filter(r=>parseFloat(r.puntuacion||r.respuesta1||0)>=9);
+  const neu=raw.filter(r=>{const v=parseFloat(r.puntuacion||r.respuesta1||0);return v>=7&&v<=8;});
+  const porEmp={};
+  det.forEach(r=>{
+    const emp=r.nombre_empresa||r.empresa||'Sin empresa';
+    if(!porEmp[emp])porEmp[emp]={c:0,pais:r.pais||r.pa__s||'?',razones:[]};
+    porEmp[emp].c++;
+    const com=r.razon||r.comentarios||'';
+    if(com)porEmp[emp].razones.push(com);
+  });
+  const topDet=Object.entries(porEmp).sort((a,b)=>b[1].c-a[1].c).slice(0,8)
+    .map(([e,d])=>`${e} (${d.pais}): ${d.c} detractores. Razón: "${d.razones[0]||'Sin comentario'}"`).join('\n');
+  const comentDet=det.slice(0,15).map(r=>`[${r.nombre_empresa||r.empresa||'?'} | ${r.pais||r.pa__s||'?'} | Nota:${r.puntuacion||r.respuesta1}] ${r.razon||r.comentarios||''}`).join('\n');
+  const comentPro=pro.slice(0,10).map(r=>`[${r.nombre_empresa||r.empresa||'?'} | Nota:${r.puntuacion||r.respuesta1}] ${r.razon||r.comentarios||''}`).join('\n');
+  const total=raw.length;
+  const score=total>0?Math.round(((pro.length/total)*100)-((det.length/total)*100)):0;
+
+  if(tipo==='riesgo'){
+    return `Eres Apprecio Beat IA, experto en riesgo de churn para plataformas de beneficios corporativos.
+
+DATOS NPS REALES:
+Total: ${total} | Score: ${score} | Promotores: ${pro.length} | Neutros: ${neu.length} | Detractores: ${det.length}
+
+EMPRESAS CON MÁS DETRACTORES (datos reales):
+${topDet||'Sin datos'}
+
+INSTRUCCIONES:
+- Identifica clientes con MAYOR PROBABILIDAD DE DEJAR Apprecio Beat
+- Clasifica por nivel: CRÍTICO / ALTO / MEDIO
+- Basa el análisis SOLO en los datos reales arriba
+- NO incluyas planes de acción, solo diagnóstico de riesgo
+- Máximo 250 palabras
+
+Estructura:
+⛔ CLIENTES EN RIESGO CRÍTICO DE SALIDA
+🟡 CLIENTES EN RIESGO ALTO
+📊 RESUMEN DEL RIESGO DE CARTERA`;
+  }
+
+  return `Eres Apprecio Beat IA, analista de CX para programas de beneficios corporativos en Latinoamérica.
+
+DATOS NPS REALES:
+Total respuestas: ${total}
+Score NPS: ${score}
+Promotores (9-10): ${pro.length} (${total>0?Math.round(pro.length/total*100):0}%)
+Neutros (7-8): ${neu.length} (${total>0?Math.round(neu.length/total*100):0}%)
+Detractores (0-6): ${det.length} (${total>0?Math.round(det.length/total*100):0}%)
+
+MUESTRA DETRACTORES:
+${comentDet||'Sin respuestas detractoras'}
+
+MUESTRA PROMOTORES:
+${comentPro||'Sin respuestas promotoras'}
+
+INSTRUCCIONES:
+1. NO entregues lista de respuestas completa, analiza y sintetiza
+2. Identifica los 3 CASOS QUE MÁS SE REPITEN en todo el módulo
+3. Detecta qué dicen los detractores vs promotores
+4. Señala empresas con comportamiento más crítico
+5. Máximo 280 palabras, tono ejecutivo
+
+Estructura obligatoria:
+📊 CASOS MÁS FRECUENTES
+🚨 PATRONES DETRACTORES
+⭐ LO QUE VALORAN LOS PROMOTORES
+⚠️ EMPRESAS CON MAYOR RIESGO`;
+}
+
+function buildPromptCSAT(data,tipo){
+  const {abonoRaw=[],reunionRaw=[]}=data;
+  const todos=[...abonoRaw,...reunionRaw];
+  const det=todos.filter(r=>parseFloat(r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||r.puntuacion||0)<=6);
+  const pro=todos.filter(r=>parseFloat(r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||r.puntuacion||0)>=9);
+  const neu=todos.filter(r=>{const v=parseFloat(r.___qu___tan_satisfecho_a_est___s_con_el_uso_de_la_plataforma___escala_del_1_al_10_||r.puntuacion||0);return v>=7&&v<=8;});
+  const comentarios=todos.map(r=>r.___qu___fue_lo_m___s_f___cil_del_proceso_y_qu___podr___amos_mejorar_||r.que_fue_lo_mas_facil||'').filter(Boolean);
+  const total=todos.length;
+
+  if(tipo==='riesgo'){
+    const porEmp={};
+    det.forEach(r=>{
+      const emp=r.nombre_de_la_empresa||r.empresa||'Sin empresa';
+      if(!porEmp[emp])porEmp[emp]={c:0,razones:[],pais:r.pa__s||r.pais||'?'};
+      porEmp[emp].c++;
+      const com=r.___qu___fue_lo_m___s_f___cil_del_proceso_y_qu___podr___amos_mejorar_||r.que_fue_lo_mas_facil||'';
+      if(com)porEmp[emp].razones.push(com);
+    });
+    const topDet=Object.entries(porEmp).sort((a,b)=>b[1].c-a[1].c).slice(0,6)
+      .map(([e,d])=>`${e}: ${d.c} detractores. Queja: "${d.razones[0]||'Sin comentario'}"`).join('\n');
+    return `Eres Apprecio Beat IA, experto en riesgo de churn para plataformas de beneficios.
+
+DATOS CSAT REALES (Post Abono + Post Reunión):
+Total: ${total} | Promotores: ${pro.length} | Neutros: ${neu.length} | Detractores: ${det.length}
+
+EMPRESAS CON MÁS DETRACTORES:
+${topDet||'Sin datos'}
+
+Identifica clientes en riesgo de dejar Apprecio Beat. Clasifica: CRÍTICO / ALTO / MEDIO.
+Solo diagnóstico, sin planes de acción. Máximo 200 palabras.
+
+Estructura:
+⛔ CLIENTES EN RIESGO CRÍTICO
+🟡 RIESGO ALTO
+📊 RESUMEN`;
+  }
+
+  return `Eres Apprecio Beat IA, analista CX para programas de beneficios corporativos.
+
+DATOS CSAT REALES:
+Total: ${total}
+Satisfechos (9-10): ${pro.length} (${total>0?Math.round(pro.length/total*100):0}%)
+Neutros (7-8): ${neu.length} (${total>0?Math.round(neu.length/total*100):0}%)
+Insatisfechos (0-6): ${det.length} (${total>0?Math.round(det.length/total*100):0}%)
+
+COMENTARIOS REALES (muestra):
+${comentarios.slice(0,15).map((c,i)=>`${i+1}. "${c}"`).join('\n')||'Sin comentarios'}
+
+INSTRUCCIONES: Identifica los 3 casos que más se repiten. Segmenta promotores/neutros/detractores. Máximo 260 palabras.
+
+Estructura:
+📊 CASOS MÁS FRECUENTES
+🚨 PATRONES DETRACTORES
+⭐ LO QUE VALORAN LOS PROMOTORES
+⚠️ SEÑALES DE RIESGO`;
+}
+
+/* ════ MÓDULO NPS ════ */
+function ModNPS({data,onExportPDF}){
+  const {hoja1=[],historico=[]}=data;
+  const [p1P,setP1P]=useState('Todos',[p1P]);
+  const [p1M,setP1M]=useState('Todos',[p1M]);
+  const [p2P,setP2P]=useState('Todos',[p2P]);
+  const [p2M,setP2M]=useState('Todos',[p2M]);
+  const [hP,setHP]=useState('Todos',[hP]);
+  const [hA,setHA]=useState('Todos',[hA]);
+
+  // Detectar campos reales del sheet NPS Histórico
+  // Columnas: Email, Nombre, Apellido, Nombre Empresa, Fecha, KAM, nombre KAM, Respuesta 1
+  const paises=useMemo(()=>{
+    const s=new Set();
+    hoja1.forEach(r=>{if(r.pa__s||r.pais)s.add(r.pa__s||r.pais);});
+    historico.forEach(r=>{if(r.pa__s||r.pais)s.add(r.pa__s||r.pais);});
+    return ['Todos',...Array.from(s).sort()];
+  },[hoja1,historico]);
+
+  // Meses desde fechas reales
+  const meses=useMemo(()=>{
+    const s=new Set();
+    const parseMes=fecha=>{
+      if(!fecha) return null;
+      try{const d=new Date(fecha);if(isNaN(d)) return null;return d.toLocaleString('es',{month:'long',year:'numeric'});}catch{return null;}
+    };
+    hoja1.forEach(r=>{const m=parseMes(r.fecha);if(m)s.add(m);});
+    historico.forEach(r=>{const m=parseMes(r.fecha);if(m)s.add(m);});
+    return ['Todos',...Array.from(s).sort()];
+  },[hoja1,historico]);
+
+  const anios=useMemo(()=>{
+    const s=new Set();
+    historico.forEach(r=>{
+      if(r.fecha){try{const d=new Date(r.fecha);if(!isNaN(d))s.add(String(d.getFullYear()));}catch{}}
+    });
+    return s.size>0?Array.from(s).sort():['2026'];
+  },[historico]);
+
+  // Filtrar hoja1 (P1: satisfaccion column, comentarios)
+  const f1=useMemo(()=>hoja1.filter(r=>{
+    const pok=p1P==='Todos'||(r.pa__s||r.pais)===p1P;
+    const mok=p1M==='Todos'||!r.fecha||new Date(r.fecha).toLocaleString('es',{month:'long',year:'numeric'})===p1M;
+    return pok&&mok&&(r.satisfaccion||r.nota||r.puntuacion||'').trim()!=='';
+  }),[hoja1,p1P,p1M]);
+
+  // Filtrar histórico (P2: respuesta 1)
+  const f2=useMemo(()=>historico.filter(r=>{
+    const pok=p2P==='Todos'||(r.pa__s||r.pais)===p2P;
+    const mok=p2M==='Todos'||!r.fecha||new Date(r.fecha).toLocaleString('es',{month:'long',year:'numeric'})===p2M;
+    return pok&&mok&&r.respuesta_1!==undefined&&r.respuesta_1!=='';
+  }),[historico,p2P,p2M]);
+
+  const calcNPS=(arr,campo)=>{
+    const total=arr.length;if(!total) return{total:0,p:0,n:0,d:0,score:0,avg:'—',pPorc:0};
+    let pr=0,ne=0,de=0,s=0;
+    arr.forEach(r=>{
+      const v=parseFloat(r[campo]||0);
+      if(!isNaN(v)&&v>0){s+=v;if(v>=9)pr++;else if(v>=7)ne++;else de++;}
+    });
+    const tot2=pr+ne+de||1;
+    return{total,p:pr,n:ne,d:de,score:Math.round(((pr/tot2)*100)-((de/tot2)*100)),avg:(s/(pr+ne+de||1)).toFixed(1),pPorc:((pr/(pr+ne+de||1))*100).toFixed(0)};
   };
 
-  const f1 = useMemo(() => abonoRaw.filter(r => (c1P === 'Todos' || r.pais === c1P) && (c1M === 'Todos' || r.mes === c1M)), [abonoRaw, c1P, c1M]);
-  const f2 = useMemo(() => reunionRaw.filter(r => (c2P === 'Todos' || r.pais === c2P) && (c2M === 'Todos' || r.mes === c2M)), [reunionRaw, c2P, c2M]);
-  const m1 = useMemo(() => calcCSAT(f1), [f1]);
-  const m2 = useMemo(() => calcCSAT(f2), [f2]);
+  const m1=useMemo(()=>calcNPS(f1,'satisfaccion'),[f1]);
+  const m2=useMemo(()=>calcNPS(f2,'respuesta_1'),[f2]);
 
-  const hA = useMemo(() => {
-    const q = {}; abonoRaw.forEach(r => { if (r.mes) { const k = r.mes === 'Mayo' ? 'Q2' : 'Q3'; if (!q[k]) q[k] = []; q[k].push(r) } });
-    return Object.keys(q).map(k => { let s = 0; q[k].forEach(r => s += parseFloat(r.puntuacion || 9)); return { q: k, score: +(s / q[k].length).toFixed(1) } });
-  }, [abonoRaw]);
+  // Tendencia histórica por KAM / mes
+  const linea=useMemo(()=>{
+    const fh=historico.filter(r=>{
+      const pok=hP==='Todos'||(r.pa__s||r.pais)===hP;
+      const aok=hA==='Todos'||!r.fecha||String(new Date(r.fecha).getFullYear())===hA;
+      return pok&&aok&&r.respuesta_1!==undefined&&r.respuesta_1!=='';
+    });
+    const qs={};
+    fh.forEach(r=>{
+      if(!r.fecha) return;
+      try{
+        const d=new Date(r.fecha);
+        if(isNaN(d)) return;
+        const k=d.toLocaleString('es',{month:'short',year:'2-digit'});
+        if(!qs[k]) qs[k]={pr:0,de:0,tot:0,fecha:d};
+        const v=parseFloat(r.respuesta_1||0);
+        if(!isNaN(v)&&v>0){qs[k].tot++;if(v>=9)qs[k].pr++;else if(v<7)qs[k].de++;}
+      }catch{}
+    });
+    return Object.entries(qs).sort((a,b)=>a[1].fecha-b[1].fecha)
+      .map(([q,d])=>({q,score:d.tot?Math.round(((d.pr/d.tot)*100)-((d.de/d.tot)*100)):0}));
+  },[historico,hP,hA]);
 
-  const hR = useMemo(() => {
-    const q = {}; reunionRaw.forEach(r => { if (r.mes) { const k = r.mes === 'Mayo' ? 'Q2' : 'Q3'; if (!q[k]) q[k] = []; q[k].push(r) } });
-    return Object.keys(q).map(k => { let s = 0; q[k].forEach(r => s += parseFloat(r.puntuacion || 5)); return { q: k, score: +(s / q[k].length).toFixed(1) } });
-  }, [reunionRaw]);
+  const criticos=useMemo(()=>historico.filter(r=>{
+    const v=parseFloat(r.respuesta_1||0);return!isNaN(v)&&v>0&&v<=6;
+  }).sort((a,b)=>parseFloat(a.respuesta_1||10)-parseFloat(b.respuesta_1||10)),[historico]);
 
-  const criticos = useMemo(() => [...abonoRaw, ...reunionRaw].filter(r => { const v = parseFloat(r.puntuacion); return !isNaN(v) && v <= 3 }), [abonoRaw, reunionRaw]);
+  // Normalizar para panel IA
+  const rawParaIA=useMemo(()=>[
+    ...f1.map(r=>({puntuacion:r.satisfaccion,razon:r.comentarios,empresa:r.empresa,pais:r.pa__s||r.pais})),
+    ...f2.map(r=>({puntuacion:r.respuesta_1,razon:r.nombre_empresa||r.nombre,empresa:r.nombre_empresa||r.nombre,pais:r.pa__s||r.pais}))
+  ],[f1,f2]);
 
-  const secHeader = (titulo, sub) => e('div', { style: { background: '#FFF5F7', border: '1px solid #FBC9D4', borderRadius: 12, padding: '11px 16px' } },
-    e('p', { style: { fontSize: 11, fontWeight: 700, color: BRAND, textTransform: 'uppercase', letterSpacing: .5, margin: 0 } }, titulo),
-    e('p', { style: { fontSize: 11, color: '#9AA0B4', margin: '2px 0 0' } }, sub)
-  );
-
-  return e('div', { style: { display: 'flex', flexDirection: 'column', gap: 20 } },
-    secHeader('Sección 1 · CSAT Post Abono Trimestral', 'Evaluación gatillada tras confirmación de abonos en la plataforma financiera'),
-    e(BloqueEspejo, { id: 'csat1', titulo: '¿Qué tan satisfecho(a) estás con el uso de la plataforma para la gestión de tus abonos trimestrales?', total: m1.total, p: m1.p, n: m1.n, d: m1.d, score: m1.score, avg: m1.avg, pPorc: m1.pPorc, paises: listP, meses: listM, filtroPais: c1P, setFP: setC1P, filtroMes: c1M, setFM: setC1M, labelScore: 'Satisfacción', filtrados: f1 }),
-    secHeader('Sección 2 · CSAT Post Reunión Comercial', 'Medición de calidad del servicio consultivo al cierre de mesas de trabajo'),
-    e(BloqueEspejo, { id: 'csat2', titulo: '¿El ejecutivo comercial resolvió de forma clara y oportuna tus requerimientos en la reunión de cuenta?', total: m2.total, p: m2.p, n: m2.n, d: m2.d, score: m2.score, avg: m2.avg, pPorc: m2.pPorc, paises: listP, meses: listM, filtroPais: c2P, setFP: setC2P, filtroMes: c2M, setFM: setC2M, labelScore: 'Satisfacción', filtrados: f2 }),
-    e('div', { className: 'card', style: { padding: 24 } },
-      e('h3', { style: { fontSize: 13, fontWeight: 700, color: '#1F2937', marginBottom: 16 } }, '📊 Tendencia CSAT Comparativa (Líneas)'),
-      e(ChartDobleLinea, { datosA: hA, datosR: hR })
+  return e('div',{style:{display:'flex',flexDirection:'column',gap:24}},
+    e(PanelIA,{
+      titulo:'Apprecio Beat IA · Análisis NPS',
+      descripcion:'Analiza casos frecuentes, segmentación y riesgo de churn con datos reales',
+      buildPrompt:buildPromptNPS,
+      data:{raw:rawParaIA}
+    }),
+    e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}},
+      e(BloqueEspejo,{
+        id:'nps1',
+        titulo:'Satisfacción del cliente · Apprecio App (Hoja 1)',
+        ...m1,paises,meses,filtroPais:p1P,setFP:setP1P,filtroMes:p1M,setFM:setP1M,
+        labelScore:'Satisfacción',filtrados:f1,onExportPDF:exportarPDFconIA
+      }),
+      e(BloqueEspejo,{
+        id:'nps2',
+        titulo:'NPS · Respuesta 1 del Histórico de Encuestas',
+        ...m2,paises,meses,filtroPais:p2P,setFP:setP2P,filtroMes:p2M,setFM:setP2M,
+        labelScore:'NPS Score',filtrados:f2,onExportPDF:exportarPDFconIA
+      })
     ),
-    criticos.length > 0 && e('div', { className: 'card', style: { padding: 24 } },
-      e('h3', { style: { fontSize: 13, fontWeight: 700, color: DANGER, marginBottom: 12 } }, '⚠️ Alertas Críticas CSAT'),
-      e('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
-        criticos.map((c, i) => e('div', { key: i, style: { display: 'flex', justifyContent: 'space-between', padding: '10px 14px', borderRadius: 10, border: '1px solid #FEE2E2', background: '#FFFBFB' } },
-          e('div', {}, e('p', { style: { fontWeight: 700, fontSize: 12, margin: 0 } }, c.cliente || 'Empresa'), e('p', { style: { fontSize: 11, color: '#9AA0B4', margin: '2px 0 0', fontStyle: 'italic' } }, c.comentario || '—')),
-          e('span', { className: 'badge', style: { background: DANGER, color: 'white' } }, `${c.puntuacion}`)
+    e('div',{className:'card',style:{padding:24,display:'flex',gap:24,flexWrap:'wrap'}},
+      e('div',{style:{flex:'0 0 60%',minWidth:280}},
+        e('h3',{style:{fontSize:13,fontWeight:700,color:'#1F2937',marginBottom:16}},'📈 Evolución NPS por Mes (datos reales)'),
+        linea.length===0
+          ?e('div',{style:{height:220,display:'flex',alignItems:'center',justifyContent:'center',color:'#D1D5DB',fontSize:12}},'Sin datos históricos')
+          :e(ChartLinea,{id:'nps_linea',datos:linea,color:BRAND,minY:-100,maxY:100})
+      ),
+      e('div',{style:{flex:1,display:'flex',flexDirection:'column',gap:14,minWidth:180}},
+        e('p',{style:{fontSize:11,fontWeight:700,color:'#9AA0B4',textTransform:'uppercase',letterSpacing:.5}},'Filtros de tendencia'),
+        e('div',{},
+          e('label',{style:{fontSize:11,color:'#9AA0B4',fontWeight:600,display:'block',marginBottom:4}},'País'),
+          e('select',{value:hP,onChange:ev=>setHP(ev.target.value),style:{width:'100%',fontSize:12,fontWeight:600,background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'7px 10px'}},
+            paises.map(p=>e('option',{key:p,value:p},p)))
+        ),
+        e('div',{},
+          e('label',{style:{fontSize:11,color:'#9AA0B4',fontWeight:600,display:'block',marginBottom:4}},'Año'),
+          e('select',{value:hA,onChange:ev=>setHA(ev.target.value),style:{width:'100%',fontSize:12,fontWeight:600,background:'#F9FAFB',border:'1px solid #E5E7EB',borderRadius:8,padding:'7px 10px'}},
+            ['Todos',...anios].map(a=>e('option',{key:a,value:a},a)))
+        )
+      )
+    ),
+    e('div',{className:'card',style:{padding:24}},
+      e('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}},
+        e('h3',{style:{fontSize:13,fontWeight:700,color:DANGER,display:'flex',alignItems:'center',gap:8}},
+          e('i',{className:'fa-solid fa-triangle-exclamation'}),' Radar de Alertas · Detractores NPS (datos reales)'),
+        e('span',{className:'badge',style:{background:'#FEF2F2',color:DANGER}},`${criticos.length} casos`)
+      ),
+      criticos.length===0
+        ?e('p',{style:{color:SUCCESS,fontWeight:600,fontSize:13,textAlign:'center',padding:'12px 0'}},'✅ Sin detractores en el período')
+        :e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+          criticos.slice(0,10).map((c,i)=>
+            e('div',{key:i,style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'11px 16px',borderRadius:10,border:'1px solid #FEE2E2',background:'#FFFBFB',gap:12}},
+              e('div',{},
+                e('p',{style:{fontWeight:700,fontSize:12,color:'#1F2937',margin:0}},
+                  (c.nombre||'')+' '+(c.apellido||'')+' - '+(c.nombre_empresa||c.nombre_kam||'—'),
+                  e('span',{style:{fontWeight:400,color:'#9AA0B4'}},' · '+(c.pais||c.pa__s||'—')+' · '+
+                    (c.fecha?new Date(c.fecha).toLocaleDateString('es'):'—'))
+                ),
+                e('p',{style:{fontSize:11,color:'#9AA0B4',margin:'2px 0 0',fontStyle:'italic'}},
+                  'KAM: '+(c.nombre_kam||c.kam||'—'))
+              ),
+              e('span',{className:'badge',style:{background:DANGER,color:'white',flexShrink:0}},'Nota: '+(c.respuesta_1||'—'))
+            )
+          )
+        )
+    )
+  );
+}
+
+/* ════ MÓDULO CSAT ════ */
+function ModCSAT({data,onExportPDF}){
+  const {csatRespuestas=[],csatConsulta=[]}=data;
+  const [c1P,setC1P]=useState('Todos',[c1P]);
+  const [c1M,setC1M]=useState('Todos',[c1M]);
+
+  // Columnas reales sheet respuestas_encuestas:
+  // Fecha_Envio, Mes_envio, empresa_id, País, Nombre de la empresa, correo_enviado, Link_utilizado,
+  // Trimestre_Año, ¿Qué tan satisfecho(a)...? (col 8), ¿Qué fue lo más fácil? (col 9), Estado
+
+  const paises=useMemo(()=>{
+    const s=new Set();
+    csatRespuestas.forEach(r=>{if(r.pa__s||r.pais||r.pa_s)s.add(r.pa__s||r.pais||r.pa_s);});
+    return ['Todos',...Array.from(s).sort()];
+  },[csatRespuestas]);
+
+  const meses=useMemo(()=>{
+    const s=new Set();
+    csatRespuestas.forEach(r=>{if(r.mes_envio)s.add(r.mes_envio);});
+    return ['Todos',...Array.from(s).sort()];
+  },[csatRespuestas]);
+
+  const getCampoNota=r=>{
+    // Buscar la columna de puntuación (cualquier variante)
+    const keys=Object.keys(r);
+    const k=keys.find(k=>k.includes('satisfecho')||k.includes('satisfech')||k.includes('escala')||k==='nota'||k==='puntuacion'||k==='satisfaccion');
+    return k?r[k]:'';
+  };
+
+  const getCampoComentario=r=>{
+    const keys=Object.keys(r);
+    const k=keys.find(k=>k.includes('f___cil')||k.includes('facil')||k.includes('mejorar')||k.includes('comentar')||k.includes('proceso'));
+    return k?r[k]:'';
+  };
+
+  const f1=useMemo(()=>csatRespuestas.filter(r=>{
+    const pok=c1P==='Todos'||(r.pa__s||r.pais||r.pa_s)===c1P;
+    const mok=c1M==='Todos'||r.mes_envio===c1M;
+    const nota=getCampoNota(r);
+    return pok&&mok&&nota!=='';
+  }),[csatRespuestas,c1P,c1M]);
+
+  const calcCSAT=(arr)=>{
+    const total=arr.length;if(!total) return{total:0,p:0,n:0,d:0,score:0,avg:'—',pPorc:0};
+    let a=0,m=0,b=0,s=0;
+    arr.forEach(r=>{
+      const v=parseFloat(getCampoNota(r)||0);
+      if(!isNaN(v)&&v>0){s+=v;if(v>=9)a++;else if(v>=7)m++;else b++;}
+    });
+    const tot2=a+m+b||1;
+    return{total,p:a,n:m,d:b,score:Math.round((a/tot2)*100),avg:(s/(tot2)).toFixed(1),pPorc:((a/tot2)*100).toFixed(0)};
+  };
+
+  const m1=useMemo(()=>calcCSAT(f1),[f1]);
+
+  // Tendencia CSAT por mes
+  const hA=useMemo(()=>{
+    const qs={};
+    f1.forEach(r=>{
+      const k=r.mes_envio||r.trimestre___a__o||'Sin mes';
+      if(!qs[k])qs[k]=[];
+      qs[k].push(r);
+    });
+    return Object.keys(qs).map(k=>{
+      let s=0,c=0;
+      qs[k].forEach(r=>{const v=parseFloat(getCampoNota(r)||0);if(!isNaN(v)&&v>0){s+=v;c++;}});
+      return{q:k,score:c>0?parseFloat((s/c).toFixed(1)):0};
+    });
+  },[f1]);
+
+  const criticos=useMemo(()=>f1.filter(r=>{
+    const v=parseFloat(getCampoNota(r)||0);return!isNaN(v)&&v>0&&v<=6;
+  }),[f1]);
+
+  // Normalizar para IA
+  const rawParaIA=useMemo(()=>f1.map(r=>({
+    puntuacion:getCampoNota(r),
+    comentario:getCampoComentario(r),
+    empresa:r.nombre_de_la_empresa||r.empresa||'—',
+    pais:r.pa__s||r.pais||r.pa_s||'—'
+  })),[f1]);
+
+  // Estado de links de consulta_abono
+  const statsConsulta=useMemo(()=>{
+    const estados={};
+    csatConsulta.forEach(r=>{
+      const est=r.estado_de_link||r.estado||'';
+      if(est)estados[est]=(estados[est]||0)+1;
+    });
+    return estados;
+  },[csatConsulta]);
+
+  return e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
+    e(PanelIA,{
+      titulo:'Apprecio Beat IA · CSAT Post Abono',
+      descripcion:'Análisis de satisfacción con datos reales de encuestas post-abono',
+      buildPrompt:(d,t)=>buildPromptCSAT({abonoRaw:rawParaIA,reunionRaw:[]},t),
+      data:{abonoRaw:rawParaIA,reunionRaw:[]}
+    }),
+    e('div',{style:{background:'#FFF5F7',border:'1px solid #FBC9D4',borderRadius:12,padding:'11px 16px'}},
+      e('p',{style:{fontSize:11,fontWeight:700,color:BRAND,textTransform:'uppercase',letterSpacing:.5,margin:0}},'CSAT Post Abono · Encuestas reales'),
+      e('p',{style:{fontSize:11,color:'#9AA0B4',margin:'2px 0 0'}},`${csatRespuestas.length} respuestas totales · Estado de envíos: `+Object.entries(statsConsulta).map(([k,v])=>`${k}: ${v}`).join(' | '))
+    ),
+    e(BloqueEspejo,{
+      id:'csat1',
+      titulo:'¿Qué tan satisfecho(a) estás con el uso de la plataforma? (Escala 1-10)',
+      ...m1,paises,meses,filtroPais:c1P,setFP:setC1P,filtroMes:c1M,setFM:setC1M,
+      labelScore:'Satisfacción',filtrados:f1,onExportPDF:exportarPDFconIA
+    }),
+    e('div',{className:'card',style:{padding:24}},
+      e('h3',{style:{fontSize:13,fontWeight:700,color:'#1F2937',marginBottom:16}},'📊 Tendencia CSAT por Mes (datos reales)'),
+      hA.length===0
+        ?e('div',{style:{height:220,display:'flex',alignItems:'center',justifyContent:'center',color:'#D1D5DB',fontSize:12}},'Sin datos')
+        :e(ChartLinea,{id:'csat_linea',datos:hA,color:INFO,minY:1,maxY:10})
+    ),
+    criticos.length>0&&e('div',{className:'card',style:{padding:24}},
+      e('h3',{style:{fontSize:13,fontWeight:700,color:DANGER,marginBottom:12}},'⚠️ Respuestas Críticas CSAT (nota ≤ 6)'),
+      e('div',{style:{display:'flex',flexDirection:'column',gap:8}},
+        criticos.slice(0,10).map((c,i)=>e('div',{key:i,style:{display:'flex',justifyContent:'space-between',padding:'10px 14px',borderRadius:10,border:'1px solid #FEE2E2',background:'#FFFBFB',gap:12}},
+          e('div',{style:{flex:1}},
+            e('p',{style:{fontWeight:700,fontSize:12,margin:0}},c.nombre_de_la_empresa||c.empresa||'Empresa',
+              e('span',{style:{fontWeight:400,color:'#9AA0B4'}},' · '+(c.pa__s||c.pais||c.pa_s||'—')+' · '+(c.mes_envio||'—'))
+            ),
+            e('p',{style:{fontSize:11,color:'#9AA0B4',margin:'2px 0 0',fontStyle:'italic'}},getCampoComentario(c)||'Sin comentario')
+          ),
+          e('span',{className:'badge',style:{background:DANGER,color:'white',flexShrink:0}},getCampoNota(c))
         ))
       )
-    ),
-    e(PanelIA, { data: { nps: [], csat_abono: abonoRaw, csat_reunion: reunionRaw }, tab: 1 })
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   TAB PLACEHOLDER
-   ════════════════════════════════════════════════════════════ */
-function TabPlaceholder({ icono, titulo }) {
-  return e('div', { className: 'card', style: { padding: 60, textAlign: 'center' } },
-    e('i', { className: `fa-solid ${icono}`, style: { fontSize: 38, color: BRAND, display: 'block', marginBottom: 16 } }),
-    e('h2', { style: { fontSize: 16, fontWeight: 700, color: '#1F2937', marginBottom: 8 } }, titulo),
-    e('p', { style: { color: '#9AA0B4', fontSize: 13 } }, 'Módulo en desarrollo')
-  );
-}
-
-/* ════════════════════════════════════════════════════════════
-   APP PRINCIPAL
-   ════════════════════════════════════════════════════════════ */
-function App() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [tab, setTab] = useState(0);
-
-  const load = useCallback(() => {
-    setLoading(true); setError(null);
-    fetch(CONFIG.API_BACKEND)
-      .then(r => { if (!r.ok) throw new Error('Error del servidor'); return r.json() })
-      .then(d => { if (!d || typeof d !== 'object') throw new Error('Respuesta inválida'); setData(d); setLoading(false) })
-      .catch(err => { setError(err.message); setLoading(false) });
-  }, []);
-
-  useEffect(() => { load() }, []);
-
-  const tabs = [
-    { label: 'NPS', icon: 'fa-chart-line' },
-    { label: 'CSAT', icon: 'fa-star' },
-    { label: 'Inactivos', icon: 'fa-user-clock' },
-    { label: 'Offboarding', icon: 'fa-right-from-bracket' }
-  ];
-
-  return e('div', { style: { minHeight: '100vh', background: '#F2F4F7', fontFamily: "'DM Sans', sans-serif" } },
-
-    /* ── HEADER ── */
-    e('header', { style: { background: '#fff', borderBottom: '1px solid #E8EAED', position: 'sticky', top: 0, zIndex: 30, padding: '0 32px' } },
-      e('div', { style: { maxWidth: 1280, margin: '0 auto' } },
-        e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 66 } },
-          /* Logo + título */
-          e('div', { style: { display: 'flex', alignItems: 'center', gap: 12 } },
-            e(Logo, { size: 36 }),
-            e('div', {},
-              e('h1', { style: { fontSize: 15, fontWeight: 800, color: '#1F2937', margin: 0, letterSpacing: '-.3px' } }, 'Experiencia del Cliente'),
-              e('p', { style: { fontSize: 11, color: '#9AA0B4', margin: 0, fontWeight: 500 } }, 'Dashboard CX · Apprecio 2026')
-            )
-          ),
-          /* Estado + botón refresh */
-          e('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
-            e('div', { style: { display: 'flex', alignItems: 'center', gap: 6, background: '#F0FDF4', borderRadius: 8, padding: '5px 12px', border: '1px solid #BBF7D0' } },
-              e('div', { style: { width: 6, height: 6, borderRadius: '50%', background: SUCCESS } }),
-              e('span', { style: { fontSize: 11, fontWeight: 700, color: '#065F46' } }, 'En vivo')
-            ),
-            e('button', {
-              className: 'btn-ghost',
-              onClick: load,
-              disabled: loading,
-              style: { width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }
-            }, e('i', { className: `fa-solid fa-rotate-right${loading ? ' fa-spin' : ''}`, style: { fontSize: 13, color: '#6B7280' } }))
-          )
-        ),
-        /* Tabs */
-        e('div', { style: { display: 'flex', gap: 28, marginBottom: -1 } },
-          tabs.map(({ label, icon }, i) =>
-            e('button', {
-              key: i,
-              onClick: () => setTab(i),
-              className: `tab-btn${tab === i ? ' active' : ''}`,
-              style: { fontSize: 12, fontWeight: tab === i ? 700 : 600, color: tab === i ? BRAND : '#9AA0B4', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }
-            },
-              e('i', { className: `fa-solid ${icon}`, style: { fontSize: 11 } }),
-              label
-            )
-          )
-        )
-      )
-    ),
-
-    /* ── MAIN ── */
-    e('main', { style: { maxWidth: 1280, margin: '0 auto', padding: '28px 32px' } },
-      /* Skeleton */
-      loading && e('div', { style: { display: 'flex', flexDirection: 'column', gap: 20 } },
-        e('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 } },
-          e('div', { className: 'skeleton', style: { height: 320 } }),
-          e('div', { className: 'skeleton', style: { height: 320 } })
-        ),
-        e('div', { className: 'skeleton', style: { height: 240 } }),
-        e('div', { className: 'skeleton', style: { height: 160 } })
-      ),
-      /* Error */
-      !loading && error && e('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 0', gap: 16 } },
-        e('div', { style: { width: 60, height: 60, borderRadius: 16, background: '#FEF2F2', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
-          e('i', { className: 'fa-solid fa-triangle-exclamation', style: { fontSize: 26, color: DANGER } })
-        ),
-        e('p', { style: { fontWeight: 700, fontSize: 15, color: '#1F2937' } }, error),
-        e('button', { className: 'btn-primary', onClick: load, style: { padding: '10px 26px', fontSize: 13 } }, 'Reintentar')
-      ),
-      /* Contenido */
-      !loading && !error && data && e('div', {},
-        tab === 0 && e(ModNPS, { raw: Array.isArray(data.nps) ? data.nps : [], data }),
-        tab === 1 && e(ModCSAT, { abonoRaw: Array.isArray(data.csat_abono) ? data.csat_abono : [], reunionRaw: Array.isArray(data.csat_reunion) ? data.csat_reunion : [], data }),
-        tab === 2 && e(TabPlaceholder, { icono: 'fa-user-clock', titulo: 'Análisis de Clientes Inactivos' }),
-        tab === 3 && e(TabPlaceholder, { icono: 'fa-right-from-bracket', titulo: 'Registro de Procesos de Offboarding' })
-      )
-    ),
-
-    /* ── FOOTER ── */
-    e('footer', { style: { textAlign: 'center', padding: '22px 0', fontSize: 11, color: '#D1D5DB', borderTop: '1px solid #E8EAED', background: '#fff', marginTop: 40 } },
-      'Apprecio · Dashboard Experiencia del Cliente · 2026'
     )
   );
 }
 
-ReactDOM.render(e(App), document.getElementById('root'));
+/* ════ TAB PLACEHOLDER ════ */
+function TabPlaceholder({icono,titulo}){
+  return e('div',{className:'card',style:{padding:60,textAlign:'center'}},
+    e('i',{className:`fa-solid ${icono}`,style:{fontSize:38,color:BRAND,display:'block',marginBottom:16}}),
+    e('h2',{style:{fontSize:16,fontWeight:700,color:'#1F2937',marginBottom:8}},titulo),
+    e('p',{style:{color:'#9AA0B4',fontSize:13}},'Módulo en desarrollo')
+  );
+}
+
+/* ════ APP ════ */
+function App(){
+  const [data,setData]=useState(null);
+  const [loading,setLoading]=useState(true);
+  const [error,setError]=useState(null);
+  const [tab,setTab]=useState(0);
+
+  const load=useCallback(async()=>{
+    setLoading(true);setError(null);
+    try{
+      const [hoja1,historico,csatRespuestas,csatConsulta]=await Promise.all([
+        fetchCSV(CONFIG.SHEETS.NPS_HOJA1),
+        fetchCSV(CONFIG.SHEETS.NPS_HISTORICO),
+        fetchCSV(CONFIG.SHEETS.CSAT_RESPUESTAS),
+        fetchCSV(CONFIG.SHEETS.CSAT_CONSULTA)
+      ]);
+      setData({hoja1,historico,csatRespuestas,csatConsulta});
+    }catch(err){setError(err.message);}
+    finally{setLoading(false);}
+  },[]);
+
+  useEffect(()=>{load();},[]);
+
+  const tabs=[
+    {label:'NPS',icon:'fa-chart-line'},
+    {label:'CSAT Post Abono',icon:'fa-star'},
+    {label:'Inactivos',icon:'fa-user-clock'},
+    {label:'Offboarding',icon:'fa-right-from-bracket'}
+  ];
+
+  return e('div',{style:{minHeight:'100vh',background:'#F2F4F7',fontFamily:''DM Sans', sans-serif'}},
+    e('style',null,'@keyframes spin{to{transform:rotate(360deg)}}'),
+    e('header',{style:{background:'#fff',borderBottom:'1px solid #E8EAED',position:'sticky',top:0,zIndex:30,padding:'0 32px'}},
+      e('div',{style:{maxWidth:1280,margin:'0 auto'}},
+        e('div',{style:{display:'flex',alignItems:'center',justifyContent:'space-between',height:66}},
+          e('div',{style:{display:'flex',alignItems:'center',gap:12}},
+            e(Logo,{size:36}),
+            e('div',{},
+              e('h1',{style:{fontSize:15,fontWeight:800,color:'#1F2937',margin:0,letterSpacing:'-.3px'}},'Experiencia del Cliente'),
+              e('p',{style:{fontSize:11,color:'#9AA0B4',margin:0,fontWeight:500}},'Dashboard CX · Apprecio Beat 2026')
+            )
+          ),
+          e('div',{style:{display:'flex',alignItems:'center',gap:10}},
+            !loading&&data&&e('div',{style:{display:'flex',alignItems:'center',gap:6,background:'#F0FDF4',borderRadius:8,padding:'5px 12px',border:'1px solid #BBF7D0'}},
+              e('div',{style:{width:6,height:6,borderRadius:'50%',background:'#10B981'}}),
+              e('span',{style:{fontSize:11,fontWeight:700,color:'#065F46'}},
+                `Datos reales · ${(data.historico||[]).length} enc. NPS · ${(data.csatRespuestas||[]).length} enc. CSAT`)
+            ),
+            loading&&e('div',{style:{display:'flex',alignItems:'center',gap:6,background:'#F0F9FF',borderRadius:8,padding:'5px 12px',border:'1px solid #BAE6FD'}},
+              e('div',{style:{width:6,height:6,borderRadius:'50%',background:'#0EA5E9'}}),
+              e('span',{style:{fontSize:11,fontWeight:700,color:'#0C4A6E'}},'Cargando datos...')
+            ),
+            e('button',{className:'btn-ghost',onClick:load,disabled:loading,style:{width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center',padding:0}},
+              e('i',{className:`fa-solid fa-rotate-right${loading?' fa-spin':''}`,style:{fontSize:13,color:'#6B7280'}}))
+          )
+        ),
+        e('div',{style:{display:'flex',gap:28,marginBottom:-1}},
+          tabs.map(({label,icon},i)=>
+            e('button',{key:i,onClick:()=>setTab(i),className:`tab-btn${tab===i?' active':''}`,
+              style:{fontSize:12,fontWeight:tab===i?700:600,color:tab===i?BRAND:'#9AA0B4',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap'}},
+              e('i',{className:`fa-solid ${icon}`,style:{fontSize:11}}),' ',label))
+        )
+      )
+    ),
+    e('main',{style:{maxWidth:1280,margin:'0 auto',padding:'28px 32px'}},
+      loading&&e('div',{style:{display:'flex',flexDirection:'column',gap:20}},
+        e('div',{className:'skeleton',style:{height:90}}),
+        e('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}},
+          e('div',{className:'skeleton',style:{height:300}}),
+          e('div',{className:'skeleton',style:{height:300}})
+        ),
+        e('div',{className:'skeleton',style:{height:260}}),
+        e('div',{className:'skeleton',style:{height:180}})
+      ),
+      !loading&&error&&e('div',{style:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'80px 0',gap:16}},
+        e('div',{style:{width:60,height:60,borderRadius:16,background:'#FEF2F2',display:'flex',alignItems:'center',justifyContent:'center'}},
+          e('i',{className:'fa-solid fa-triangle-exclamation',style:{fontSize:26,color:DANGER}})
+        ),
+        e('p',{style:{fontWeight:700,fontSize:15,color:'#1F2937'}},'Error cargando datos: '+error),
+        e('p',{style:{fontSize:12,color:'#9AA0B4',textAlign:'center',maxWidth:400}},'Verifica que los Google Sheets sean públicos (Cualquiera con el enlace puede ver).'),
+        e('button',{className:'btn-primary',onClick:load,style:{padding:'10px 26px',fontSize:13}},'Reintentar')
+      ),
+      !loading&&!error&&data&&e('div',{},
+        tab===0&&e(ModNPS,{data,onExportPDF:exportarPDFconIA}),
+        tab===1&&e(ModCSAT,{data,onExportPDF:exportarPDFconIA}),
+        tab===2&&e(TabPlaceholder,{icono:'fa-user-clock',titulo:'Análisis de Clientes Inactivos'}),
+        tab===3&&e(TabPlaceholder,{icono:'fa-right-from-bracket',titulo:'Registro de Procesos de Offboarding'})
+      )
+    ),
+    e('footer',{style:{textAlign:'center',padding:'22px 0',fontSize:11,color:'#D1D5DB',borderTop:'1px solid #E8EAED',background:'#fff',marginTop:40}},
+      'Apprecio · Dashboard Experiencia del Cliente · 2026 · Powered by Claude AI')
+  );
+}
+
+ReactDOM.render(e(App),document.getElementById('root'));
 </script>
 </body>
 </html>
