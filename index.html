@@ -31,20 +31,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .logo-text{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.5px}
 .logo-text span{color:var(--brand)}
 .header-badge{background:var(--brand-bg);color:var(--brand);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid var(--brand-border)}
-.topbar-filters{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap;padding:8px 0}
-.filter-label{font-size:12px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-.filter-divider{width:1px;height:22px;background:var(--border);margin:0 4px}
-select{font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 30px 7px 12px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .15s}
-select:focus,select:hover{border-color:var(--brand)}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap}
-.btn-brand{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(250,52,94,.25)}
-.btn-brand:hover{background:var(--brand-dark);box-shadow:0 4px 14px rgba(250,52,94,.35)}
 .btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-bg)}
-.btn-ai{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);color:#fff;position:relative;overflow:hidden}
-.btn-ai::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(250,52,94,.2),transparent 60%)}
-.btn-ai:hover{box-shadow:0 4px 16px rgba(26,26,46,.4)}
-.btn-ai:disabled{opacity:.55;cursor:not-allowed}
+.btn-brand{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(250,52,94,.25)}
+.btn-brand:hover{background:var(--brand-dark);box-shadow:0 4px 14px rgba(250,52,94,.35)}
+.btn-brand:disabled{opacity:.55;cursor:not-allowed}
 
 /* STATUS BANNER */
 #status-banner{display:none;align-items:center;gap:10px;padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;margin-bottom:20px}
@@ -53,42 +45,72 @@ select:focus,select:hover{border-color:var(--brand)}
 .status-success{background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D}
 
 .main{max-width:1400px;margin:0 auto;padding:28px 24px 80px}
-.section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* TABS */
 .tabs-bar{background:var(--card);border-bottom:1.5px solid var(--border);display:flex;gap:0;margin-bottom:28px;overflow-x:auto}
 .tab-btn{padding:14px 22px;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;background:none;border:none;border-bottom:2.5px solid transparent;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:7px}
 .tab-btn:hover{color:var(--text);background:var(--bg)}
 .tab-btn.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
+.tab-btn.coming-soon{opacity:.6}
+.tab-btn.coming-soon:hover{color:var(--text2);background:none;cursor:default}
 
-/* KPI CARDS */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:24px}
-.kpi-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,box-shadow .18s}
-.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.kpi-top-stripe{height:4px;background:var(--card-accent,var(--brand));border-radius:var(--radius) var(--radius) 0 0}
-.kpi-body{padding:18px 20px}
-.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:8px}
-.kpi-value{font-size:32px;font-weight:700;color:var(--text);line-height:1;margin-bottom:4px}
-.kpi-value.brand{color:var(--brand)}
-.kpi-value.success{color:var(--success)}
-.kpi-value.warning{color:var(--warning)}
-.kpi-value.danger{color:var(--danger)}
-.kpi-value.info{color:var(--info)}
-.kpi-sub{font-size:12px;color:var(--text3)}
+/* ── METRIC CARD (el widget grande con donut) ── */
+.metric-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;transition:box-shadow .2s}
+.metric-card:hover{box-shadow:var(--shadow-lg)}
 
-/* CHARTS */
-.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-@media(max-width:880px){.charts-grid{grid-template-columns:1fr}}
-.chart-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-.card-header{margin-bottom:16px}
-.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
-.card-subtitle{font-size:12px;color:var(--text2);margin-top:3px}
-.chart-wrap{position:relative;height:210px}
+.mc-left{display:flex;flex-direction:column;gap:10px;padding-right:24px;border-right:1px solid var(--border)}
+.mc-question{font-size:14px;font-weight:700;color:var(--text);line-height:1.45;max-width:220px}
+.mc-based{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.mc-filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+select.mc-sel{font-family:var(--font);font-size:12px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:5px 24px 5px 10px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color .15s}
+select.mc-sel:hover,select.mc-sel:focus{border-color:var(--brand)}
 
-/* TABLES */
+.mc-donut-wrap{position:relative;width:160px;height:160px;margin:12px auto 8px}
+.mc-donut-wrap canvas{position:absolute;inset:0}
+.mc-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.mc-donut-score{font-size:28px;font-weight:800;color:var(--text);line-height:1}
+.mc-donut-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.05em;margin-top:2px}
+
+.mc-legend{display:flex;justify-content:center;gap:20px;margin-top:6px}
+.mc-leg-item{text-align:center}
+.mc-leg-val{font-size:18px;font-weight:700}
+.mc-leg-val.alto{color:var(--success)}
+.mc-leg-val.medio{color:var(--warning)}
+.mc-leg-val.bajo{color:var(--danger)}
+.mc-leg-lbl{font-size:10px;color:var(--text3);margin-top:1px}
+
+.mc-right{display:flex;flex-direction:column;gap:16px;padding-left:24px;justify-content:space-between}
+.mc-consolidado-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+.mc-stats{display:flex;gap:20px;margin-top:4px}
+.mc-stat-box{display:flex;flex-direction:column;gap:3px}
+.mc-stat-label{font-size:11px;color:var(--text2)}
+.mc-stat-value{font-size:26px;font-weight:700;color:var(--text)}
+.mc-stat-value.green{color:var(--success)}
+.mc-stat-sub{font-size:11px;color:var(--text3)}
+
+.btn-report{display:inline-flex;align-items:center;gap:8px;padding:14px 20px;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;border:none;background:var(--brand);color:#fff;width:100%;justify-content:center;letter-spacing:.02em;box-shadow:0 3px 10px rgba(250,52,94,.3);transition:all .18s;text-transform:uppercase}
+.btn-report:hover{background:var(--brand-dark);box-shadow:0 5px 16px rgba(250,52,94,.4)}
+.btn-report:disabled{opacity:.55;cursor:not-allowed}
+.btn-report svg{width:16px;height:16px;flex-shrink:0}
+
+/* SECTION HEADER (secciones CSAT) */
+.section-header{padding:12px 18px;border-radius:var(--radius-sm);margin-bottom:16px;border:1px solid var(--brand-border);background:var(--brand-bg)}
+.section-header h3{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);margin-bottom:2px}
+.section-header p{font-size:12px;color:var(--text2)}
+
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+@media(max-width:900px){.metrics-grid{grid-template-columns:1fr}.metric-card{grid-template-columns:1fr}.mc-left{border-right:none;border-bottom:1px solid var(--border);padding-right:0;padding-bottom:20px}.mc-right{padding-left:0;padding-top:20px}}
+
+/* EMPRESAS */
+.emp-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.emp-stat{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500}
+.emp-stat strong{font-weight:700;font-size:15px}
+.emp-stat.respondido{background:#D1FAE5;color:#065F46}
+.emp-stat.enviado{background:#DBEAFE;color:#1E40AF}
+.emp-stat.bloqueado{background:#FEF3C7;color:#92400E}
 .table-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
 .table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1.5px solid var(--border);gap:12px;flex-wrap:wrap}
+.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
 .table-scroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);padding:9px 14px;text-align:left;background:var(--bg);border-bottom:1.5px solid var(--border);white-space:nowrap}
@@ -96,6 +118,11 @@ td{font-size:13px;padding:11px 14px;border-bottom:1px solid var(--border);color:
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#FAFBFE}
 .country-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.status-respondido{background:#D1FAE5;color:#065F46}
+.status-enviado{background:#DBEAFE;color:#1E40AF}
+.status-bloqueado{background:#FEF3C7;color:#92400E}
+.company-cell{font-weight:500;color:var(--text)}
 .score-pill{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-family:var(--mono);font-size:12px;font-weight:700}
 .score-pill.promotor{background:#D1FAE5;color:#065F46}
 .score-pill.neutro{background:#FEF3C7;color:#92400E}
@@ -105,20 +132,9 @@ tr:hover td{background:#FAFBFE}
 .risk-alto{background:#FEF3C7;color:#92400E}
 .risk-medio{background:#EDE9FE;color:#5B21B6}
 .risk-sano{background:#D1FAE5;color:#065F46}
-.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.status-respondido{background:#D1FAE5;color:#065F46}
-.status-enviado{background:#DBEAFE;color:#1E40AF}
-.status-bloqueado{background:#FEF3C7;color:#92400E}
-.company-cell{font-weight:500;color:var(--text)}
 .interp-cell{font-size:12px;color:var(--text2);max-width:280px;line-height:1.45}
-
-/* EMPRESA STATS */
-.emp-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.emp-stat{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500}
-.emp-stat strong{font-weight:700;font-size:15px}
-.emp-stat.respondido{background:#D1FAE5;color:#065F46}
-.emp-stat.enviado{background:#DBEAFE;color:#1E40AF}
-.emp-stat.bloqueado{background:#FEF3C7;color:#92400E}
+.section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* AI PANEL */
 .ai-panel{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);border-radius:var(--radius);padding:24px;margin-bottom:24px;position:relative;overflow:hidden}
@@ -133,55 +149,34 @@ tr:hover td{background:#FAFBFE}
 .ai-result.visible{display:block;margin-top:4px}
 .ai-result-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);padding:18px 20px;font-size:13px;color:rgba(255,255,255,.82);line-height:1.7;white-space:pre-wrap;font-family:var(--font)}
 .ai-result-box strong{color:#fff;font-weight:700}
+.btn-ai-ghost{background:transparent;color:rgba(255,255,255,.5);border:1.5px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
+.btn-ai-ghost:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.8)}
 
-/* CSAT SCORE VISUAL */
-.csat-gauge-wrap{display:flex;align-items:center;gap:20px;padding:20px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:24px}
-.csat-gauge-circle{position:relative;width:110px;height:110px;flex-shrink:0}
-.csat-gauge-circle svg{transform:rotate(-90deg)}
-.csat-gauge-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.csat-gauge-pct{font-size:24px;font-weight:700;color:var(--text)}
-.csat-gauge-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em}
-.csat-gauge-info{flex:1}
-.csat-gauge-title{font-size:15px;font-weight:600;margin-bottom:4px}
-.csat-gauge-sub{font-size:13px;color:var(--text2)}
-
-/* CSAT comment cards */
-.csat-comments-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:24px}
-.csat-comment-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);transition:transform .18s,box-shadow .18s}
-.csat-comment-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-.csat-comment-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.csat-score-badge{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
-.csat-score-badge.promotor{background:#D1FAE5;color:#065F46}
-.csat-score-badge.neutro{background:#FEF3C7;color:#92400E}
-.csat-score-badge.detractor{background:#FEE2E2;color:#991B1B}
-.csat-comment-company{font-weight:600;font-size:13px;color:var(--text)}
-.csat-comment-meta{font-size:11px;color:var(--text3);margin-top:1px}
-.csat-comment-text{font-size:12px;color:var(--text2);line-height:1.55;font-style:italic;border-left:3px solid var(--border2);padding-left:10px}
+/* COMING SOON */
+.coming-soon-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;background:var(--card);border:2px dashed var(--border2);border-radius:var(--radius);margin-top:8px}
+.coming-soon-icon{font-size:52px;margin-bottom:20px;opacity:.6}
+.coming-soon-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
+.coming-soon-sub{font-size:14px;color:var(--text2);max-width:400px;line-height:1.6}
+.coming-soon-badge{display:inline-block;margin-top:18px;padding:6px 16px;border-radius:20px;background:var(--bg2);border:1.5px solid var(--border2);font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase}
 
 /* MISC */
-.section{margin-bottom:32px}
 .empty-state{text-align:center;padding:36px 20px;color:var(--text3);font-size:13px}
 .skeleton{background:linear-gradient(90deg,#F3F4F6 25%,#E5E7EB 50%,#F3F4F6 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
 @keyframes shimmer{to{background-position:-200% 0}}
 .spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
+.spinner-dark{display:inline-block;width:13px;height:13px;border:2px solid rgba(26,26,46,.2);border-top-color:var(--brand);border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle}
 footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;border-top:1px solid var(--border)}
-@media(max-width:600px){.topbar{padding:0 14px}.main{padding:18px 14px 60px}.kpi-value{font-size:26px}}
+@media(max-width:600px){.topbar{padding:0 14px}.main{padding:18px 14px 60px}}
 </style>
 </head>
 <body>
 <div id="loading-bar"></div>
 
-<!-- TOPBAR -->
 <header class="topbar">
   <a class="logo-wrap" href="#">
     <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"   style="stop-color:#FF6B8A"/>
-          <stop offset="100%" style="stop-color:#FA345E"/>
-        </linearGradient>
-      </defs>
+      <defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#FF6B8A"/><stop offset="100%" style="stop-color:#FA345E"/></linearGradient></defs>
       <path d="M50 82C50 82 15 58 15 35C15 23 24 14 35 14C42 14 48 18 50 22C52 18 58 14 65 14C76 14 85 23 85 35C85 58 50 82 50 82Z" fill="url(#hg)" opacity=".15"/>
       <path d="M50 78C50 78 17 55 17 34C17 23 25.5 15.5 35.5 15.5C42 15.5 47.5 19 50 23C52.5 19 58 15.5 64.5 15.5C74.5 15.5 83 23 83 34C83 55 50 78 50 78Z" fill="url(#hg)"/>
       <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
@@ -189,176 +184,269 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
     <span class="logo-text">apprecio<span>Beat</span></span>
   </a>
   <span class="header-badge">CX Dashboard</span>
-  <div class="filter-divider"></div>
-  <div class="topbar-filters">
-    <span class="filter-label">País</span>
-    <select id="filter-country"><option value="">Todos los países</option></select>
-    <div class="filter-divider"></div>
-    <span class="filter-label">Período</span>
-    <select id="filter-period"><option value="">Todos los meses</option></select>
-    <div class="filter-divider"></div>
-    <span class="filter-label">Riesgo</span>
-    <select id="filter-risk">
-      <option value="">Todos los niveles</option>
-      <option value="Crítico">Crítico</option>
-      <option value="Alto">Alto</option>
-      <option value="Medio">Medio</option>
-      <option value="Sano">Sano</option>
-    </select>
-  </div>
   <button class="btn btn-ghost" onclick="refreshData()" style="margin-left:auto;">↻ Actualizar</button>
 </header>
 
 <main class="main">
-  <div id="status-banner" class="status-loading"></div>
+  <div id="status-banner"></div>
 
-  <!-- TABS -->
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="showTab('tab-nps',this)">📊 NPS</button>
-    <button class="tab-btn"        onclick="showTab('tab-csat',this)">⭐ CSAT</button>
-    <button class="tab-btn"        onclick="showTab('tab-empresas',this)">🏢 Encuestas enviadas</button>
+    <button class="tab-btn active"    onclick="showTab('tab-nps',this)">📊 NPS</button>
+    <button class="tab-btn"           onclick="showTab('tab-csat',this)">⭐ CSAT</button>
+    <button class="tab-btn"           onclick="showTab('tab-empresas',this)">🏢 Encuestas enviadas</button>
+    <button class="tab-btn coming-soon" onclick="showComingSoon(this,'Inactivos')">😴 Inactivos</button>
+    <button class="tab-btn coming-soon" onclick="showComingSoon(this,'Salidas')">🚪 Salidas</button>
   </div>
 
-  <!-- ══════════ TAB NPS ══════════ -->
+  <!-- ══ TAB NPS ══ -->
   <div id="tab-nps">
-    <div class="section">
-      <div class="section-title">Resumen NPS</div>
-      <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--brand)"></div><div class="kpi-body"><div class="kpi-label">Score NPS</div><div class="kpi-value brand" id="kpi-nps">—</div><div class="kpi-sub">Escala -100 a +100</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--success)"></div><div class="kpi-body"><div class="kpi-label">Promotores</div><div class="kpi-value success" id="kpi-pro">—</div><div class="kpi-sub">Nota 9–10</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--warning)"></div><div class="kpi-body"><div class="kpi-label">Neutros</div><div class="kpi-value warning" id="kpi-neu">—</div><div class="kpi-sub">Nota 7–8</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--danger)"></div><div class="kpi-body"><div class="kpi-label">Detractores</div><div class="kpi-value danger" id="kpi-det">—</div><div class="kpi-sub">Nota 0–6</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--info)"></div><div class="kpi-body"><div class="kpi-label">Total Respuestas</div><div class="kpi-value info" id="kpi-tot">—</div><div class="kpi-sub">En el período</div></div></div>
-      </div>
-    </div>
-
-    <div class="charts-grid section">
-      <div class="chart-card"><div class="card-header"><div class="card-title">📈 Distribución NPS</div><div class="card-subtitle">Promotores · Neutros · Detractores</div></div><div class="chart-wrap"><canvas id="chart-dist"></canvas></div></div>
-      <div class="chart-card"><div class="card-header"><div class="card-title">🌎 NPS por País</div><div class="card-subtitle">Score calculado por región</div></div><div class="chart-wrap"><canvas id="chart-pais"></canvas></div></div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">Análisis con IA · n8n + Ollama</div>
-      <div class="ai-panel">
-        <div class="ai-panel-top">
+    <div class="metrics-grid" id="nps-metrics-grid">
+      <!-- card NPS Score (recomendación app) -->
+      <div class="metric-card">
+        <div class="mc-left">
           <div>
-            <div class="ai-title-row">
-              <span style="font-size:20px">🤖</span>
-              <span class="ai-title">Apprecio Beat IA — Reporte Preguntas Abiertas</span>
-              <span class="ai-badge">⚡ Powered by n8n · Ollama</span>
+            <div class="mc-question">Pregunta 1:<br>En una escala del 1 al 10, ¿Qué tanto recomiendas nuestra aplicación Apprecio?</div>
+            <div class="mc-based" id="nps1-based">Cargando...</div>
+            <div class="mc-filters">
+              <select class="mc-sel" id="nps1-country" onchange="applyNPS1Filters()"><option value="">País: Todos</option></select>
+              <select class="mc-sel" id="nps1-period" onchange="applyNPS1Filters()"><option value="">Mes: Todos</option></select>
             </div>
-            <div class="ai-desc">Envía las interpretaciones filtradas al flujo n8n. La IA analiza los patrones cualitativos y genera un resumen ejecutivo de positivos, neutros y negativos en el período seleccionado.</div>
           </div>
-          <div class="ai-actions">
-            <button class="btn btn-brand" id="btn-ai" onclick="runAI()">✨ Generar Reporte</button>
-            <button class="btn btn-ghost" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)" onclick="clearAI('ai-result')">✕ Limpiar</button>
+          <div>
+            <div class="mc-donut-wrap">
+              <canvas id="nps1-chart"></canvas>
+              <div class="mc-donut-center">
+                <div class="mc-donut-score" id="nps1-score">—</div>
+                <div class="mc-donut-label">NPS Score</div>
+              </div>
+            </div>
+            <div class="mc-legend">
+              <div class="mc-leg-item"><div class="mc-leg-val alto" id="nps1-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val medio" id="nps1-medio">—</div><div class="mc-leg-lbl">Medio / Neutral</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val bajo" id="nps1-bajo">—</div><div class="mc-leg-lbl">Bajo / Crítico</div></div>
+            </div>
           </div>
         </div>
-        <div id="ai-result" class="ai-result"></div>
+        <div class="mc-right">
+          <div>
+            <div class="mc-consolidado-title">Consolidado General</div>
+            <div class="mc-stats">
+              <div class="mc-stat-box"><div class="mc-stat-label">Promedio Métrica</div><div class="mc-stat-value" id="nps1-avg">—</div><div class="mc-stat-sub">Filtro Activo</div></div>
+              <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="nps1-dest">—</div><div class="mc-stat-sub" id="nps1-dest-pct">—</div></div>
+            </div>
+          </div>
+          <button class="btn-report" id="btn-nps1-report" onclick="runAI_NPS('nps1')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Generar Reporte de Respuestas Abiertas
+          </button>
+          <div id="ai-result-nps1" class="ai-result"></div>
+        </div>
+      </div>
+
+      <!-- card NPS Operativo (atención KAM) -->
+      <div class="metric-card">
+        <div class="mc-left">
+          <div>
+            <div class="mc-question">Pregunta 2:<br>¿Cómo calificarías la atención del KAM asignado a tu cuenta trimestralmente?</div>
+            <div class="mc-based" id="nps2-based">Cargando...</div>
+            <div class="mc-filters">
+              <select class="mc-sel" id="nps2-country" onchange="applyNPS2Filters()"><option value="">País: Todos</option></select>
+              <select class="mc-sel" id="nps2-period" onchange="applyNPS2Filters()"><option value="">Mes: Todos</option></select>
+            </div>
+          </div>
+          <div>
+            <div class="mc-donut-wrap">
+              <canvas id="nps2-chart"></canvas>
+              <div class="mc-donut-center">
+                <div class="mc-donut-score" id="nps2-score">—</div>
+                <div class="mc-donut-label">Operativo</div>
+              </div>
+            </div>
+            <div class="mc-legend">
+              <div class="mc-leg-item"><div class="mc-leg-val alto" id="nps2-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val medio" id="nps2-medio">—</div><div class="mc-leg-lbl">Medio / Neutral</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val bajo" id="nps2-bajo">—</div><div class="mc-leg-lbl">Bajo / Crítico</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mc-right">
+          <div>
+            <div class="mc-consolidado-title">Consolidado General</div>
+            <div class="mc-stats">
+              <div class="mc-stat-box"><div class="mc-stat-label">Promedio Métrica</div><div class="mc-stat-value" id="nps2-avg">—</div><div class="mc-stat-sub">Filtro Activo</div></div>
+              <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="nps2-dest">—</div><div class="mc-stat-sub" id="nps2-dest-pct">—</div></div>
+            </div>
+          </div>
+          <button class="btn-report" id="btn-nps2-report" onclick="runAI_NPS('nps2')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Generar Reporte de Respuestas Abiertas
+          </button>
+          <div id="ai-result-nps2" class="ai-result"></div>
+        </div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="table-card">
-        <div class="table-head"><div class="card-title">🚨 Detractores Críticos — Riesgo de Churn</div><span id="det-count" style="font-size:12px;color:var(--text3)"></span></div>
-        <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-det"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
-      </div>
+    <!-- Tabla detractores NPS -->
+    <div class="section-title" style="margin-top:8px">Detractores · Riesgo de Churn</div>
+    <div class="table-card" style="margin-bottom:24px">
+      <div class="table-head"><div class="card-title">🚨 Clientes Detractores</div><span id="det-count" style="font-size:12px;color:var(--text3)"></span></div>
+      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS App</th><th>NPS KAM</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-det"><tr><td colspan="8"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
     </div>
 
-    <div class="section">
-      <div class="table-card">
-        <div class="table-head"><div class="card-title">📋 Todas las respuestas NPS</div><span id="all-count" style="font-size:12px;color:var(--text3)"></span></div>
-        <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-all"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
-      </div>
+    <div class="section-title">Todas las respuestas NPS</div>
+    <div class="table-card">
+      <div class="table-head"><div class="card-title">📋 Respuestas completas</div><span id="all-count" style="font-size:12px;color:var(--text3)"></span></div>
+      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS App</th><th>NPS KAM</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-all"><tr><td colspan="8"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
     </div>
-  </div><!-- /tab-nps -->
+  </div>
 
-  <!-- ══════════ TAB CSAT ══════════ -->
+  <!-- ══ TAB CSAT ══ -->
   <div id="tab-csat" style="display:none">
 
-    <!-- KPIs CSAT -->
-    <div class="section">
-      <div class="section-title">Resumen CSAT · Satisfacción de plataforma</div>
-      <div class="kpi-grid">
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--brand)"></div><div class="kpi-body"><div class="kpi-label">CSAT Score</div><div class="kpi-value brand" id="csat-kpi-score">—</div><div class="kpi-sub">% satisfechos (≥9)</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--success)"></div><div class="kpi-body"><div class="kpi-label">Promotores</div><div class="kpi-value success" id="csat-kpi-pro">—</div><div class="kpi-sub">Nota 9–10</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--warning)"></div><div class="kpi-body"><div class="kpi-label">Neutros</div><div class="kpi-value warning" id="csat-kpi-neu">—</div><div class="kpi-sub">Nota 7–8</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--danger)"></div><div class="kpi-body"><div class="kpi-label">Detractores</div><div class="kpi-value danger" id="csat-kpi-det">—</div><div class="kpi-sub">Nota 0–6</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--info)"></div><div class="kpi-body"><div class="kpi-label">Total</div><div class="kpi-value info" id="csat-kpi-tot">—</div><div class="kpi-sub">Respuestas</div></div></div>
-        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:#8B5CF6"></div><div class="kpi-body"><div class="kpi-label">Promedio</div><div class="kpi-value" style="color:#8B5CF6" id="csat-kpi-avg">—</div><div class="kpi-sub">Nota promedio</div></div></div>
-      </div>
+    <!-- SECCIÓN 1: CSAT Post Abono Trimestral -->
+    <div class="section-header">
+      <h3>Sección Horizontal 1 · CSAT Post Abono Trimestral</h3>
+      <p>Evaluación gatillada tras la confirmación de abonos trimestrales en la plataforma financiera.</p>
     </div>
 
-    <!-- CHARTS CSAT -->
-    <div class="charts-grid section">
-      <div class="chart-card"><div class="card-header"><div class="card-title">📈 Distribución CSAT</div><div class="card-subtitle">Promotores · Neutros · Detractores</div></div><div class="chart-wrap"><canvas id="csat-chart-dist"></canvas></div></div>
-      <div class="chart-card"><div class="card-header"><div class="card-title">🌎 CSAT por País</div><div class="card-subtitle">Score % satisfechos por región</div></div><div class="chart-wrap"><canvas id="csat-chart-pais"></canvas></div></div>
-    </div>
-
-    <!-- CSAT por ejecutivo -->
-    <div class="charts-grid section">
-      <div class="chart-card"><div class="card-header"><div class="card-title">👤 CSAT por Ejecutivo</div><div class="card-subtitle">Score promedio por KAM</div></div><div class="chart-wrap" style="height:240px"><canvas id="csat-chart-exec"></canvas></div></div>
-      <div class="chart-card"><div class="card-header"><div class="card-title">📅 Evolución CSAT</div><div class="card-subtitle">Score por mes</div></div><div class="chart-wrap"><canvas id="csat-chart-evol"></canvas></div></div>
-    </div>
-
-    <!-- AI PANEL CSAT -->
-    <div class="section">
-      <div class="section-title">Análisis con IA · n8n + Ollama</div>
-      <div class="ai-panel">
-        <div class="ai-panel-top">
+    <div style="margin-bottom:28px">
+      <div class="metric-card" style="grid-template-columns:1fr 1fr">
+        <div class="mc-left">
           <div>
-            <div class="ai-title-row">
-              <span style="font-size:20px">🤖</span>
-              <span class="ai-title">Apprecio Beat IA — Reporte CSAT</span>
-              <span class="ai-badge">⚡ Powered by n8n · Ollama</span>
+            <div class="mc-question">¿Qué tan satisfecho(a) estás con el uso de la plataforma para la gestión de tus abonos trimestrales?</div>
+            <div class="mc-based" id="csat1-based">Cargando...</div>
+            <div class="mc-filters">
+              <select class="mc-sel" id="csat1-country" onchange="renderCSAT1()"><option value="">País: Todos</option></select>
+              <select class="mc-sel" id="csat1-period" onchange="renderCSAT1()"><option value="">Mes: Todos</option></select>
             </div>
-            <div class="ai-desc">Análisis de satisfacción de plataforma: detecta patrones en los comentarios de clientes, aspectos de fricción y mejores prácticas reportadas por los usuarios.</div>
           </div>
-          <div class="ai-actions">
-            <button class="btn btn-brand" id="btn-ai-csat" onclick="runAI_CSAT()">✨ Generar Reporte</button>
-            <button class="btn btn-ghost" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)" onclick="clearAI('ai-result-csat')">✕ Limpiar</button>
+          <div>
+            <div class="mc-donut-wrap">
+              <canvas id="csat1-chart"></canvas>
+              <div class="mc-donut-center">
+                <div class="mc-donut-score" id="csat1-score">—</div>
+                <div class="mc-donut-label">Satisfechos</div>
+              </div>
+            </div>
+            <div class="mc-legend">
+              <div class="mc-leg-item"><div class="mc-leg-val alto" id="csat1-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val medio" id="csat1-medio">—</div><div class="mc-leg-lbl">Medio / Neutral</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val bajo" id="csat1-bajo">—</div><div class="mc-leg-lbl">Bajo / Crítico</div></div>
+            </div>
           </div>
         </div>
-        <div id="ai-result-csat" class="ai-result"></div>
-      </div>
-    </div>
-
-    <!-- COMENTARIOS CARDS -->
-    <div class="section">
-      <div class="section-title">Comentarios recientes</div>
-      <div class="csat-comments-grid" id="csat-comments-grid">
-        <div class="skeleton" style="height:120px;border-radius:14px"></div>
-        <div class="skeleton" style="height:120px;border-radius:14px"></div>
-        <div class="skeleton" style="height:120px;border-radius:14px"></div>
-      </div>
-    </div>
-
-    <!-- TABLA CSAT -->
-    <div class="section">
-      <div class="table-card">
-        <div class="table-head"><div class="card-title">📋 Todas las respuestas CSAT</div><span id="csat-count" style="font-size:12px;color:var(--text3)"></span></div>
-        <div class="table-scroll">
-          <table><thead><tr><th>Empresa</th><th>País</th><th>Nota</th><th>Tipo</th><th>Ejecutivo</th><th>Comentario</th><th>Fecha</th></tr></thead>
-          <tbody id="tbody-csat"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table>
+        <div class="mc-right">
+          <div>
+            <div class="mc-consolidado-title">Consolidado General</div>
+            <div class="mc-stats">
+              <div class="mc-stat-box"><div class="mc-stat-label">Promedio Métrica</div><div class="mc-stat-value" id="csat1-avg">—</div><div class="mc-stat-sub">Filtro Activo</div></div>
+              <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="csat1-dest">—</div><div class="mc-stat-sub" id="csat1-dest-pct">—</div></div>
+            </div>
+          </div>
+          <button class="btn-report" id="btn-csat1-report" onclick="runAI_CSAT('csat1')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Generar Reporte de Respuestas Abiertas
+          </button>
+          <div id="ai-result-csat1" class="ai-result"></div>
         </div>
       </div>
     </div>
 
-  </div><!-- /tab-csat -->
+    <!-- SECCIÓN 2: CSAT Post Reunión Comercial -->
+    <div class="section-header">
+      <h3>Sección Horizontal 2 · CSAT Post Reunión Comercial</h3>
+      <p>Medición de calidad del servicio consultivo ejecutada inmediatamente al cierre de mesas de trabajo.</p>
+    </div>
 
-  <!-- ══════════ TAB EMPRESAS ══════════ -->
+    <div style="margin-bottom:28px">
+      <div class="metric-card" style="grid-template-columns:1fr 1fr">
+        <div class="mc-left">
+          <div>
+            <div class="mc-question">¿El ejecutivo comercial resolvió de forma clara y oportuna tus requerimientos en la reunión de cuenta?</div>
+            <div class="mc-based" id="csat2-based">Cargando...</div>
+            <div class="mc-filters">
+              <select class="mc-sel" id="csat2-country" onchange="renderCSAT2()"><option value="">País: Todos</option></select>
+              <select class="mc-sel" id="csat2-period" onchange="renderCSAT2()"><option value="">Mes: Todos</option></select>
+            </div>
+          </div>
+          <div>
+            <div class="mc-donut-wrap">
+              <canvas id="csat2-chart"></canvas>
+              <div class="mc-donut-center">
+                <div class="mc-donut-score" id="csat2-score">—</div>
+                <div class="mc-donut-label">Satisfechos</div>
+              </div>
+            </div>
+            <div class="mc-legend">
+              <div class="mc-leg-item"><div class="mc-leg-val alto" id="csat2-alto">—</div><div class="mc-leg-lbl">Alto / Satisfecho</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val medio" id="csat2-medio">—</div><div class="mc-leg-lbl">Medio / Neutral</div></div>
+              <div class="mc-leg-item"><div class="mc-leg-val bajo" id="csat2-bajo">—</div><div class="mc-leg-lbl">Bajo / Crítico</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mc-right">
+          <div>
+            <div class="mc-consolidado-title">Consolidado General</div>
+            <div class="mc-stats">
+              <div class="mc-stat-box"><div class="mc-stat-label">Promedio Métrica</div><div class="mc-stat-value" id="csat2-avg">—</div><div class="mc-stat-sub">Filtro Activo</div></div>
+              <div class="mc-stat-box"><div class="mc-stat-label">Casos Destacados</div><div class="mc-stat-value green" id="csat2-dest">—</div><div class="mc-stat-sub" id="csat2-dest-pct">—</div></div>
+            </div>
+          </div>
+          <button class="btn-report" id="btn-csat2-report" onclick="runAI_CSAT('csat2')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Generar Reporte de Respuestas Abiertas
+          </button>
+          <div id="ai-result-csat2" class="ai-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla comentarios CSAT -->
+    <div class="section-title">Comentarios recientes</div>
+    <div class="table-card">
+      <div class="table-head"><div class="card-title">💬 Todas las respuestas CSAT</div><span id="csat-all-count" style="font-size:12px;color:var(--text3)"></span></div>
+      <div class="table-scroll">
+        <table><thead><tr><th>Empresa</th><th>País</th><th>Nota</th><th>Tipo</th><th>Fuente</th><th>Ejecutivo</th><th>Comentario</th><th>Fecha</th></tr></thead>
+        <tbody id="tbody-csat-all"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB EMPRESAS ══ -->
   <div id="tab-empresas" style="display:none">
-    <div class="section">
-      <div class="section-title">Estado de encuestas enviadas</div>
-      <div class="emp-summary" id="emp-summary"><div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div><div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div><div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div></div>
+    <div class="section-title">Estado de encuestas enviadas</div>
+    <div class="emp-summary" id="emp-summary">
+      <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
+      <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
+      <div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div>
     </div>
     <div class="table-card">
       <div class="table-head"><div class="card-title">🏢 Empresas · NPS enviado</div><span id="emp-count" style="font-size:12px;color:var(--text3)"></span></div>
       <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>Abonos trim.</th><th>Estado</th><th>Fecha generado</th><th>Último abono</th></tr></thead><tbody id="tbody-emp"><tr><td colspan="6"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
     </div>
   </div>
-</main>
 
+  <!-- ══ TAB INACTIVOS (coming soon) ══ -->
+  <div id="tab-inactivos" style="display:none">
+    <div class="coming-soon-panel">
+      <div class="coming-soon-icon">😴</div>
+      <div class="coming-soon-title">Módulo Inactivos</div>
+      <div class="coming-soon-sub">Próximamente podrás visualizar el análisis de empresas inactivas, su segmentación por tiempo sin actividad y estrategias de reactivación.</div>
+      <span class="coming-soon-badge">🚧 En desarrollo</span>
+    </div>
+  </div>
+
+  <!-- ══ TAB SALIDAS (coming soon) ══ -->
+  <div id="tab-salidas" style="display:none">
+    <div class="coming-soon-panel">
+      <div class="coming-soon-icon">🚪</div>
+      <div class="coming-soon-title">Módulo Salidas</div>
+      <div class="coming-soon-sub">Próximamente podrás analizar las causas de churn, el volumen de bajas por período y los patrones de comportamiento previos a la salida.</div>
+      <span class="coming-soon-badge">🚧 En desarrollo</span>
+    </div>
+  </div>
+
+</main>
 <footer>APPRECIO BEAT · CX DASHBOARD · <span id="last-update">—</span></footer>
 
 <script>
@@ -367,60 +455,71 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
 // ══════════════════════════════════════════
 const N8N_WEBHOOK = 'https://n8n.openip.cl/webhook/apprecio-cx-analisis';
 
-// SHEET NPS (respuestas NPS de clientes B2B)
 const SHEET_NPS = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:json&gid=749991184';
-
-// SHEET EMPRESAS (estado de encuestas enviadas)
 const SHEET_EMPRESAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
-
-// SHEET CSAT - respuestas_encuestas (satisfacción de plataforma, escala 1-10)
-// Columnas clave: Fecha_Envio, empresa_id, País, Nombre de la empresa, correo_enviado,
-//                 ¿Qué tan satisfecho(a)...? (nota), ¿Qué fue lo más fácil...? (comentario)
-const SHEET_CSAT_RESPUESTAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
-
-// SHEET CSAT - Hoja 1 (CSAT de reuniones/atención, con ejecutivo comercial)
-// Columnas clave: Fecha, Email, Satisfaccion (1-10), Comentarios, ejecutivo comercial, País
-const SHEET_CSAT_REUNIONES = 'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:json&gid=0';
+// CSAT Post Abono (respuestas_encuestas en el sheet de empresas)
+const SHEET_CSAT_ABONO = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
+// CSAT Post Reunión (Hoja 1 del segundo sheet)
+const SHEET_CSAT_REUNION = 'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:json&gid=0';
 
 // ══════════════════════════════════════════
 //  STATE
 // ══════════════════════════════════════════
-let npsData=[], empresaData=[], csatData=[], filteredNps=[], filteredCsat=[];
-let chartDist=null, chartPais=null;
-let csatChartDist=null, csatChartPais=null, csatChartExec=null, csatChartEvol=null;
+let npsData = [];        // datos crudos NPS
+let csatAbonoData = [];  // CSAT plataforma (post abono)
+let csatReunionData = []; // CSAT reunión comercial
+let empresaData = [];
+
+// filtrados locales por card
+let nps1Filtered = [], nps2Filtered = [];
+let csat1Filtered = [], csat2Filtered = [];
+
+let charts = {};  // { nps1, nps2, csat1, csat2 }
 
 // ══════════════════════════════════════════
-//  INIT
+//  UTILS
 // ══════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', refreshData);
+function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function flag(c){return{'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Perú':'🇵🇪','Argentina':'🇦🇷'}[c]||'🌎';}
+function monthName(m){return['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m-1]||'';}
+function riskOrd(r){return{'Crítico':0,'Alto':1,'Medio':2,'Sano':3}[r]??4;}
+function parseDate(s){
+  if(!s)return null;
+  const m1=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(m1)return new Date(+m1[3],+m1[2]-1,+m1[1]);
+  const m2=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(m2)return new Date(+m2[1],+m2[2]-1,+m2[3]);
+  const d=new Date(s); return isNaN(d)?null:d;
+}
+function dateToPeriod(d){return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:null;}
 
 function setProgress(p){
   const b=document.getElementById('loading-bar');
   b.style.width=p+'%';
-  if(p>=100) setTimeout(()=>b.style.width='0%',700);
+  if(p>=100)setTimeout(()=>b.style.width='0%',700);
 }
 function showBanner(msg,type){
   const el=document.getElementById('status-banner');
   el.className='status-'+type; el.innerHTML=msg; el.style.display='flex';
-  if(type!=='loading') setTimeout(()=>el.style.display='none',4000);
+  if(type!=='loading')setTimeout(()=>el.style.display='none',5000);
 }
 
 // ══════════════════════════════════════════
-//  GOOGLE SHEETS FETCH
+//  FETCH GOOGLE SHEETS
 // ══════════════════════════════════════════
 async function fetchSheet(url){
   const res=await fetch(url);
-  if(!res.ok) throw new Error('HTTP '+res.status);
+  if(!res.ok)throw new Error('HTTP '+res.status);
   const text=await res.text();
   const match=text.match(/setResponse\((\{[\s\S]+\})\)/);
-  if(!match) throw new Error('Respuesta inesperada de Google Sheets');
+  if(!match)throw new Error('Respuesta inesperada de Google Sheets');
   const data=JSON.parse(match[1]);
-  if(data.status==='error') throw new Error(data.errors?.[0]?.message||'Error en Google Sheets');
+  if(data.status==='error')throw new Error(data.errors?.[0]?.message||'Error en Sheets');
   const cols=data.table.cols.map(c=>c.label);
   return data.table.rows.map(row=>{
     const obj={};
     row.c.forEach((cell,i)=>{
-      if(!cols[i]) return;
+      if(!cols[i])return;
       obj[cols[i]]=cell==null?'':(cell.f!=null?cell.f:String(cell.v??''));
     });
     return obj;
@@ -428,329 +527,356 @@ async function fetchSheet(url){
 }
 
 // ══════════════════════════════════════════
-//  REFRESH
+//  INIT & REFRESH
 // ══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', refreshData);
+
 async function refreshData(){
   showBanner('<span class="spinner"></span>&nbsp; Cargando datos desde Google Sheets...','loading');
   setProgress(15);
   try{
-    // Cargamos en paralelo: NPS, Empresas (estado encuestas), CSAT plataforma, CSAT reuniones
-    const [npsRaw, empRaw, csatPlatRaw, csatReuRaw] = await Promise.all([
+    const [npsRaw, empRaw, csatAbonoRaw, csatReunRaw] = await Promise.all([
       fetchSheet(SHEET_NPS),
       fetchSheet(SHEET_EMPRESAS),
-      fetchSheet(SHEET_CSAT_RESPUESTAS),
-      fetchSheet(SHEET_CSAT_REUNIONES)
+      fetchSheet(SHEET_CSAT_ABONO),
+      fetchSheet(SHEET_CSAT_REUNION)
     ]);
     setProgress(70);
 
     npsData = npsRaw.filter(r=>r['CLIENTE']?.trim());
     empresaData = empRaw.filter(r=>r['empresa_id']?.trim());
 
-    // Normalizar CSAT plataforma (respuestas_encuestas)
-    // La nota está en la columna con el nombre largo
-    const csatPlat = csatPlatRaw
-      .filter(r=>r['Estado']==='COMPLETADO' || r['Estado']==='completado' || !r['Estado'])
+    // Normalizar CSAT Abono (respuestas_encuestas)
+    csatAbonoData = csatAbonoRaw
+      .filter(r=>r['Estado']==='COMPLETADO')
       .map(r=>{
-        // Buscar la columna de satisfacción (contiene "satisfecho")
         const notaKey = Object.keys(r).find(k=>k.toLowerCase().includes('satisfech'));
-        const comentKey = Object.keys(r).find(k=>k.toLowerCase().includes('f\u00e1cil') || k.toLowerCase().includes('facil') || k.toLowerCase().includes('mejorar'));
-        const nota = notaKey ? +r[notaKey] : NaN;
-        const fechaKey = Object.keys(r).find(k=>k.toLowerCase().includes('fecha'));
+        const comentKey = Object.keys(r).find(k=>k.toLowerCase().includes('facil')||k.toLowerCase().includes('fácil')||k.toLowerCase().includes('mejorar'));
         return {
-          fuente: 'plataforma',
           empresa: r['Nombre de la empresa']||r['empresa_id']||'',
-          pais: r['Pa\u00eds']||r['Pais']||'',
+          pais: r['País']||r['Pais']||'',
           ejecutivo: '',
-          nota: nota,
+          nota: notaKey ? +r[notaKey] : NaN,
           comentario: comentKey ? r[comentKey] : '',
-          fecha: fechaKey ? r[fechaKey] : '',
+          fecha: r['Fecha_Envio']||r['fecha']||'',
           email: r['correo_enviado']||''
         };
       })
-      .filter(r=>!isNaN(r.nota) && r.nota>0);
+      .filter(r=>!isNaN(r.nota)&&r.nota>0);
 
-    // Normalizar CSAT reuniones (Hoja 1)
-    const csatReu = csatReuRaw
-      .filter(r=>{
-        const s = +r['Satisfaccion'];
-        return !isNaN(s) && s>0;
-      })
+    // Normalizar CSAT Reunión (Hoja 1)
+    csatReunionData = csatReunRaw
       .map(r=>({
-        fuente: 'reunion',
         empresa: r['Empresa']||'',
-        pais: r['Pa\u00eds']||r['Pais']||'',
+        pais: r['País']||r['Pais']||'',
         ejecutivo: r['ejecutivo comercial']||'',
         nota: +r['Satisfaccion'],
         comentario: r['Comentarios']||'',
         fecha: r['Fecha']||'',
         email: r['Email']||''
-      }));
-
-    // Combinar ambas fuentes CSAT
-    csatData = [...csatPlat, ...csatReu];
+      }))
+      .filter(r=>!isNaN(r.nota)&&r.nota>0);
 
     setProgress(90);
-    buildFilters();
-    applyFilters();
+    buildAllFilters();
+    renderAll();
     renderEmpresasTab();
-    renderCsatTab();
     setProgress(100);
     document.getElementById('last-update').textContent='Actualizado: '+new Date().toLocaleString('es-CL');
-    showBanner('✓ Datos cargados correctamente (NPS + CSAT plataforma + CSAT reuniones)','success');
+    showBanner('✓ Datos cargados: '+npsData.length+' NPS · '+csatAbonoData.length+' CSAT abono · '+csatReunionData.length+' CSAT reunión','success');
   }catch(e){
     setProgress(100);
-    showBanner('⚠ Error al cargar datos: '+e.message,'error');
+    showBanner('⚠ Error al cargar: '+e.message,'error');
     console.error(e);
   }
 }
 
 // ══════════════════════════════════════════
-//  FILTERS (basados en NPS para sincronía)
+//  BUILD FILTERS (populamos todos los selects)
 // ══════════════════════════════════════════
-function buildFilters(){
-  const countries=[...new Set([
-    ...npsData.map(r=>r['PAÍS']),
-    ...csatData.map(r=>r.pais)
-  ].filter(Boolean))].sort();
-  const cEl=document.getElementById('filter-country');
-  cEl.innerHTML='<option value="">Todos los países</option>'+
-    countries.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('');
+function buildAllFilters(){
+  // Países NPS
+  const npsCountries=[...new Set(npsData.map(r=>r['PAÍS']).filter(Boolean))].sort();
+  // Períodos NPS
+  const npsPeriods=[...new Set(npsData.map(r=>dateToPeriod(parseDate(r['FECHA']))).filter(Boolean))].sort().reverse();
 
-  const periods=[...new Set(npsData.map(r=>{
-    const d=parseDate(r['FECHA']);
-    return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:null;
-  }).filter(Boolean))].sort().reverse();
-  const pEl=document.getElementById('filter-period');
-  pEl.innerHTML='<option value="">Todos los meses</option>'+
-    periods.map(p=>{const[y,m]=p.split('-');return`<option value="${p}">${monthName(+m)} ${y}</option>`;}).join('');
+  populateSel('nps1-country', npsCountries, 'País');
+  populateSel('nps2-country', npsCountries, 'País');
+  populatePeriods('nps1-period', npsPeriods);
+  populatePeriods('nps2-period', npsPeriods);
 
-  ['filter-country','filter-period','filter-risk'].forEach(id=>
-    document.getElementById(id).addEventListener('change',applyFilters));
+  // Países CSAT abono
+  const c1Countries=[...new Set(csatAbonoData.map(r=>r.pais).filter(Boolean))].sort();
+  const c1Periods=[...new Set(csatAbonoData.map(r=>dateToPeriod(parseDate(r.fecha))).filter(Boolean))].sort().reverse();
+  populateSel('csat1-country', c1Countries, 'País');
+  populatePeriods('csat1-period', c1Periods);
+
+  // Países CSAT reunión
+  const c2Countries=[...new Set(csatReunionData.map(r=>r.pais).filter(Boolean))].sort();
+  const c2Periods=[...new Set(csatReunionData.map(r=>dateToPeriod(parseDate(r.fecha))).filter(Boolean))].sort().reverse();
+  populateSel('csat2-country', c2Countries, 'País');
+  populatePeriods('csat2-period', c2Periods);
 }
 
-function applyFilters(){
-  const country=document.getElementById('filter-country').value;
-  const period=document.getElementById('filter-period').value;
-  const risk=document.getElementById('filter-risk').value;
+function populateSel(id, vals, label){
+  const el=document.getElementById(id); if(!el)return;
+  el.innerHTML=`<option value="">${label}: Todos</option>`+vals.map(v=>`<option value="${v}">${flag(v)} ${v}</option>`).join('');
+}
+function populatePeriods(id, periods){
+  const el=document.getElementById(id); if(!el)return;
+  el.innerHTML='<option value="">Mes: Todos</option>'+periods.map(p=>{const[y,m]=p.split('-');return`<option value="${p}">${monthName(+m)} ${y}</option>`;}).join('');
+}
 
-  filteredNps=npsData.filter(r=>{
-    if(country&&r['PAÍS']!==country) return false;
-    if(period){const d=parseDate(r['FECHA']);if(!d)return false;if(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`!==period)return false;}
-    if(risk&&r['Nivel de Riesgo']!==risk) return false;
+// ══════════════════════════════════════════
+//  FILTER HELPERS
+// ══════════════════════════════════════════
+function filterByCountryPeriod(data, country, period, fechaFn){
+  return data.filter(r=>{
+    if(country && fechaFn(r,'pais')!==country) return false;
+    if(period){
+      const d=parseDate(fechaFn(r,'fecha'));
+      if(!d) return false;
+      if(dateToPeriod(d)!==period) return false;
+    }
     return true;
   });
+}
 
-  filteredCsat=csatData.filter(r=>{
-    if(country&&r.pais!==country) return false;
-    // Para CSAT no aplicamos filtro de período estricto (fechas mixtas)
+function applyNPS1Filters(){ renderNPS1(); }
+function applyNPS2Filters(){ renderNPS2(); renderNPSTables(); }
+
+// ══════════════════════════════════════════
+//  RENDER ALL
+// ══════════════════════════════════════════
+function renderAll(){
+  renderNPS1();
+  renderNPS2();
+  renderNPSTables();
+  renderCSAT1();
+  renderCSAT2();
+  renderCsatAllTable();
+}
+
+// ══════════════════════════════════════════
+//  NPS RENDERS
+// ══════════════════════════════════════════
+function getFiltered_NPS(num){
+  const country=document.getElementById(`nps${num}-country`)?.value||'';
+  const period=document.getElementById(`nps${num}-period`)?.value||'';
+  return npsData.filter(r=>{
+    if(country && r['PAÍS']!==country) return false;
+    if(period){const d=parseDate(r['FECHA']);if(!d)return false;if(dateToPeriod(d)!==period)return false;}
     return true;
   });
-
-  renderKpis();
-  renderCharts();
-  renderDetTable();
-  renderAllTable();
-  renderCsatTab();
 }
 
-// ══════════════════════════════════════════
-//  NPS KPIs
-// ══════════════════════════════════════════
-function renderKpis(){
-  const n=filteredNps.length;
-  if(!n){['kpi-nps','kpi-pro','kpi-neu','kpi-det','kpi-tot'].forEach(id=>document.getElementById(id).textContent='—');return;}
-  const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
-  const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
-  const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
-  const score=Math.round(((pro-det)/n)*100);
-  document.getElementById('kpi-nps').textContent=(score>0?'+':'')+score;
-  document.getElementById('kpi-pro').textContent=pro;
-  document.getElementById('kpi-neu').textContent=neu;
-  document.getElementById('kpi-det').textContent=det;
-  document.getElementById('kpi-tot').textContent=n;
+function renderNPS1(){
+  const data = getFiltered_NPS(1);
+  nps1Filtered = data;
+  const scoreKey = 'NPS (Col G)'; // columna NPS aplicación
+  renderMetricCard('nps1', data, scoreKey, 'NPS Score', 'nps1-based', data.length+' respuestas reales');
+  renderNPSTables();
 }
 
-// ══════════════════════════════════════════
-//  NPS CHARTS
-// ══════════════════════════════════════════
-function renderCharts(){
-  const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
-  const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
-  const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
-  if(chartDist)chartDist.destroy();
-  chartDist=new Chart(document.getElementById('chart-dist').getContext('2d'),{
-    type:'doughnut',
-    data:{labels:['Promotores','Neutros','Detractores'],datasets:[{data:[pro,neu,det],backgroundColor:['#D1FAE5','#FEF3C7','#FEE2E2'],borderColor:['#10B981','#F59E0B','#EF4444'],borderWidth:2,hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'#6B7280',font:{family:'DM Sans',size:12},padding:16}}}}
-  });
-  const byC={};
-  filteredNps.forEach(r=>{const c=r['PAÍS']||'N/A',v=+r['NPS (Col G)'];if(!byC[c])byC[c]={p:0,n:0,d:0};if(v>=9)byC[c].p++;else if(v>=7)byC[c].n++;else byC[c].d++;});
-  const cs=Object.keys(byC);
-  const scores=cs.map(c=>{const t=byC[c].p+byC[c].n+byC[c].d;return t?Math.round(((byC[c].p-byC[c].d)/t)*100):0;});
-  if(chartPais)chartPais.destroy();
-  chartPais=new Chart(document.getElementById('chart-pais').getContext('2d'),{
-    type:'bar',
-    data:{labels:cs.map(c=>flag(c)+' '+c),datasets:[{label:'Score NPS',data:scores,backgroundColor:scores.map(v=>v>=50?'rgba(16,185,129,.7)':v>=0?'rgba(245,158,11,.7)':'rgba(239,68,68,.7)'),borderColor:scores.map(v=>v>=50?'#10B981':v>=0?'#F59E0B':'#EF4444'),borderWidth:2,borderRadius:6}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{family:'DM Sans',size:11}},grid:{color:'#F3F4F6'}},y:{ticks:{color:'#6B7280'},grid:{color:'#F3F4F6'},suggestedMin:-100,suggestedMax:100}}}
-  });
+function renderNPS2(){
+  const data = getFiltered_NPS(2);
+  nps2Filtered = data;
+  const scoreKey = 'INTENCIÓN PERMANENCIA'; // columna NPS KAM / operativo
+  renderMetricCard('nps2', data, scoreKey, 'Operativo', 'nps2-based', data.length+' respuestas reales');
 }
 
-// ══════════════════════════════════════════
-//  CSAT TAB — KPIs + Charts + Tabla + Cards
-// ══════════════════════════════════════════
-function renderCsatTab(){
-  const data = filteredCsat.length ? filteredCsat : csatData;
+function renderMetricCard(prefix, data, scoreKey, centerLabel, basedId, basedText){
   const n = data.length;
+  document.getElementById(basedId).textContent = n>0 ? 'BASADO EN '+n+' RESPUESTAS REALES' : 'SIN DATOS DISPONIBLES';
 
   if(!n){
-    ['csat-kpi-score','csat-kpi-pro','csat-kpi-neu','csat-kpi-det','csat-kpi-tot','csat-kpi-avg']
-      .forEach(id=>document.getElementById(id).textContent='—');
-    document.getElementById('csat-count').textContent='0 respuestas';
-    document.getElementById('tbody-csat').innerHTML='<tr><td colspan="7"><div class="empty-state">Sin datos CSAT aún</div></td></tr>';
-    document.getElementById('csat-comments-grid').innerHTML='<div class="empty-state">Sin comentarios disponibles</div>';
+    ['score','alto','medio','bajo','avg','dest'].forEach(k=>{
+      const el=document.getElementById(`${prefix}-${k}`); if(el) el.textContent='—';
+    });
+    const el=document.getElementById(`${prefix}-dest-pct`); if(el) el.textContent='—';
+    destroyChart(prefix);
+    return;
+  }
+
+  const pro = data.filter(r=>+r[scoreKey]>=9).length;
+  const neu = data.filter(r=>{const v=+r[scoreKey];return v>=7&&v<=8;}).length;
+  const det = data.filter(r=>+r[scoreKey]<=6&&+r[scoreKey]>=0).length;
+  const npsScore = Math.round(((pro-det)/n)*100);
+  const avg = (data.reduce((s,r)=>s+(+r[scoreKey]||0),0)/n).toFixed(1);
+
+  document.getElementById(`${prefix}-score`).textContent = (npsScore>0?'+':'')+npsScore;
+  document.getElementById(`${prefix}-alto`).textContent = pro;
+  document.getElementById(`${prefix}-medio`).textContent = neu;
+  document.getElementById(`${prefix}-bajo`).textContent = det;
+  document.getElementById(`${prefix}-avg`).textContent = avg;
+  document.getElementById(`${prefix}-dest`).textContent = pro;
+  document.getElementById(`${prefix}-dest-pct`).textContent = Math.round((pro/n)*100)+'% de este corte';
+
+  // Donut chart
+  destroyChart(prefix);
+  const ctx = document.getElementById(`${prefix}-chart`).getContext('2d');
+  charts[prefix] = new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
+      datasets:[{
+        data:[pro,neu,det],
+        backgroundColor:['#22C55E','#F59E0B','#EF4444'],
+        borderColor:['#16A34A','#D97706','#DC2626'],
+        borderWidth:2, hoverOffset:6
+      }]
+    },
+    options:{
+      responsive:false, maintainAspectRatio:false,
+      cutout:'68%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}`}}}
+    }
+  });
+}
+
+function destroyChart(prefix){
+  if(charts[prefix]){charts[prefix].destroy();delete charts[prefix];}
+}
+
+// ══════════════════════════════════════════
+//  NPS TABLES
+// ══════════════════════════════════════════
+function renderNPSTables(){
+  // Usamos NPS1 filtrado como base (aplica mismo filtro de país/período)
+  const data = nps1Filtered.length ? nps1Filtered : npsData;
+  const scoreKey='NPS (Col G)';
+  const kamKey='INTENCIÓN PERMANENCIA';
+  const perKey='INTENCIÓN PERMANENCIA';
+
+  const rowHTML = r => {
+    const nps=+r[scoreKey], kam=+r[kamKey];
+    const nc=nps>=9?'promotor':nps>=7?'neutro':'detractor';
+    const kc=kam>=9?'promotor':kam>=7?'neutro':'detractor';
+    const rk=(r['Nivel de Riesgo']||'').toLowerCase().replace(/[íi]/g,'i').replace(/[óo]/g,'o').replace(/[éê]/g,'e');
+    return`<tr>
+      <td><span class="company-cell">${x(r['CLIENTE'])}</span></td>
+      <td><span class="country-badge">${flag(r['PAÍS'])} ${x(r['PAÍS'])}</span></td>
+      <td><span class="score-pill ${nc}">${isNaN(nps)?'—':nps}</span></td>
+      <td><span class="score-pill ${kc}">${isNaN(kam)?'—':kam}</span></td>
+      <td>${x(r['INTENCIÓN PERMANENCIA']||'—')}</td>
+      <td><span class="risk-badge risk-${rk}">${x(r['Nivel de Riesgo']||'—')}</span></td>
+      <td class="interp-cell">${x(r['Interpretación']||'—')}</td>
+      <td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r['FECHA']||'').split(' ')[0])}</td>
+    </tr>`;
+  };
+
+  const dets = data.filter(r=>+r[scoreKey]<=6).sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
+  document.getElementById('det-count').textContent=dets.length+' clientes';
+  document.getElementById('tbody-det').innerHTML=dets.length?dets.map(rowHTML).join(''):'<tr><td colspan="8"><div class="empty-state">Sin detractores en el período ✓</div></td></tr>';
+
+  const all=[...data].sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
+  document.getElementById('all-count').textContent=all.length+' respuestas';
+  document.getElementById('tbody-all').innerHTML=all.length?all.map(rowHTML).join(''):'<tr><td colspan="8"><div class="empty-state">Sin datos</div></td></tr>';
+}
+
+// ══════════════════════════════════════════
+//  CSAT RENDERS
+// ══════════════════════════════════════════
+function getFilteredCSAT(dataset, prefix){
+  const country=document.getElementById(`${prefix}-country`)?.value||'';
+  const period=document.getElementById(`${prefix}-period`)?.value||'';
+  return dataset.filter(r=>{
+    if(country && r.pais!==country) return false;
+    if(period){const d=parseDate(r.fecha);if(!d)return false;if(dateToPeriod(d)!==period)return false;}
+    return true;
+  });
+}
+
+function renderCSAT1(){
+  const data = getFilteredCSAT(csatAbonoData,'csat1');
+  csat1Filtered = data;
+  renderCSATCard('csat1', data, 'csat1-based', data.length+' respuestas reales');
+  renderCsatAllTable();
+}
+
+function renderCSAT2(){
+  const data = getFilteredCSAT(csatReunionData,'csat2');
+  csat2Filtered = data;
+  renderCSATCard('csat2', data, 'csat2-based', data.length+' respuestas reales');
+  renderCsatAllTable();
+}
+
+function renderCSATCard(prefix, data, basedId, basedText){
+  const n = data.length;
+  document.getElementById(basedId).textContent = n>0 ? 'BASADO EN '+n+' RESPUESTAS REALES' : 'SIN DATOS DISPONIBLES';
+
+  if(!n){
+    ['score','alto','medio','bajo','avg','dest'].forEach(k=>{
+      const el=document.getElementById(`${prefix}-${k}`); if(el) el.textContent='—';
+    });
+    destroyChart(prefix);
     return;
   }
 
   const pro = data.filter(r=>r.nota>=9).length;
   const neu = data.filter(r=>r.nota>=7&&r.nota<=8).length;
   const det = data.filter(r=>r.nota<=6).length;
-  const csatScore = Math.round((pro/n)*100);
+  // CSAT score = % satisfechos expresado en escala NPS-like (+promotores - detractores)
+  const csatScore = Math.round(((pro-det)/n)*100);
   const avg = (data.reduce((s,r)=>s+r.nota,0)/n).toFixed(1);
 
-  document.getElementById('csat-kpi-score').textContent=csatScore+'%';
-  document.getElementById('csat-kpi-pro').textContent=pro;
-  document.getElementById('csat-kpi-neu').textContent=neu;
-  document.getElementById('csat-kpi-det').textContent=det;
-  document.getElementById('csat-kpi-tot').textContent=n;
-  document.getElementById('csat-kpi-avg').textContent=avg;
-  document.getElementById('csat-count').textContent=n+' respuestas';
+  document.getElementById(`${prefix}-score`).textContent=(csatScore>0?'+':'')+csatScore;
+  document.getElementById(`${prefix}-alto`).textContent=pro;
+  document.getElementById(`${prefix}-medio`).textContent=neu;
+  document.getElementById(`${prefix}-bajo`).textContent=det;
+  document.getElementById(`${prefix}-avg`).textContent=avg;
+  document.getElementById(`${prefix}-dest`).textContent=pro;
+  document.getElementById(`${prefix}-dest-pct`).textContent=Math.round((pro/n)*100)+'% de este corte';
 
-  // Chart distribución donut
-  if(csatChartDist)csatChartDist.destroy();
-  csatChartDist=new Chart(document.getElementById('csat-chart-dist').getContext('2d'),{
+  destroyChart(prefix);
+  const ctx=document.getElementById(`${prefix}-chart`).getContext('2d');
+  charts[prefix]=new Chart(ctx,{
     type:'doughnut',
-    data:{labels:['Promotores (9-10)','Neutros (7-8)','Detractores (1-6)'],datasets:[{data:[pro,neu,det],backgroundColor:['#D1FAE5','#FEF3C7','#FEE2E2'],borderColor:['#10B981','#F59E0B','#EF4444'],borderWidth:2,hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'#6B7280',font:{family:'DM Sans',size:12},padding:14}}}}
+    data:{
+      labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
+      datasets:[{
+        data:[pro,neu,det],
+        backgroundColor:['#22C55E','#F59E0B','#EF4444'],
+        borderColor:['#16A34A','#D97706','#DC2626'],
+        borderWidth:2, hoverOffset:6
+      }]
+    },
+    options:{
+      responsive:false, maintainAspectRatio:false,
+      cutout:'68%',
+      plugins:{legend:{display:false}}
+    }
   });
+}
 
-  // Chart por país
-  const byPais={};
-  data.forEach(r=>{
-    const p=r.pais||'N/A';
-    if(!byPais[p])byPais[p]={pro:0,tot:0};
-    byPais[p].tot++;
-    if(r.nota>=9)byPais[p].pro++;
-  });
-  const paisKeys=Object.keys(byPais).sort();
-  const paisScores=paisKeys.map(p=>byPais[p].tot?Math.round((byPais[p].pro/byPais[p].tot)*100):0);
-  if(csatChartPais)csatChartPais.destroy();
-  csatChartPais=new Chart(document.getElementById('csat-chart-pais').getContext('2d'),{
-    type:'bar',
-    data:{labels:paisKeys.map(c=>flag(c)+' '+c),datasets:[{label:'CSAT %',data:paisScores,backgroundColor:paisScores.map(v=>v>=70?'rgba(16,185,129,.7)':v>=50?'rgba(245,158,11,.7)':'rgba(239,68,68,.7)'),borderColor:paisScores.map(v=>v>=70?'#10B981':v>=50?'#F59E0B':'#EF4444'),borderWidth:2,borderRadius:6}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{family:'DM Sans',size:11}},grid:{color:'#F3F4F6'}},y:{ticks:{color:'#6B7280',callback:v=>v+'%'},grid:{color:'#F3F4F6'},min:0,max:100}}}
-  });
+// ══════════════════════════════════════════
+//  CSAT ALL TABLE
+// ══════════════════════════════════════════
+function renderCsatAllTable(){
+  const all = [
+    ...csatAbonoData.map(r=>({...r, fuente:'🖥️ Abono'})),
+    ...csatReunionData.map(r=>({...r, fuente:'👤 Reunión'}))
+  ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
 
-  // Chart por ejecutivo
-  const byExec={};
-  data.filter(r=>r.ejecutivo).forEach(r=>{
-    const e=r.ejecutivo.trim();
-    if(!e)return;
-    if(!byExec[e])byExec[e]={sum:0,cnt:0};
-    byExec[e].sum+=r.nota;
-    byExec[e].cnt++;
-  });
-  const execKeys=Object.keys(byExec).sort((a,b)=>(byExec[b].sum/byExec[b].cnt)-(byExec[a].sum/byExec[a].cnt));
-  const execAvgs=execKeys.map(e=>(byExec[e].sum/byExec[e].cnt).toFixed(1));
-  if(csatChartExec)csatChartExec.destroy();
-  csatChartExec=new Chart(document.getElementById('csat-chart-exec').getContext('2d'),{
-    type:'bar',
-    data:{labels:execKeys,datasets:[{label:'Nota promedio',data:execAvgs,backgroundColor:'rgba(250,52,94,.15)',borderColor:'#FA345E',borderWidth:2,borderRadius:6}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280'},grid:{color:'#F3F4F6'},min:0,max:10},y:{ticks:{color:'#6B7280',font:{size:11}},grid:{display:false}}}}
-  });
-
-  // Chart evolución por mes
-  const byMes={};
-  data.forEach(r=>{
-    const d=parseDateFlex(r.fecha);
-    if(!d)return;
-    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    if(!byMes[key])byMes[key]={sum:0,cnt:0,pro:0};
-    byMes[key].sum+=r.nota;
-    byMes[key].cnt++;
-    if(r.nota>=9)byMes[key].pro++;
-  });
-  const mesKeys=Object.keys(byMes).sort();
-  const mesLabels=mesKeys.map(k=>{const[y,m]=k.split('-');return monthName(+m)+' '+y;});
-  const mesScores=mesKeys.map(k=>byMes[k].cnt?Math.round((byMes[k].pro/byMes[k].cnt)*100):0);
-  if(csatChartEvol)csatChartEvol.destroy();
-  csatChartEvol=new Chart(document.getElementById('csat-chart-evol').getContext('2d'),{
-    type:'line',
-    data:{labels:mesLabels,datasets:[{label:'CSAT %',data:mesScores,borderColor:'#FA345E',backgroundColor:'rgba(250,52,94,.08)',fill:true,tension:0.4,pointBackgroundColor:'#FA345E',pointRadius:5,pointHoverRadius:7}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{size:11}},grid:{color:'#F3F4F6'}},y:{ticks:{color:'#6B7280',callback:v=>v+'%'},grid:{color:'#F3F4F6'},min:0,max:100}}}
-  });
-
-  // Comment cards (últimas 9, con comentario)
-  const conComentario=data.filter(r=>r.comentario&&r.comentario.trim().length>5)
-    .sort((a,b)=>parseDateFlex(b.fecha)-parseDateFlex(a.fecha))
-    .slice(0,9);
-  const grid=document.getElementById('csat-comments-grid');
-  if(conComentario.length===0){
-    grid.innerHTML='<div class="empty-state">Sin comentarios disponibles aún</div>';
-  } else {
-    grid.innerHTML=conComentario.map(r=>{
-      const tipo=r.nota>=9?'promotor':r.nota>=7?'neutro':'detractor';
-      const tipoLabel=r.nota>=9?'Promotor':r.nota>=7?'Neutro':'Detractor';
-      const fuenteIcon=r.fuente==='reunion'?'👤 Reunión':'🖥️ Plataforma';
-      return `<div class="csat-comment-card">
-        <div class="csat-comment-header">
-          <div class="csat-score-badge ${tipo}">${r.nota}</div>
-          <div>
-            <div class="csat-comment-company">${x(r.empresa||r.email||'—')}</div>
-            <div class="csat-comment-meta">${flag(r.pais)} ${x(r.pais||'—')} · ${fuenteIcon}${r.ejecutivo?' · '+x(r.ejecutivo):''}</div>
-          </div>
-        </div>
-        <div class="csat-comment-text">"${x(r.comentario)}"</div>
-      </div>`;
-    }).join('');
+  document.getElementById('csat-all-count').textContent=all.length+' respuestas';
+  if(!all.length){
+    document.getElementById('tbody-csat-all').innerHTML='<tr><td colspan="8"><div class="empty-state">Sin datos CSAT</div></td></tr>';
+    return;
   }
-
-  // Tabla completa CSAT
-  const sorted=[...data].sort((a,b)=>a.nota-b.nota);
-  document.getElementById('tbody-csat').innerHTML=sorted.map(r=>{
+  document.getElementById('tbody-csat-all').innerHTML=all.map(r=>{
     const tipo=r.nota>=9?'promotor':r.nota>=7?'neutro':'detractor';
     const tipoLabel=r.nota>=9?'Promotor':r.nota>=7?'Neutro':'Detractor';
-    const fuenteIcon=r.fuente==='reunion'?'👤':'🖥️';
     return`<tr>
       <td><span class="company-cell">${x(r.empresa||r.email||'—')}</span></td>
       <td><span class="country-badge">${flag(r.pais)} ${x(r.pais||'—')}</span></td>
       <td><span class="score-pill ${tipo}">${r.nota}</span></td>
-      <td><span class="status-badge status-${tipo==='promotor'?'respondido':tipo==='neutro'?'enviado':'bloqueado'}">${fuenteIcon} ${tipoLabel}</span></td>
+      <td><span class="status-badge status-${tipo==='promotor'?'respondido':tipo==='neutro'?'enviado':'bloqueado'}">${tipoLabel}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${x(r.fuente)}</td>
       <td style="font-size:12px;color:var(--text2)">${x(r.ejecutivo||'—')}</td>
       <td class="interp-cell">${x(r.comentario||'—')}</td>
-      <td style="font-size:12px;color:var(--text3);white-space:nowrap">${x(r.fecha.split(' ')[0]||'—')}</td>
+      <td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r.fecha||'').split(' ')[0]||'—')}</td>
     </tr>`;
   }).join('');
-}
-
-// ══════════════════════════════════════════
-//  NPS TABLES
-// ══════════════════════════════════════════
-function rowHTML(r){
-  const nps=+r['NPS (Col G)'],per=+r['INTENCIÓN PERMANENCIA'];
-  const nc=nps>=9?'promotor':nps>=7?'neutro':'detractor';
-  const pc=per>=9?'promotor':per>=7?'neutro':'detractor';
-  const rk=(r['Nivel de Riesgo']||'').toLowerCase().replace(/[íi]/g,'i').replace(/[éê]/g,'e').replace(/[óo]/g,'o');
-  return`<tr><td><span class="company-cell">${x(r['CLIENTE'])}</span></td><td><span class="country-badge">${flag(r['PAÍS'])} ${x(r['PAÍS'])}</span></td><td><span class="score-pill ${nc}">${isNaN(nps)?'—':nps}</span></td><td><span class="score-pill ${pc}">${isNaN(per)?'—':per}</span></td><td><span class="risk-badge risk-${rk}">${x(r['Nivel de Riesgo'])}</span></td><td class="interp-cell">${x(r['Interpretación'])}</td><td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r['FECHA']||'').split(' ')[0])}</td></tr>`;
-}
-function renderDetTable(){
-  const dets=filteredNps.filter(r=>+r['NPS (Col G)']<=6).sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
-  document.getElementById('det-count').textContent=dets.length+' clientes';
-  document.getElementById('tbody-det').innerHTML=dets.length?dets.map(rowHTML).join(''):'<tr><td colspan="7"><div class="empty-state">Sin detractores en el período seleccionado ✓</div></td></tr>';
-}
-function renderAllTable(){
-  const sorted=[...filteredNps].sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
-  document.getElementById('all-count').textContent=sorted.length+' respuestas';
-  document.getElementById('tbody-all').innerHTML=sorted.length?sorted.map(rowHTML).join(''):'<tr><td colspan="7"><div class="empty-state">Sin datos para los filtros seleccionados</div></td></tr>';
 }
 
 // ══════════════════════════════════════════
@@ -760,104 +886,118 @@ function renderEmpresasTab(){
   const resp=empresaData.filter(r=>r['Estado de Link']==='RESPONDIDO').length;
   const env=empresaData.filter(r=>r['Estado de Link']==='CORREO ENVIADO').length;
   const blq=empresaData.filter(r=>(r['Estado de Link']||'').startsWith('BLOQUEADO')).length;
-  document.getElementById('emp-summary').innerHTML=`<div class="emp-stat respondido">✓ Respondido <strong>${resp}</strong></div><div class="emp-stat enviado">📨 Enviado <strong>${env}</strong></div><div class="emp-stat bloqueado">⚠ Bloqueado <strong>${blq}</strong></div>`;
+  document.getElementById('emp-summary').innerHTML=
+    `<div class="emp-stat respondido">✓ Respondido <strong>${resp}</strong></div>`+
+    `<div class="emp-stat enviado">📨 Enviado <strong>${env}</strong></div>`+
+    `<div class="emp-stat bloqueado">⚠ Bloqueado <strong>${blq}</strong></div>`;
   document.getElementById('emp-count').textContent=empresaData.length+' empresas';
   const sorted=[...empresaData].sort((a,b)=>({'RESPONDIDO':0,'CORREO ENVIADO':1}[a['Estado de Link']]??2)-({'RESPONDIDO':0,'CORREO ENVIADO':1}[b['Estado de Link']]??2));
-  document.getElementById('tbody-emp').innerHTML=sorted.length?sorted.map(r=>{
+  document.getElementById('tbody-emp').innerHTML=sorted.map(r=>{
     const st=r['Estado de Link']||'';
-    const badge=st==='RESPONDIDO'?'<span class="status-badge status-respondido">✓ Respondido</span>':st==='CORREO ENVIADO'?'<span class="status-badge status-enviado">📨 Enviado</span>':`<span class="status-badge status-bloqueado">⚠ ${x(st)}</span>`;
-    return`<tr><td><span class="company-cell">${x(r['Nombre de la empresa'])}</span></td><td><span class="country-badge">${flag(r['País'])} ${x(r['País'])}</span></td><td style="font-family:var(--mono);font-size:13px">${x(r['Abonos_Trimestre']||'—')}</td><td>${badge}</td><td style="font-size:12px;color:var(--text3)">${x(r['Fecha_generado']||'—')}</td><td style="font-size:12px;color:var(--text3)">${x((r['Fecha_Ultimo_Abono']||'').split(' ')[0]||'—')}</td></tr>`;
-  }).join(''):'<tr><td colspan="6"><div class="empty-state">Sin datos</div></td></tr>';
+    const badge=st==='RESPONDIDO'?'<span class="status-badge status-respondido">✓ Respondido</span>':
+      st==='CORREO ENVIADO'?'<span class="status-badge status-enviado">📨 Enviado</span>':
+      `<span class="status-badge status-bloqueado">⚠ ${x(st)}</span>`;
+    return`<tr>
+      <td><span class="company-cell">${x(r['Nombre de la empresa'])}</span></td>
+      <td><span class="country-badge">${flag(r['País'])} ${x(r['País'])}</span></td>
+      <td style="font-family:var(--mono);font-size:13px">${x(r['Abonos_Trimestre']||'—')}</td>
+      <td>${badge}</td>
+      <td style="font-size:12px;color:var(--text3)">${x(r['Fecha_generado']||'—')}</td>
+      <td style="font-size:12px;color:var(--text3)">${x((r['Fecha_Ultimo_Abono']||'').split(' ')[0]||'—')}</td>
+    </tr>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════
-//  AI NPS
+//  AI — NPS
 // ══════════════════════════════════════════
-async function runAI(){
-  const btn=document.getElementById('btn-ai');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Analizando...';
-  const resultEl=document.getElementById('ai-result');
-  resultEl.className='ai-result visible';
-  resultEl.innerHTML=`<div class="ai-result-box" style="color:rgba(255,255,255,.4);font-style:italic">Enviando ${filteredNps.length} respuestas NPS al flujo n8n · Ollama...</div>`;
-  const muestraNPS=filteredNps.map(r=>({empresa:r['CLIENTE']||'',pais:r['PAÍS']||'',puntuacion:r['NPS (Col G)']||'',permanencia:r['INTENCIÓN PERMANENCIA']||'',riesgo:r['Nivel de Riesgo']||'',razon:r['Interpretación']||''}));
-  const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
-  const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
-  const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
-  const payload={modulo:'NPS',datos:{totalNPS:filteredNps.length,totalCSAT_abono:0,totalCSAT_reunion:0,muestraNPS,muestraCSAT:[],filtros:{pais:document.getElementById('filter-country').value||'todos',periodo:document.getElementById('filter-period').value||'todos',riesgo:document.getElementById('filter-risk').value||'todos'},distribucion:{promotores:pro,neutros:neu,detractores:det}}};
+async function runAI_NPS(prefix){
+  const btn=document.getElementById(`btn-${prefix}-report`);
+  const resultEl=document.getElementById(`ai-result-${prefix}`);
+  btn.disabled=true; btn.innerHTML='<span class="spinner-dark"></span>&nbsp; Analizando...';
+  resultEl.style.display='block';
+  resultEl.innerHTML=`<div style="padding:12px 0;font-size:13px;color:var(--text3);font-style:italic"><span class="spinner-dark"></span> Enviando datos al flujo n8n · Ollama...</div>`;
+
+  const data = prefix==='nps1' ? nps1Filtered : nps2Filtered;
+  const scoreKey = prefix==='nps1' ? 'NPS (Col G)' : 'INTENCIÓN PERMANENCIA';
+  const modulo = prefix==='nps1' ? 'NPS_APP' : 'NPS_KAM';
+  const pro=data.filter(r=>+r[scoreKey]>=9).length;
+  const neu=data.filter(r=>{const v=+r[scoreKey];return v>=7&&v<=8;}).length;
+  const det=data.filter(r=>+r[scoreKey]<=6).length;
+  const muestra=data.map(r=>({empresa:r['CLIENTE'],pais:r['PAÍS'],puntuacion:r[scoreKey],riesgo:r['Nivel de Riesgo'],razon:r['Interpretación']}));
+
+  const payload={
+    modulo,
+    datos:{total:data.length,distribucion:{promotores:pro,neutros:neu,detractores:det},muestra,filtros:{pais:document.getElementById(`${prefix}-country`).value||'todos',periodo:document.getElementById(`${prefix}-period`).value||'todos'}}
+  };
   try{
     const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(!res.ok) throw new Error('n8n respondió HTTP '+res.status);
-    const data=await res.json();
-    const texto=data.respuesta||data.text||data.output||JSON.stringify(data);
-    resultEl.innerHTML=`<div class="ai-result-box">${formatMD(texto)}</div>`;
+    if(!res.ok)throw new Error('n8n HTTP '+res.status);
+    const json=await res.json();
+    const texto=json.respuesta||json.text||json.output||JSON.stringify(json);
+    resultEl.innerHTML=`<div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap">${formatMD(texto)}</div>`;
   }catch(e){
-    resultEl.innerHTML=`<div class="ai-result-box" style="border-color:rgba(239,68,68,.4)"><strong style="color:#FC8181">⚠ Error al contactar n8n:</strong> ${x(e.message)}\n\nVerifica que:\n• El webhook esté activo en n8n\n• La URL N8N_WEBHOOK sea la correcta\n• El flujo permita CORS (Access-Control-Allow-Origin: *)\n\n<span style="color:rgba(255,255,255,.35);font-size:11px">Payload enviado (debug):\n${x(JSON.stringify(payload,null,2))}</span></div>`;
+    resultEl.innerHTML=`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px;font-size:12px;color:#DC2626">⚠ Error al contactar n8n: ${x(e.message)}<br><span style="color:var(--text3)">Verifica que el webhook esté activo y permita CORS.</span></div>`;
   }
-  btn.disabled=false; btn.innerHTML='✨ Generar Reporte';
+  btn.disabled=false;
+  btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Generar Reporte de Respuestas Abiertas`;
 }
 
 // ══════════════════════════════════════════
-//  AI CSAT
+//  AI — CSAT
 // ══════════════════════════════════════════
-async function runAI_CSAT(){
-  const btn=document.getElementById('btn-ai-csat');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Analizando...';
-  const resultEl=document.getElementById('ai-result-csat');
-  resultEl.className='ai-result visible';
-  resultEl.innerHTML=`<div class="ai-result-box" style="color:rgba(255,255,255,.4);font-style:italic">Enviando ${filteredCsat.length||csatData.length} respuestas CSAT al flujo n8n · Ollama...</div>`;
-  const data = filteredCsat.length ? filteredCsat : csatData;
-  const muestraCSAT=data.map(r=>({empresa:r.empresa,pais:r.pais,ejecutivo:r.ejecutivo,nota:r.nota,comentario:r.comentario,fuente:r.fuente}));
+async function runAI_CSAT(prefix){
+  const btn=document.getElementById(`btn-${prefix}-report`);
+  const resultEl=document.getElementById(`ai-result-${prefix}`);
+  btn.disabled=true; btn.innerHTML='<span class="spinner-dark"></span>&nbsp; Analizando...';
+  resultEl.style.display='block';
+  resultEl.innerHTML=`<div style="padding:12px 0;font-size:13px;color:var(--text3);font-style:italic"><span class="spinner-dark"></span> Enviando datos CSAT al flujo n8n · Ollama...</div>`;
+
+  const data = prefix==='csat1' ? csat1Filtered : csat2Filtered;
   const pro=data.filter(r=>r.nota>=9).length;
   const neu=data.filter(r=>r.nota>=7&&r.nota<=8).length;
   const det=data.filter(r=>r.nota<=6).length;
-  const payload={modulo:'CSAT',datos:{totalCSAT:data.length,muestraCSAT,filtros:{pais:document.getElementById('filter-country').value||'todos'},distribucion:{promotores:pro,neutros:neu,detractores:det},csatScore:Math.round((pro/data.length)*100)}};
+  const muestra=data.map(r=>({empresa:r.empresa,pais:r.pais,ejecutivo:r.ejecutivo,nota:r.nota,comentario:r.comentario}));
+  const modulo=prefix==='csat1'?'CSAT_ABONO':'CSAT_REUNION';
+
+  const payload={
+    modulo,
+    datos:{total:data.length,distribucion:{promotores:pro,neutros:neu,detractores:det},muestra,csatScore:Math.round(((pro-det)/Math.max(data.length,1))*100)}
+  };
   try{
     const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(!res.ok) throw new Error('n8n respondió HTTP '+res.status);
+    if(!res.ok)throw new Error('n8n HTTP '+res.status);
     const json=await res.json();
     const texto=json.respuesta||json.text||json.output||JSON.stringify(json);
-    resultEl.innerHTML=`<div class="ai-result-box">${formatMD(texto)}</div>`;
+    resultEl.innerHTML=`<div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:16px;font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap">${formatMD(texto)}</div>`;
   }catch(e){
-    resultEl.innerHTML=`<div class="ai-result-box" style="border-color:rgba(239,68,68,.4)"><strong style="color:#FC8181">⚠ Error al contactar n8n:</strong> ${x(e.message)}\n\n<span style="color:rgba(255,255,255,.35);font-size:11px">Payload CSAT (debug):\n${x(JSON.stringify(payload,null,2))}</span></div>`;
+    resultEl.innerHTML=`<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px;font-size:12px;color:#DC2626">⚠ Error al contactar n8n: ${x(e.message)}</div>`;
   }
-  btn.disabled=false; btn.innerHTML='✨ Generar Reporte';
+  btn.disabled=false;
+  btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Generar Reporte de Respuestas Abiertas`;
 }
 
-function clearAI(id){const el=document.getElementById(id);if(el){el.className='ai-result';el.innerHTML='';}}
-function formatMD(txt){return x(txt).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>').replace(/\n/g,'<br>');}
+function formatMD(txt){
+  return x(txt).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>').replace(/\n/g,'<br>');
+}
 
 // ══════════════════════════════════════════
 //  TAB SWITCH
 // ══════════════════════════════════════════
+const ALL_TABS=['tab-nps','tab-csat','tab-empresas','tab-inactivos','tab-salidas'];
 function showTab(id,btn){
   document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  ['tab-nps','tab-csat','tab-empresas'].forEach(t=>document.getElementById(t).style.display='none');
+  ALL_TABS.forEach(t=>document.getElementById(t).style.display='none');
   document.getElementById(id).style.display='block';
 }
-
-// ══════════════════════════════════════════
-//  UTILS
-// ══════════════════════════════════════════
-function parseDate(s){
-  if(!s)return null;
-  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-  return m?new Date(+m[3],+m[2]-1,+m[1]):null;
+function showComingSoon(btn,name){
+  const id='tab-'+name.toLowerCase();
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ALL_TABS.forEach(t=>document.getElementById(t).style.display='none');
+  document.getElementById(id).style.display='block';
 }
-function parseDateFlex(s){
-  if(!s)return null;
-  // Intentar varios formatos: DD/MM/YYYY, YYYY-MM-DD, "1/06/2026 ..."
-  const m1=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-  if(m1)return new Date(+m1[3],+m1[2]-1,+m1[1]);
-  const m2=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if(m2)return new Date(+m2[1],+m2[2]-1,+m2[3]);
-  const d=new Date(s);
-  return isNaN(d)?null:d;
-}
-function monthName(m){return['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m-1];}
-function riskOrd(r){return{'Crítico':0,'Alto':1,'Medio':2,'Sano':3}[r]??4;}
-function flag(c){return{'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Argentina':'🇦🇷','Perú':'🇵🇪'}[c]||'🌎';}
-function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
