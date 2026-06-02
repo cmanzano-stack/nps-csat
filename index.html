@@ -4,1557 +4,552 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard CX · Apprecio Beat</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
-  :root {
-    --brand: #FA345E;
-    --brand-dark: #D42050;
-    --brand-light: #FF6B8A;
-    --brand-bg: #FFF0F3;
-    --accent: #1A1A2E;
-    --info: #3B82F6;
-    --success: #10B981;
-    --warning: #F59E0B;
-    --danger: #EF4444;
-    --neutral: #8B93A7;
-    --bg: #F7F8FC;
-    --card: #FFFFFF;
-    --border: #E8EAF0;
-    --text: #1A1A2E;
-    --text2: #6B7280;
-    --font: 'DM Sans', sans-serif;
-    --mono: 'DM Mono', monospace;
-    --radius: 14px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.06);
-    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
+:root {
+  --brand:#FA345E; --brand-dark:#D42050; --brand-light:#FF6B8A;
+  --brand-bg:#FFF0F3; --brand-border:#FFD0DA;
+  --accent:#1A1A2E; --info:#3B82F6; --success:#10B981;
+  --warning:#F59E0B; --danger:#EF4444; --neutral:#8B93A7;
+  --bg:#F7F8FC; --bg2:#EDEEF4; --card:#FFFFFF;
+  --border:#E8EAF0; --border2:#D4D7E3;
+  --text:#1A1A2E; --text2:#6B7280; --text3:#9CA3AF;
+  --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+  --radius:14px; --radius-sm:8px;
+  --shadow:0 2px 12px rgba(0,0,0,.06); --shadow-lg:0 8px 32px rgba(0,0,0,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
 
-  /* ─── HEADER ─── */
-  .header {
-    background: var(--card);
-    border-bottom: 1.5px solid var(--border);
-    padding: 0 28px;
-    height: 62px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .header-left { display: flex; align-items: center; gap: 12px; }
-  .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-icon { width: 34px; height: 34px; }
-  .logo-text { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
-  .logo-text span { color: var(--brand); }
-  .header-badge { background: var(--brand-bg); color: var(--brand); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; border: 1px solid #FFD0DA; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
+#loading-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand-light),var(--brand),var(--brand-dark));width:0%;transition:width .4s ease;z-index:300}
 
-  /* ─── FILTERS BAR ─── */
-  .filters-bar {
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .filter-group { display: flex; align-items: center; gap: 8px; }
-  .filter-label { font-size: 12px; font-weight: 500; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; }
-  select.filter-select {
-    font-family: var(--font);
-    font-size: 13px;
-    padding: 6px 28px 6px 10px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E") no-repeat right 10px center;
-    color: var(--text);
-    appearance: none;
-    cursor: pointer;
-    min-width: 130px;
-  }
-  select.filter-select:focus { outline: none; border-color: var(--brand); }
-  .filter-divider { width: 1px; height: 22px; background: var(--border); }
+/* ── TOPBAR ── */
+.topbar{background:var(--card);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:100;padding:0 28px;display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;padding:12px 0}
+.logo-icon{width:34px;height:34px}
+.logo-text{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.5px}
+.logo-text span{color:var(--brand)}
+.header-badge{background:var(--brand-bg);color:var(--brand);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid var(--brand-border)}
+.topbar-filters{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap;padding:8px 0}
+.filter-label{font-size:12px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.filter-divider{width:1px;height:22px;background:var(--border);margin:0 4px}
+select{font-family:var(--font);font-size:13px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 30px 7px 12px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .15s}
+select:focus,select:hover{border-color:var(--brand)}
 
-  /* ─── TABS ─── */
-  .tabs-bar {
-    background: var(--card);
-    border-bottom: 1.5px solid var(--border);
-    padding: 0 28px;
-    display: flex;
-    gap: 0;
-  }
-  .tab-btn {
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 14px 20px;
-    border: none;
-    background: none;
-    color: var(--text2);
-    cursor: pointer;
-    border-bottom: 2.5px solid transparent;
-    margin-bottom: -1.5px;
-    transition: all .2s;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .tab-btn:hover { color: var(--text); }
-  .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 600; }
-  .tab-icon { font-size: 15px; }
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap}
+.btn-brand{background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(250,52,94,.25)}
+.btn-brand:hover{background:var(--brand-dark);box-shadow:0 4px 14px rgba(250,52,94,.35)}
+.btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-bg)}
+.btn-ai{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);color:#fff;position:relative;overflow:hidden}
+.btn-ai::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(250,52,94,.2),transparent 60%)}
+.btn-ai:hover{box-shadow:0 4px 16px rgba(26,26,46,.4)}
+.btn-ai:disabled{opacity:.55;cursor:not-allowed}
 
-  /* ─── MAIN ─── */
-  .main { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
-  .section { display: none; }
-  .section.active { display: block; }
+/* ── STATUS BANNER ── */
+#status-banner{display:none;align-items:center;gap:10px;padding:10px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;margin-bottom:20px}
+.status-loading{background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8}
+.status-error{background:#FEF2F2;border:1px solid #FECACA;color:#DC2626}
+.status-success{background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D}
 
-  /* ─── KPI ROW ─── */
-  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 22px; }
-  .kpi-card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
-    box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
-    transition: transform .2s;
-  }
-  .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-  .kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--card-accent, var(--brand));
-    border-radius: var(--radius) var(--radius) 0 0;
-  }
-  .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 8px; }
-  .kpi-value { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 6px; }
-  .kpi-value.brand { color: var(--brand); }
-  .kpi-value.success { color: var(--success); }
-  .kpi-value.warning { color: var(--warning); }
-  .kpi-value.danger { color: var(--danger); }
-  .kpi-sub { font-size: 12px; color: var(--text2); }
-  .kpi-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 6px; }
-  .kpi-badge.up { background: #D1FAE5; color: #065F46; }
-  .kpi-badge.down { background: #FEE2E2; color: #991B1B; }
-  .kpi-badge.neutral { background: #F3F4F6; color: #6B7280; }
+.main{max-width:1400px;margin:0 auto;padding:28px 24px 80px}
+.section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-  /* ─── GRID LAYOUT ─── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 18px; }
-  .col-span-2 { grid-column: span 2; }
+/* ── TABS ── */
+.tabs-bar{background:var(--card);border-bottom:1.5px solid var(--border);display:flex;gap:0;margin-bottom:28px;overflow-x:auto}
+.tab-btn{padding:14px 22px;font-family:var(--font);font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;background:none;border:none;border-bottom:2.5px solid transparent;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--text);background:var(--bg)}
+.tab-btn.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
 
-  /* ─── CARD ─── */
-  .card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow);
-  }
-  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .card-title { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 7px; }
-  .card-title-icon { font-size: 15px; }
-  .card-subtitle { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .chart-wrap { position: relative; width: 100%; }
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:24px}
+.kpi-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,box-shadow .18s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kpi-top-stripe{height:4px;background:var(--card-accent,var(--brand));border-radius:var(--radius) var(--radius) 0 0}
+.kpi-body{padding:18px 20px}
+.kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:8px}
+.kpi-value{font-size:32px;font-weight:700;color:var(--text);line-height:1;margin-bottom:4px}
+.kpi-value.brand{color:var(--brand)}
+.kpi-value.success{color:var(--success)}
+.kpi-value.warning{color:var(--warning)}
+.kpi-value.danger{color:var(--danger)}
+.kpi-value.info{color:var(--info)}
+.kpi-sub{font-size:12px;color:var(--text3)}
 
-  /* ─── SEGMENTO BADGES ─── */
-  .segment-row { display: flex; gap: 10px; margin-bottom: 16px; }
-  .seg-pill {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 8px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    text-align: center;
-  }
-  .seg-pill .seg-count { font-size: 26px; font-weight: 700; margin-bottom: 3px; line-height: 1; }
-  .seg-pill.promotor { background: #D1FAE5; color: #065F46; }
-  .seg-pill.neutral { background: #FEF3C7; color: #92400E; }
-  .seg-pill.detractor { background: #FEE2E2; color: #991B1B; }
+/* ── CHARTS ── */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:880px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.card-header{margin-bottom:16px}
+.card-title{font-size:13px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
+.card-subtitle{font-size:12px;color:var(--text2);margin-top:3px}
+.chart-wrap{position:relative;height:210px}
 
-  /* ─── TABLA DE DETRACTORES ─── */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text2); padding: 8px 12px; text-align: left; background: var(--bg); border-bottom: 1.5px solid var(--border); }
-  td { font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #FAFBFE; }
-  .risk-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
-  .risk-critical { background: #FEE2E2; color: #991B1B; }
-  .risk-high { background: #FEF3C7; color: #92400E; }
-  .risk-medium { background: #EDE9FE; color: #5B21B6; }
+/* ── TABLES ── */
+.table-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1.5px solid var(--border);gap:12px;flex-wrap:wrap}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text2);padding:9px 14px;text-align:left;background:var(--bg);border-bottom:1.5px solid var(--border);white-space:nowrap}
+td{font-size:13px;padding:11px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#FAFBFE}
+.country-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
+.score-pill{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-family:var(--mono);font-size:12px;font-weight:700}
+.score-pill.promotor{background:#D1FAE5;color:#065F46}
+.score-pill.neutro{background:#FEF3C7;color:#92400E}
+.score-pill.detractor{background:#FEE2E2;color:#991B1B}
+.risk-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.03em}
+.risk-critico{background:#FEE2E2;color:#991B1B}
+.risk-alto{background:#FEF3C7;color:#92400E}
+.risk-medio{background:#EDE9FE;color:#5B21B6}
+.risk-sano{background:#D1FAE5;color:#065F46}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.status-respondido{background:#D1FAE5;color:#065F46}
+.status-enviado{background:#DBEAFE;color:#1E40AF}
+.status-bloqueado{background:#FEF3C7;color:#92400E}
+.company-cell{font-weight:500;color:var(--text)}
+.interp-cell{font-size:12px;color:var(--text2);max-width:280px;line-height:1.45}
 
-  /* ─── PANEL IA ─── */
-  .ia-panel {
-    background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
-    border: 1.5px solid rgba(250,52,94,0.3);
-    border-radius: var(--radius);
-    padding: 24px;
-    margin-bottom: 18px;
-    position: relative;
-    overflow: hidden;
-  }
-  .ia-panel::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(250,52,94,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .ia-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: gap; gap: 12px; }
-  .ia-title { color: #fff; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-  .ia-badge { background: rgba(250,52,94,0.2); border: 1px solid rgba(250,52,94,0.4); color: #FA345E; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
-  .ia-desc { color: rgba(255,255,255,0.6); font-size: 12px; margin-bottom: 18px; line-height: 1.5; }
-  .ia-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-  .ia-btn {
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 9px 18px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: all .2s;
-  }
-  .ia-btn-primary { background: var(--brand); color: #fff; }
-  .ia-btn-primary:hover { background: var(--brand-dark); transform: translateY(-1px); }
-  .ia-btn-secondary { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.15); }
-  .ia-btn-secondary:hover { background: rgba(255,255,255,0.15); }
-  .ia-btn-danger { background: rgba(239,68,68,0.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
-  .ia-btn-danger:hover { background: rgba(239,68,68,0.3); }
-  .ia-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-  .ia-result {
-    margin-top: 16px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 18px;
-    color: rgba(255,255,255,0.9);
-    font-size: 13px;
-    line-height: 1.7;
-    white-space: pre-wrap;
-    max-height: 400px;
-    overflow-y: auto;
-  }
-  .ia-result-section { margin-bottom: 14px; }
-  .ia-result h4 { color: var(--brand-light); font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-  .ia-loading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: rgba(255,255,255,0.6);
-    font-size: 13px;
-    margin-top: 16px;
-    padding: 14px 0;
-  }
-  .ia-spinner {
-    width: 18px; height: 18px;
-    border: 2px solid rgba(250,52,94,0.3);
-    border-top-color: var(--brand);
-    border-radius: 50%;
-    animation: spin .8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .ia-error {
-    margin-top: 16px;
-    background: rgba(239,68,68,0.1);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 8px;
-    padding: 12px 16px;
-    color: #FCA5A5;
-    font-size: 12px;
-  }
+/* ── EMPRESA STATS ── */
+.emp-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.emp-stat{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500}
+.emp-stat strong{font-weight:700;font-size:15px}
+.emp-stat.respondido{background:#D1FAE5;color:#065F46}
+.emp-stat.enviado{background:#DBEAFE;color:#1E40AF}
+.emp-stat.bloqueado{background:#FEF3C7;color:#92400E}
 
-  /* ─── PDF BUTTON ─── */
-  .export-btn {
-    font-family: var(--font);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 9px 18px;
-    border-radius: 8px;
-    border: 1.5px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    transition: all .2s;
-  }
-  .export-btn:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-bg); }
-  .export-btn.loading { opacity: 0.7; cursor: wait; }
+/* ── AI PANEL ── */
+.ai-panel{background:linear-gradient(135deg,var(--accent) 0%,#16213E 100%);border-radius:var(--radius);padding:24px;margin-bottom:24px;position:relative;overflow:hidden}
+.ai-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 15% 50%,rgba(250,52,94,.12) 0%,transparent 65%);pointer-events:none}
+.ai-panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.ai-title-row{display:flex;align-items:center;gap:10px}
+.ai-title{color:#fff;font-size:15px;font-weight:600}
+.ai-badge{background:rgba(250,52,94,.2);border:1px solid rgba(250,52,94,.4);color:#FA345E;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.ai-desc{color:rgba(255,255,255,.55);font-size:12px;line-height:1.55;margin-top:6px}
+.ai-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
-  /* ─── RADAR ALERTAS ─── */
-  .alert-list { display: flex; flex-direction: column; gap: 10px; }
-  .alert-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    font-size: 13px;
-    border-left: 3px solid transparent;
-  }
-  .alert-item.critical { background: #FFF5F5; border-left-color: var(--danger); }
-  .alert-item.warning { background: #FFFBEB; border-left-color: var(--warning); }
-  .alert-item.info { background: #EFF6FF; border-left-color: var(--info); }
-  .alert-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
-  .alert-content { flex: 1; }
-  .alert-title { font-weight: 600; color: var(--text); margin-bottom: 2px; }
-  .alert-desc { color: var(--text2); font-size: 12px; line-height: 1.4; }
+/* Result markdown */
+.ai-result{display:none}
+.ai-result.visible{display:block;margin-top:4px}
+.ai-result-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius-sm);padding:18px 20px;font-size:13px;color:rgba(255,255,255,.82);line-height:1.7;white-space:pre-wrap;font-family:var(--font)}
+.ai-result-box strong{color:#fff;font-weight:700}
 
-  /* ─── LOADING SKELETON ─── */
-  .skeleton { background: linear-gradient(90deg, #F0F0F5 25%, #E8E8EE 50%, #F0F0F5 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 6px; }
-  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-  .sk-kpi { height: 80px; border-radius: var(--radius); }
-  .sk-chart { height: 200px; border-radius: var(--radius); }
-
-  /* ─── COUNTRY FLAGS ─── */
-  .flag { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); }
-  .flag-icon { font-size: 16px; }
-
-  /* ─── EMPTY STATE ─── */
-  .empty-state { text-align: center; padding: 48px 24px; color: var(--text2); }
-  .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
-  .empty-text { font-size: 14px; }
-
-  /* ─── ACTIONS CARDS ─── */
-  .action-card {
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-  }
-  .action-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .action-card-title { font-size: 13px; font-weight: 600; color: var(--text); }
-  .action-steps { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-  .action-steps li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text2); line-height: 1.4; }
-  .action-steps li::before { content: '→'; color: var(--brand); font-weight: 700; flex-shrink: 0; }
-
-  @media (max-width: 768px) {
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .col-span-2 { grid-column: span 1; }
-    .main { padding: 16px; }
-  }
-
-  /* ─── PROGRESS BAR ─── */
-  .progress-bar { height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; margin-top: 6px; }
-  .progress-fill { height: 100%; border-radius: 10px; transition: width .8s cubic-bezier(0.4,0,0.2,1); }
-
-  /* ─── PDF MODAL ─── */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000;
-    opacity: 0; pointer-events: none;
-    transition: opacity .3s;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px;
-    max-width: 540px;
-    width: 90%;
-    box-shadow: var(--shadow-lg);
-    transform: translateY(20px);
-    transition: transform .3s;
-  }
-  .modal-overlay.open .modal { transform: translateY(0); }
-  .modal-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 9px; }
-  .modal-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
-  .modal-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .modal-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all .2s;
-    background: var(--bg);
-  }
-  .modal-option:hover { border-color: var(--brand); background: var(--brand-bg); }
-  .modal-option.selected { border-color: var(--brand); background: var(--brand-bg); }
-  .modal-option-icon { font-size: 24px; }
-  .modal-option-content { flex: 1; }
-  .modal-option-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-  .modal-option-desc { font-size: 12px; color: var(--text2); }
-  .modal-footer { display: flex; gap: 10px; justify-content: flex-end; }
-  .btn-outline { font-family: var(--font); font-size: 13px; font-weight: 500; padding: 9px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--card); color: var(--text2); cursor: pointer; }
-  .btn-primary { font-family: var(--font); font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 8px; border: none; background: var(--brand); color: #fff; cursor: pointer; display: flex; align-items: center; gap: 7px; }
-  .btn-primary:disabled { opacity: 0.5; cursor: wait; }
-  .modal-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
-
-  /* ─── IA REPORT SECTION ─── */
-  .report-section { color: rgba(255,255,255,0.9); }
-  .report-section + .report-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); }
-  .report-section h4 { font-size: 13px; font-weight: 600; color: var(--brand-light); margin-bottom: 8px; }
-  .report-section p, .report-section li { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.6; }
-  .report-section ul { padding-left: 16px; display: flex; flex-direction: column; gap: 4px; }
-  .critical-client-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; margin-bottom: 8px; }
-  .critical-client-name { font-size: 13px; font-weight: 600; color: #FCA5A5; flex: 1; }
-  .critical-client-score { font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,0.7); }
-  .critical-client-risk { font-size: 11px; color: #FCA5A5; background: rgba(239,68,68,0.2); padding: 2px 8px; border-radius: 20px; }
+/* ── MISC ── */
+.section{margin-bottom:32px}
+.empty-state{text-align:center;padding:36px 20px;color:var(--text3);font-size:13px}
+.skeleton{background:linear-gradient(90deg,#F3F4F6 25%,#E5E7EB 50%,#F3F4F6 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
+@keyframes shimmer{to{background-position:-200% 0}}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;border-top:1px solid var(--border)}
+@media(max-width:600px){.topbar{padding:0 14px}.main{padding:18px 14px 60px}.kpi-value{font-size:26px}}
 </style>
 </head>
 <body>
+<div id="loading-bar"></div>
 
-<!-- ═══ HEADER ═══ -->
-<header class="header">
-  <div class="header-left">
-    <a class="logo-wrap" href="#">
-      <!-- Logo corazón Apprecio Beat -->
-      <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#FF6B8A"/>
-            <stop offset="100%" style="stop-color:#FA345E"/>
-          </linearGradient>
-        </defs>
-        <!-- Corazón -->
-        <path d="M50 82 C50 82 15 58 15 35 C15 23 24 14 35 14 C42 14 48 18 50 22 C52 18 58 14 65 14 C76 14 85 23 85 35 C85 58 50 82 50 82Z" fill="url(#heartGrad)" opacity="0.15"/>
-        <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="url(#heartGrad)"/>
-        <!-- Línea de pulso dentro del corazón -->
-        <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-      </svg>
-      <span class="logo-text">apprecio<span>Beat</span></span>
-    </a>
-    <span class="header-badge">CX Dashboard</span>
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="logo-wrap" href="#">
+    <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   style="stop-color:#FF6B8A"/>
+          <stop offset="100%" style="stop-color:#FA345E"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 82C50 82 15 58 15 35C15 23 24 14 35 14C42 14 48 18 50 22C52 18 58 14 65 14C76 14 85 23 85 35C85 58 50 82 50 82Z" fill="url(#hg)" opacity=".15"/>
+      <path d="M50 78C50 78 17 55 17 34C17 23 25.5 15.5 35.5 15.5C42 15.5 47.5 19 50 23C52.5 19 58 15.5 64.5 15.5C74.5 15.5 83 23 83 34C83 55 50 78 50 78Z" fill="url(#hg)"/>
+      <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+    </svg>
+    <span class="logo-text">apprecio<span>Beat</span></span>
+  </a>
+  <span class="header-badge">CX Dashboard</span>
+  <div class="filter-divider"></div>
+  <div class="topbar-filters">
+    <span class="filter-label">País</span>
+    <select id="filter-country"><option value="">Todos los países</option></select>
+    <div class="filter-divider"></div>
+    <span class="filter-label">Período</span>
+    <select id="filter-period"><option value="">Todos los meses</option></select>
+    <div class="filter-divider"></div>
+    <span class="filter-label">Riesgo</span>
+    <select id="filter-risk">
+      <option value="">Todos los niveles</option>
+      <option value="Crítico">Crítico</option>
+      <option value="Alto">Alto</option>
+      <option value="Medio">Medio</option>
+      <option value="Sano">Sano</option>
+    </select>
   </div>
-  <div class="header-right">
-    <button class="export-btn" id="btnExportarPDF" onclick="abrirModalPDF()">
-      <span>📄</span> Exportar Reporte PDF
-    </button>
-  </div>
+  <button class="btn btn-ghost" onclick="refreshData()" style="margin-left:auto;">↻ Actualizar</button>
 </header>
 
-<!-- ═══ FILTERS BAR ═══ -->
-<div class="filters-bar">
-  <div class="filter-group">
-    <span class="filter-label">País</span>
-    <select class="filter-select" id="filtroPais" onchange="aplicarFiltros()">
-      <option value="">Todos los países</option>
-    </select>
-  </div>
-  <div class="filter-divider"></div>
-  <div class="filter-group">
-    <span class="filter-label">Período</span>
-    <select class="filter-select" id="filtroMes" onchange="aplicarFiltros()">
-      <option value="">Todos los meses</option>
-    </select>
-  </div>
-  <div class="filter-divider"></div>
-  <div class="filter-group">
-    <span class="filter-label">Empresa</span>
-    <select class="filter-select" id="filtroEmpresa" onchange="aplicarFiltros()">
-      <option value="">Todas las empresas</option>
-    </select>
-  </div>
-</div>
-
-<!-- ═══ TABS ═══ -->
-<div class="tabs-bar">
-  <button class="tab-btn active" onclick="cambiarTab(0)" id="tab0"><span class="tab-icon">📊</span> NPS</button>
-  <button class="tab-btn" onclick="cambiarTab(1)" id="tab1"><span class="tab-icon">⭐</span> CSAT Post Abono</button>
-  <button class="tab-btn" onclick="cambiarTab(2)" id="tab2"><span class="tab-icon">🤝</span> CSAT Post Reunión</button>
-  <button class="tab-btn" onclick="cambiarTab(3)" id="tab3"><span class="tab-icon">⚠️</span> Alertas Críticas</button>
-</div>
-
-<!-- ═══ MAIN ═══ -->
 <main class="main">
+  <div id="status-banner" class="status-loading"></div>
 
-  <!-- ── TAB: NPS ── -->
-  <div class="section active" id="sec0">
-    <!-- Panel IA con análisis de promotores/detractores/neutros -->
-    <div class="ia-panel">
-      <div class="ia-header">
-        <div class="ia-title">
-          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
-            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Apprecio Beat IA — Análisis NPS
-        </div>
-        <span class="ia-badge">⚡ Powered by Claude</span>
-      </div>
-      <p class="ia-desc">La IA analiza los datos filtrados y entrega un reporte ejecutivo: casos más frecuentes, segmentación de promotores/detractores/neutros, clientes críticos con mayor riesgo de churn y acciones prioritarias.</p>
-      <div class="ia-actions">
-        <button class="ia-btn ia-btn-primary" id="btnIAnps" onclick="ejecutarAnalisisIA('nps')">
-          <span>🔍</span> Analizar NPS con IA
-        </button>
-        <button class="ia-btn ia-btn-secondary" id="btnIAnps2" onclick="ejecutarAnalisisDetractores('nps')">
-          <span>🚨</span> Ver clientes en riesgo
-        </button>
-        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('nps')">
-          <span>✕</span> Limpiar
-        </button>
-      </div>
-      <div id="ia-loading-nps" style="display:none" class="ia-loading">
-        <div class="ia-spinner"></div>
-        <span id="ia-loading-text-nps">Analizando respuestas NPS...</span>
-      </div>
-      <div id="ia-error-nps" style="display:none" class="ia-error"></div>
-      <div id="ia-result-nps" style="display:none" class="ia-result"></div>
-    </div>
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('tab-nps',this)">📊 NPS</button>
+    <button class="tab-btn"        onclick="showTab('tab-empresas',this)">🏢 Encuestas enviadas</button>
+  </div>
 
-    <div class="kpi-row" id="kpi-nps">
-      <div class="kpi-card" style="--card-accent: var(--brand)">
-        <div class="kpi-label">Score NPS</div>
-        <div class="kpi-value brand" id="v-nps-score">—</div>
-        <div class="kpi-sub">Escala -100 a +100</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--success)">
-        <div class="kpi-label">Promotores</div>
-        <div class="kpi-value success" id="v-nps-pro">—</div>
-        <div class="kpi-sub" id="v-nps-pro-pct">Nota 9-10</div>
-        <div class="progress-bar"><div class="progress-fill" id="bar-pro" style="background:var(--success); width:0%"></div></div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--warning)">
-        <div class="kpi-label">Neutros</div>
-        <div class="kpi-value warning" id="v-nps-neu">—</div>
-        <div class="kpi-sub" id="v-nps-neu-pct">Nota 7-8</div>
-        <div class="progress-bar"><div class="progress-fill" id="bar-neu" style="background:var(--warning); width:0%"></div></div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--danger)">
-        <div class="kpi-label">Detractores</div>
-        <div class="kpi-value danger" id="v-nps-det">—</div>
-        <div class="kpi-sub" id="v-nps-det-pct">Nota 0-6</div>
-        <div class="progress-bar"><div class="progress-fill" id="bar-det" style="background:var(--danger); width:0%"></div></div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--info)">
-        <div class="kpi-label">Total Respuestas</div>
-        <div class="kpi-value" id="v-nps-total">—</div>
-        <div class="kpi-sub">En el período</div>
+  <!-- ══════════ TAB NPS ══════════ -->
+  <div id="tab-nps">
+
+    <!-- KPIs -->
+    <div class="section">
+      <div class="section-title">Resumen NPS</div>
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--brand)"></div><div class="kpi-body"><div class="kpi-label">Score NPS</div><div class="kpi-value brand" id="kpi-nps">—</div><div class="kpi-sub">Escala -100 a +100</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--success)"></div><div class="kpi-body"><div class="kpi-label">Promotores</div><div class="kpi-value success" id="kpi-pro">—</div><div class="kpi-sub">Nota 9–10</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--warning)"></div><div class="kpi-body"><div class="kpi-label">Neutros</div><div class="kpi-value warning" id="kpi-neu">—</div><div class="kpi-sub">Nota 7–8</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--danger)"></div><div class="kpi-body"><div class="kpi-label">Detractores</div><div class="kpi-value danger" id="kpi-det">—</div><div class="kpi-sub">Nota 0–6</div></div></div>
+        <div class="kpi-card"><div class="kpi-top-stripe" style="--card-accent:var(--info)"></div><div class="kpi-body"><div class="kpi-label">Total Respuestas</div><div class="kpi-value info" id="kpi-tot">—</div><div class="kpi-sub">En el período</div></div></div>
       </div>
     </div>
 
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-header">
+    <!-- CHARTS -->
+    <div class="charts-grid section">
+      <div class="chart-card"><div class="card-header"><div class="card-title">📈 Distribución NPS</div><div class="card-subtitle">Promotores · Neutros · Detractores</div></div><div class="chart-wrap"><canvas id="chart-dist"></canvas></div></div>
+      <div class="chart-card"><div class="card-header"><div class="card-title">🌎 NPS por País</div><div class="card-subtitle">Score calculado por región</div></div><div class="chart-wrap"><canvas id="chart-pais"></canvas></div></div>
+    </div>
+
+    <!-- IA PANEL -->
+    <div class="section">
+      <div class="section-title">Análisis con IA · n8n + Ollama</div>
+      <div class="ai-panel">
+        <div class="ai-panel-top">
           <div>
-            <div class="card-title"><span class="card-title-icon">📈</span> Evolución NPS por Mes</div>
-            <div class="card-subtitle">Score mensual acumulado</div>
+            <div class="ai-title-row">
+              <span style="font-size:20px">🤖</span>
+              <span class="ai-title">Apprecio Beat IA — Reporte Preguntas Abiertas</span>
+              <span class="ai-badge">⚡ Powered by n8n · Ollama</span>
+            </div>
+            <div class="ai-desc">Envía las interpretaciones filtradas al flujo n8n. La IA analiza los patrones cualitativos y genera un resumen ejecutivo de positivos, neutros y negativos en el período seleccionado.</div>
+          </div>
+          <div class="ai-actions">
+            <button class="btn btn-brand" id="btn-ai" onclick="runAI()">✨ Generar Reporte</button>
+            <button class="btn btn-ghost" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.15)" onclick="clearAI()">✕ Limpiar</button>
           </div>
         </div>
-        <div class="chart-wrap" style="height:220px"><canvas id="chart-nps-trend"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title"><span class="card-title-icon">🌎</span> NPS por País</div>
-            <div class="card-subtitle">Distribución geográfica</div>
-          </div>
-        </div>
-        <div class="chart-wrap" style="height:220px"><canvas id="chart-nps-pais"></canvas></div>
+        <div id="ai-result" class="ai-result"></div>
       </div>
     </div>
 
-    <!-- Tabla detractores críticos -->
-    <div class="card" style="margin-bottom:18px">
-      <div class="card-header">
-        <div>
-          <div class="card-title"><span class="card-title-icon">🚨</span> Detractores Críticos — Riesgo de Churn</div>
-          <div class="card-subtitle">Clientes con mayor riesgo de dejar Apprecio Beat · Ordenados por prioridad</div>
-        </div>
-      </div>
-      <div class="table-wrap" id="tabla-detractores">
-        <div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Cargando datos...</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── TAB: CSAT POST ABONO ── -->
-  <div class="section" id="sec1">
-    <div class="ia-panel">
-      <div class="ia-header">
-        <div class="ia-title">
-          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
-            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Apprecio Beat IA — Análisis CSAT Post Abono
-        </div>
-        <span class="ia-badge">⚡ Powered by Claude</span>
-      </div>
-      <p class="ia-desc">Análisis de satisfacción post-abono: patrones más frecuentes en respuestas detractoras, promotoras y neutras. Detecta qué aspectos de la plataforma generan mayor fricción.</p>
-      <div class="ia-actions">
-        <button class="ia-btn ia-btn-primary" onclick="ejecutarAnalisisIA('csat_abono')">
-          <span>🔍</span> Analizar CSAT con IA
-        </button>
-        <button class="ia-btn ia-btn-secondary" onclick="ejecutarAnalisisDetractores('csat_abono')">
-          <span>🚨</span> Ver clientes en riesgo
-        </button>
-        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('csat_abono')">
-          <span>✕</span> Limpiar
-        </button>
-      </div>
-      <div id="ia-loading-csat_abono" style="display:none" class="ia-loading">
-        <div class="ia-spinner"></div>
-        <span>Analizando respuestas CSAT Post Abono...</span>
-      </div>
-      <div id="ia-error-csat_abono" style="display:none" class="ia-error"></div>
-      <div id="ia-result-csat_abono" style="display:none" class="ia-result"></div>
-    </div>
-
-    <div class="kpi-row">
-      <div class="kpi-card" style="--card-accent: var(--brand)">
-        <div class="kpi-label">CSAT Score</div>
-        <div class="kpi-value brand" id="v-csa-score">—</div>
-        <div class="kpi-sub">% satisfechos (≥9)</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--success)">
-        <div class="kpi-label">Promotores</div>
-        <div class="kpi-value success" id="v-csa-pro">—</div>
-        <div class="kpi-sub">Nota 9-10</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--warning)">
-        <div class="kpi-label">Neutros</div>
-        <div class="kpi-value warning" id="v-csa-neu">—</div>
-        <div class="kpi-sub">Nota 7-8</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--danger)">
-        <div class="kpi-label">Detractores</div>
-        <div class="kpi-value danger" id="v-csa-det">—</div>
-        <div class="kpi-sub">Nota 0-6</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Total</div>
-        <div class="kpi-value" id="v-csa-total">—</div>
-        <div class="kpi-sub">Respuestas</div>
+    <!-- DETRACTORES TABLE -->
+    <div class="section">
+      <div class="table-card">
+        <div class="table-head"><div class="card-title">🚨 Detractores Críticos — Riesgo de Churn</div><span id="det-count" style="font-size:12px;color:var(--text3)"></span></div>
+        <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-det"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
       </div>
     </div>
 
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">📈</span> Evolución CSAT Post Abono</div>
-        <div class="chart-wrap" style="height:220px"><canvas id="chart-csa-trend"></canvas></div>
+    <!-- ALL TABLE -->
+    <div class="section">
+      <div class="table-card">
+        <div class="table-head"><div class="card-title">📋 Todas las respuestas NPS</div><span id="all-count" style="font-size:12px;color:var(--text3)"></span></div>
+        <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>NPS</th><th>Permanencia</th><th>Riesgo</th><th>Interpretación</th><th>Fecha</th></tr></thead><tbody id="tbody-all"><tr><td colspan="7"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
       </div>
-      <div class="card">
-        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">🌎</span> Por País</div>
-        <div class="chart-wrap" style="height:220px"><canvas id="chart-csa-pais"></canvas></div>
-      </div>
+    </div>
+
+  </div><!-- /tab-nps -->
+
+  <!-- ══════════ TAB EMPRESAS ══════════ -->
+  <div id="tab-empresas" style="display:none">
+    <div class="section">
+      <div class="section-title">Estado de encuestas enviadas</div>
+      <div class="emp-summary" id="emp-summary"><div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div><div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div><div class="skeleton" style="width:150px;height:38px;border-radius:8px"></div></div>
+    </div>
+    <div class="table-card">
+      <div class="table-head"><div class="card-title">🏢 Empresas · NPS enviado</div><span id="emp-count" style="font-size:12px;color:var(--text3)"></span></div>
+      <div class="table-scroll"><table><thead><tr><th>Empresa</th><th>País</th><th>Abonos trim.</th><th>Estado</th><th>Fecha generado</th><th>Último abono</th></tr></thead><tbody id="tbody-emp"><tr><td colspan="6"><div class="skeleton" style="height:14px;margin:8px 0"></div></td></tr></tbody></table></div>
     </div>
   </div>
-
-  <!-- ── TAB: CSAT POST REUNIÓN ── -->
-  <div class="section" id="sec2">
-    <div class="ia-panel">
-      <div class="ia-header">
-        <div class="ia-title">
-          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
-            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Apprecio Beat IA — Análisis CSAT Post Reunión
-        </div>
-        <span class="ia-badge">⚡ Powered by Claude</span>
-      </div>
-      <p class="ia-desc">Análisis de satisfacción post-reunión comercial: frecuencia de quejas, elogios y observaciones neutras. Identifica qué aspectos del equipo KAM generan mejor o peor experiencia.</p>
-      <div class="ia-actions">
-        <button class="ia-btn ia-btn-primary" onclick="ejecutarAnalisisIA('csat_reunion')">
-          <span>🔍</span> Analizar CSAT con IA
-        </button>
-        <button class="ia-btn ia-btn-secondary" onclick="ejecutarAnalisisDetractores('csat_reunion')">
-          <span>🚨</span> Ver clientes en riesgo
-        </button>
-        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('csat_reunion')">
-          <span>✕</span> Limpiar
-        </button>
-      </div>
-      <div id="ia-loading-csat_reunion" style="display:none" class="ia-loading">
-        <div class="ia-spinner"></div>
-        <span>Analizando respuestas CSAT Post Reunión...</span>
-      </div>
-      <div id="ia-error-csat_reunion" style="display:none" class="ia-error"></div>
-      <div id="ia-result-csat_reunion" style="display:none" class="ia-result"></div>
-    </div>
-
-    <div class="kpi-row">
-      <div class="kpi-card" style="--card-accent: var(--brand)">
-        <div class="kpi-label">CSAT Score</div>
-        <div class="kpi-value brand" id="v-csr-score">—</div>
-        <div class="kpi-sub">% satisfechos (≥9)</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--success)">
-        <div class="kpi-label">Promotores</div>
-        <div class="kpi-value success" id="v-csr-pro">—</div>
-        <div class="kpi-sub">Nota 9-10</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--warning)">
-        <div class="kpi-label">Neutros</div>
-        <div class="kpi-value warning" id="v-csr-neu">—</div>
-        <div class="kpi-sub">Nota 7-8</div>
-      </div>
-      <div class="kpi-card" style="--card-accent: var(--danger)">
-        <div class="kpi-label">Detractores</div>
-        <div class="kpi-value danger" id="v-csr-det">—</div>
-        <div class="kpi-sub">Nota 0-6</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Total</div>
-        <div class="kpi-value" id="v-csr-total">—</div>
-        <div class="kpi-sub">Respuestas</div>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">📈</span> Evolución CSAT Post Reunión</div>
-        <div class="chart-wrap" style="height:220px"><canvas id="chart-csr-trend"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title" style="margin-bottom:16px"><span class="card-title-icon">🌎</span> Por País</div>
-        <div class="chart-wrap" style="height:220px"><canvas id="chart-csr-pais"></canvas></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── TAB: ALERTAS ── -->
-  <div class="section" id="sec3">
-    <div class="ia-panel">
-      <div class="ia-header">
-        <div class="ia-title">
-          <svg width="22" height="22" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
-            <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Apprecio Beat IA — Radar de Alertas
-        </div>
-        <span class="ia-badge">⚡ Powered by Claude</span>
-      </div>
-      <p class="ia-desc">Análisis integral de todos los módulos. La IA identifica los clientes más críticos que podrían dejar de usar Apprecio Beat, con nivel de riesgo y acciones prioritarias para el equipo KAM.</p>
-      <div class="ia-actions">
-        <button class="ia-btn ia-btn-primary" onclick="ejecutarRadarCompleto()">
-          <span>🎯</span> Ejecutar Radar Completo
-        </button>
-        <button class="ia-btn ia-btn-danger" onclick="ejecutarChurnIA()">
-          <span>⛔</span> Clientes en riesgo de salida
-        </button>
-        <button class="ia-btn ia-btn-secondary" onclick="limpiarIA('alertas')">
-          <span>✕</span> Limpiar
-        </button>
-      </div>
-      <div id="ia-loading-alertas" style="display:none" class="ia-loading">
-        <div class="ia-spinner"></div>
-        <span id="ia-loading-text-alertas">Ejecutando radar completo...</span>
-      </div>
-      <div id="ia-error-alertas" style="display:none" class="ia-error"></div>
-      <div id="ia-result-alertas" style="display:none" class="ia-result"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title"><span class="card-title-icon">⚠️</span> Alertas Críticas del Sistema</div>
-      </div>
-      <div class="alert-list" id="lista-alertas">
-        <div class="empty-state"><div class="empty-icon">⏳</div><div class="empty-text">Cargando alertas...</div></div>
-      </div>
-    </div>
-  </div>
-
 </main>
 
-<!-- ═══ MODAL PDF ═══ -->
-<div class="modal-overlay" id="modalPDF">
-  <div class="modal">
-    <div class="modal-title">
-      <svg width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
-        <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Exportar Reporte Apprecio Beat
-    </div>
-    <p class="modal-desc">La IA analiza todos los datos del período seleccionado y genera un reporte ejecutivo inteligente: frecuencia de casos, segmentación completa y clientes críticos.</p>
-    <div class="modal-options">
-      <div class="modal-option selected" id="opt-ejecutivo" onclick="seleccionarOpcion('ejecutivo')">
-        <span class="modal-option-icon">📊</span>
-        <div class="modal-option-content">
-          <div class="modal-option-title">Resumen Ejecutivo IA</div>
-          <div class="modal-option-desc">Análisis de casos frecuentes, promotores/neutros/detractores y tendencias clave. Sin acciones detalladas.</div>
-        </div>
-      </div>
-      <div class="modal-option" id="opt-completo" onclick="seleccionarOpcion('completo')">
-        <span class="modal-option-icon">📋</span>
-        <div class="modal-option-content">
-          <div class="modal-option-title">Reporte Completo con Acciones</div>
-          <div class="modal-option-desc">Incluye acciones recomendadas por cliente, plan de recuperación de detractores y mapa de churn.</div>
-        </div>
-      </div>
-      <div class="modal-option" id="opt-churn" onclick="seleccionarOpcion('churn')">
-        <span class="modal-option-icon">🚨</span>
-        <div class="modal-option-content">
-          <div class="modal-option-title">Reporte de Riesgo de Churn</div>
-          <div class="modal-option-desc">Enfocado en los clientes críticos con mayor probabilidad de dejar Apprecio Beat. Urgente para KAM.</div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-outline" onclick="cerrarModalPDF()">Cancelar</button>
-      <button class="btn-primary" id="btnGenerarPDF" onclick="generarReportePDF()">
-        <span>⚡</span> Generar con IA
-      </button>
-    </div>
-  </div>
-</div>
+<footer>APPRECIO BEAT · CX DASHBOARD · <span id="last-update">—</span></footer>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG — ajusta estas URLs
-// ═══════════════════════════════════════════════════════
-const CONFIG = {
-  // Webhook n8n original (para análisis generales via Ollama)
-  N8N_WEBHOOK: 'https://TU-N8N-DOMINIO/webhook/apprecio-cx-analisis',
-  
-  // API Anthropic Claude (análisis IA directa en el dashboard)
-  CLAUDE_API: 'https://api.anthropic.com/v1/messages',
-  CLAUDE_MODEL: 'claude-sonnet-4-20250514',
-  
-  // Google Sheets (igual que versión anterior)
-  SHEETS: {
-    NPS:         'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:csv&sheet=Hoja1',
-    CSAT_ABONO:  'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&sheet=Hoja1',
-    CSAT_REUNION:'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:csv&sheet=Hoja1'
+// ══════════════════════════════════════════
+//  CONFIG — webhook n8n embebido
+// ══════════════════════════════════════════
+const N8N_WEBHOOK = 'https://TU-N8N.com/webhook/apprecio-cx-analisis';
+// ↑ Cambia esta URL por la de tu instancia n8n
+
+const SHEET_NPS      = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:csv&gid=749991184';
+const SHEET_EMPRESAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:csv&gid=527249897';
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let npsData=[], empresaData=[], filteredNps=[];
+let chartDist=null, chartPais=null;
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', refreshData);
+
+function setProgress(p){
+  const b=document.getElementById('loading-bar');
+  b.style.width=p+'%';
+  if(p>=100) setTimeout(()=>b.style.width='0%',700);
+}
+function showBanner(msg,type){
+  const el=document.getElementById('status-banner');
+  el.className='status-'+type; el.innerHTML=msg; el.style.display='flex';
+  if(type!=='loading') setTimeout(()=>el.style.display='none',4000);
+}
+
+// ══════════════════════════════════════════
+//  CSV FETCH
+// ══════════════════════════════════════════
+async function fetchCSV(url){
+  const res=await fetch(url);
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  const text=await res.text();
+  return new Promise((resolve,reject)=>{
+    Papa.parse(text,{header:true,skipEmptyLines:true,complete:r=>resolve(r.data),error:e=>reject(e)});
+  });
+}
+
+// ══════════════════════════════════════════
+//  REFRESH
+// ══════════════════════════════════════════
+async function refreshData(){
+  showBanner('<span class="spinner"></span>&nbsp; Cargando datos desde Google Sheets...','loading');
+  setProgress(20);
+  try{
+    const [nps,emp]=await Promise.all([fetchCSV(SHEET_NPS),fetchCSV(SHEET_EMPRESAS)]);
+    setProgress(75);
+    npsData=nps.filter(r=>r['CLIENTE']?.trim());
+    empresaData=emp.filter(r=>r['empresa_id']?.trim());
+    buildFilters();
+    applyFilters();
+    renderEmpresasTab();
+    setProgress(100);
+    document.getElementById('last-update').textContent='Actualizado: '+new Date().toLocaleString('es-CL');
+    showBanner('✓ Datos cargados correctamente','success');
+  }catch(e){
+    setProgress(100);
+    showBanner('⚠ Error al cargar datos: '+e.message,'error');
   }
-};
-
-// ═══════════════════════════════════════════════════════
-// ESTADO GLOBAL
-// ═══════════════════════════════════════════════════════
-let DATA = { nps: [], csat_abono: [], csat_reunion: [] };
-let DATA_FILTRADA = { nps: [], csat_abono: [], csat_reunion: [] };
-let TAB_ACTUAL = 0;
-let CHARTS = {};
-let OPCION_PDF = 'ejecutivo';
-
-// ── Parsear CSV ──
-function parseCSV(txt) {
-  const lines = txt.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim().toLowerCase());
-  return lines.slice(1).map(line => {
-    const vals = line.match(/(".*?"|[^,]+)(?=,|$)/g) || [];
-    const obj = {};
-    headers.forEach((h, i) => {
-      obj[h] = (vals[i] || '').replace(/"/g,'').trim();
-    });
-    return obj;
-  }).filter(r => Object.values(r).some(v => v));
 }
 
-// ── Cargar datos ──
-async function cargarDatos() {
-  // Datos demo si no hay conexión a sheets
-  const demNPS = generarDemoNPS(80);
-  const demCSAT_A = generarDemoCSAT(60);
-  const demCSAT_R = generarDemoCSAT(45);
-  DATA = { nps: demNPS, csat_abono: demCSAT_A, csat_reunion: demCSAT_R };
-  popularFiltros();
-  aplicarFiltros();
+// ══════════════════════════════════════════
+//  FILTERS
+// ══════════════════════════════════════════
+function buildFilters(){
+  const countries=[...new Set(npsData.map(r=>r['PAÍS']).filter(Boolean))].sort();
+  const cEl=document.getElementById('filter-country');
+  cEl.innerHTML='<option value="">Todos los países</option>'+
+    countries.map(c=>`<option value="${c}">${flag(c)} ${c}</option>`).join('');
+
+  const periods=[...new Set(npsData.map(r=>{
+    const d=parseDate(r['FECHA']);
+    return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`:null;
+  }).filter(Boolean))].sort().reverse();
+  const pEl=document.getElementById('filter-period');
+  pEl.innerHTML='<option value="">Todos los meses</option>'+
+    periods.map(p=>{const[y,m]=p.split('-');return`<option value="${p}">${monthName(+m)} ${y}</option>`;}).join('');
+
+  ['filter-country','filter-period','filter-risk'].forEach(id=>
+    document.getElementById(id).addEventListener('change',applyFilters));
 }
 
-function generarDemoNPS(n) {
-  const empresas = ['TechCorp SA','Retail Group','Banca Plus','Seguros Max','Retail XYZ','Minería Sur','Logística Fast','Servicios Pro','InnoTech','MegaRetail','Constructora ABC','Salud Total'];
-  const paises = ['Chile','Colombia','México','Perú','Argentina','Costa Rica'];
-  const meses = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08'];
-  const razones_det = [
-    'La plataforma es lenta y tiene muchos errores','No hay soporte técnico adecuado','Los beneficios no son relevantes para nuestros empleados','Difícil de usar, interfaz confusa','Precios muy elevados para lo que ofrece','No cumple con lo prometido en la venta','El equipo de atención no responde a tiempo'];
-  const razones_pro = [
-    'Excelente plataforma, muy fácil de usar','El equipo es muy atento y resolutivo','Los empleados valoran mucho los beneficios','Muy buena relación calidad-precio','Nos ha ayudado a mejorar el clima laboral'];
-  const razones_neu = [
-    'Cumple con lo básico pero podría mejorar','La plataforma funciona bien pero falta más variedad','El soporte es aceptable','Algunos beneficios son buenos, otros no tanto'];
-  return Array.from({length: n}, (_, i) => {
-    const nota = Math.random() < 0.35 ? Math.floor(Math.random()*7) : (Math.random() < 0.45 ? 7+Math.floor(Math.random()*2) : 9+Math.floor(Math.random()*2));
-    const tipo = nota >= 9 ? 'promotor' : nota >= 7 ? 'neutro' : 'detractor';
-    const empresa = empresas[Math.floor(Math.random()*empresas.length)];
-    return {
-      id: i+1,
-      empresa,
-      pais: paises[Math.floor(Math.random()*paises.length)],
-      mes: meses[Math.floor(Math.random()*meses.length)],
-      puntuacion: nota,
-      tipo,
-      razon: tipo === 'detractor' ? razones_det[Math.floor(Math.random()*razones_det.length)] : tipo === 'promotor' ? razones_pro[Math.floor(Math.random()*razones_pro.length)] : razones_neu[Math.floor(Math.random()*razones_neu.length)],
-      contacto: `contacto@${empresa.toLowerCase().replace(/\s/g,'')}.com`
-    };
+function applyFilters(){
+  const country=document.getElementById('filter-country').value;
+  const period=document.getElementById('filter-period').value;
+  const risk=document.getElementById('filter-risk').value;
+  filteredNps=npsData.filter(r=>{
+    if(country&&r['PAÍS']!==country) return false;
+    if(period){const d=parseDate(r['FECHA']);if(!d)return false;if(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`!==period)return false;}
+    if(risk&&r['Nivel de Riesgo']!==risk) return false;
+    return true;
+  });
+  renderKpis(); renderCharts(); renderDetTable(); renderAllTable();
+}
+
+// ══════════════════════════════════════════
+//  KPIs
+// ══════════════════════════════════════════
+function renderKpis(){
+  const n=filteredNps.length;
+  if(!n){['kpi-nps','kpi-pro','kpi-neu','kpi-det','kpi-tot'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
+  const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
+  const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
+  const score=Math.round(((pro-det)/n)*100);
+  document.getElementById('kpi-nps').textContent=(score>0?'+':'')+score;
+  document.getElementById('kpi-pro').textContent=pro;
+  document.getElementById('kpi-neu').textContent=neu;
+  document.getElementById('kpi-det').textContent=det;
+  document.getElementById('kpi-tot').textContent=n;
+}
+
+// ══════════════════════════════════════════
+//  CHARTS
+// ══════════════════════════════════════════
+function renderCharts(){
+  const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
+  const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
+  const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
+  if(chartDist)chartDist.destroy();
+  chartDist=new Chart(document.getElementById('chart-dist').getContext('2d'),{
+    type:'doughnut',
+    data:{labels:['Promotores','Neutros','Detractores'],datasets:[{data:[pro,neu,det],backgroundColor:['#D1FAE5','#FEF3C7','#FEE2E2'],borderColor:['#10B981','#F59E0B','#EF4444'],borderWidth:2,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{color:'#6B7280',font:{family:'DM Sans',size:12},padding:16}}}}
+  });
+  const byC={};
+  filteredNps.forEach(r=>{const c=r['PAÍS']||'N/A',v=+r['NPS (Col G)'];if(!byC[c])byC[c]={p:0,n:0,d:0};if(v>=9)byC[c].p++;else if(v>=7)byC[c].n++;else byC[c].d++;});
+  const cs=Object.keys(byC);
+  const scores=cs.map(c=>{const t=byC[c].p+byC[c].n+byC[c].d;return t?Math.round(((byC[c].p-byC[c].d)/t)*100):0;});
+  if(chartPais)chartPais.destroy();
+  chartPais=new Chart(document.getElementById('chart-pais').getContext('2d'),{
+    type:'bar',
+    data:{labels:cs.map(c=>flag(c)+' '+c),datasets:[{label:'Score NPS',data:scores,backgroundColor:scores.map(v=>v>=50?'rgba(16,185,129,.7)':v>=0?'rgba(245,158,11,.7)':'rgba(239,68,68,.7)'),borderColor:scores.map(v=>v>=50?'#10B981':v>=0?'#F59E0B':'#EF4444'),borderWidth:2,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{family:'DM Sans',size:11}},grid:{color:'#F3F4F6'}},y:{ticks:{color:'#6B7280'},grid:{color:'#F3F4F6'},suggestedMin:-100,suggestedMax:100}}}
   });
 }
 
-function generarDemoCSAT(n) {
-  const empresas = ['TechCorp SA','Retail Group','Banca Plus','Seguros Max','Retail XYZ','Minería Sur','Logística Fast','Servicios Pro','InnoTech','MegaRetail'];
-  const paises = ['Chile','Colombia','México','Perú','Argentina'];
-  const meses = ['2024-01','2024-02','2024-03','2024-04','2024-05','2024-06','2024-07','2024-08'];
-  const comentarios = [
-    'El proceso fue muy fluido','Necesitan mejorar los tiempos de respuesta','Muy satisfecho con la atención','Hubo problemas técnicos durante el proceso','El equipo fue muy profesional','Falta mejor comunicación','Excelente experiencia'];
-  return Array.from({length: n}, (_, i) => {
-    const nota = Math.random() < 0.3 ? Math.floor(Math.random()*7) : (Math.random() < 0.4 ? 7+Math.floor(Math.random()*2) : 9+Math.floor(Math.random()*2));
-    return {
-      id: i+1,
-      empresa: empresas[Math.floor(Math.random()*empresas.length)],
-      pais: paises[Math.floor(Math.random()*paises.length)],
-      mes: meses[Math.floor(Math.random()*meses.length)],
-      puntuacion: nota,
-      tipo: nota >= 9 ? 'promotor' : nota >= 7 ? 'neutro' : 'detractor',
-      comentario: comentarios[Math.floor(Math.random()*comentarios.length)]
-    };
-  });
+// ══════════════════════════════════════════
+//  TABLES
+// ══════════════════════════════════════════
+function rowHTML(r){
+  const nps=+r['NPS (Col G)'],per=+r['INTENCIÓN PERMANENCIA'];
+  const nc=nps>=9?'promotor':nps>=7?'neutro':'detractor';
+  const pc=per>=9?'promotor':per>=7?'neutro':'detractor';
+  const rk=(r['Nivel de Riesgo']||'').toLowerCase().replace(/[íi]/g,'i').replace(/[éê]/g,'e').replace(/[óo]/g,'o');
+  return`<tr><td><span class="company-cell">${x(r['CLIENTE'])}</span></td><td><span class="country-badge">${flag(r['PAÍS'])} ${x(r['PAÍS'])}</span></td><td><span class="score-pill ${nc}">${isNaN(nps)?'—':nps}</span></td><td><span class="score-pill ${pc}">${isNaN(per)?'—':per}</span></td><td><span class="risk-badge risk-${rk}">${x(r['Nivel de Riesgo'])}</span></td><td class="interp-cell">${x(r['Interpretación'])}</td><td style="font-size:12px;color:var(--text3);white-space:nowrap">${x((r['FECHA']||'').split(' ')[0])}</td></tr>`;
+}
+function renderDetTable(){
+  const dets=filteredNps.filter(r=>+r['NPS (Col G)']<=6).sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
+  document.getElementById('det-count').textContent=dets.length+' clientes';
+  document.getElementById('tbody-det').innerHTML=dets.length?dets.map(rowHTML).join(''):'<tr><td colspan="7"><div class="empty-state">Sin detractores en el período seleccionado ✓</div></td></tr>';
+}
+function renderAllTable(){
+  const sorted=[...filteredNps].sort((a,b)=>riskOrd(a['Nivel de Riesgo'])-riskOrd(b['Nivel de Riesgo']));
+  document.getElementById('all-count').textContent=sorted.length+' respuestas';
+  document.getElementById('tbody-all').innerHTML=sorted.length?sorted.map(rowHTML).join(''):'<tr><td colspan="7"><div class="empty-state">Sin datos para los filtros seleccionados</div></td></tr>';
 }
 
-// ── Filtros ──
-function popularFiltros() {
-  const paises = [...new Set([...DATA.nps,...DATA.csat_abono,...DATA.csat_reunion].map(r=>r.pais).filter(Boolean))].sort();
-  const meses  = [...new Set([...DATA.nps,...DATA.csat_abono,...DATA.csat_reunion].map(r=>r.mes).filter(Boolean))].sort();
-  const emps   = [...new Set([...DATA.nps,...DATA.csat_abono,...DATA.csat_reunion].map(r=>r.empresa).filter(Boolean))].sort();
-  const sel = (id, vals) => {
-    const el = document.getElementById(id);
-    const cur = el.value;
-    el.innerHTML = `<option value="">Todos</option>` + vals.map(v=>`<option value="${v}"${v===cur?' selected':''}>${v}</option>`).join('');
-  };
-  sel('filtroPais', paises);
-  sel('filtroMes', meses);
-  sel('filtroEmpresa', emps);
+// ══════════════════════════════════════════
+//  EMPRESAS TAB
+// ══════════════════════════════════════════
+function renderEmpresasTab(){
+  const resp=empresaData.filter(r=>r['Estado de Link']==='RESPONDIDO').length;
+  const env=empresaData.filter(r=>r['Estado de Link']==='CORREO ENVIADO').length;
+  const blq=empresaData.filter(r=>(r['Estado de Link']||'').startsWith('BLOQUEADO')).length;
+  document.getElementById('emp-summary').innerHTML=`<div class="emp-stat respondido">✓ Respondido <strong>${resp}</strong></div><div class="emp-stat enviado">📨 Enviado <strong>${env}</strong></div><div class="emp-stat bloqueado">⚠ Bloqueado <strong>${blq}</strong></div>`;
+  document.getElementById('emp-count').textContent=empresaData.length+' empresas';
+  const sorted=[...empresaData].sort((a,b)=>({'RESPONDIDO':0,'CORREO ENVIADO':1}[a['Estado de Link']]??2)-({'RESPONDIDO':0,'CORREO ENVIADO':1}[b['Estado de Link']]??2));
+  document.getElementById('tbody-emp').innerHTML=sorted.length?sorted.map(r=>{
+    const st=r['Estado de Link']||'';
+    const badge=st==='RESPONDIDO'?'<span class="status-badge status-respondido">✓ Respondido</span>':st==='CORREO ENVIADO'?'<span class="status-badge status-enviado">📨 Enviado</span>':`<span class="status-badge status-bloqueado">⚠ ${x(st)}</span>`;
+    return`<tr><td><span class="company-cell">${x(r['Nombre de la empresa'])}</span></td><td><span class="country-badge">${flag(r['País'])} ${x(r['País'])}</span></td><td style="font-family:var(--mono);font-size:13px">${x(r['Abonos_Trimestre']||'—')}</td><td>${badge}</td><td style="font-size:12px;color:var(--text3)">${x(r['Fecha_generado']||'—')}</td><td style="font-size:12px;color:var(--text3)">${x((r['Fecha_Ultimo_Abono']||'').split(' ')[0]||'—')}</td></tr>`;
+  }).join(''):'<tr><td colspan="6"><div class="empty-state">Sin datos</div></td></tr>';
 }
 
-function aplicarFiltros() {
-  const pais = document.getElementById('filtroPais').value;
-  const mes  = document.getElementById('filtroMes').value;
-  const emp  = document.getElementById('filtroEmpresa').value;
-  const filtrar = (arr) => arr.filter(r =>
-    (!pais || r.pais === pais) &&
-    (!mes  || r.mes  === mes) &&
-    (!emp  || r.empresa === emp)
-  );
-  DATA_FILTRADA = {
-    nps:          filtrar(DATA.nps),
-    csat_abono:   filtrar(DATA.csat_abono),
-    csat_reunion: filtrar(DATA.csat_reunion)
-  };
-  actualizarKPIs();
-  actualizarCharts();
-  actualizarTablaDetractores();
-  actualizarAlertas();
-}
+// ══════════════════════════════════════════
+//  AI — payload adaptado al flujo n8n real
+//  El flujo espera: { modulo, datos }
+//  datos.muestraNPS = array de { empresa, pais, puntuacion, razon }
+// ══════════════════════════════════════════
+async function runAI(){
+  const btn=document.getElementById('btn-ai');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> Analizando...';
 
-// ── KPIs ──
-function calcSegmentos(arr) {
-  let pro=0, neu=0, det=0;
-  arr.forEach(r => {
-    const v = parseFloat(r.puntuacion);
-    if (v >= 9) pro++;
-    else if (v >= 7) neu++;
-    else det++;
-  });
-  return { pro, neu, det, total: arr.length, score: arr.length > 0 ? Math.round((pro-det)/arr.length*100) : 0 };
-}
+  const resultEl=document.getElementById('ai-result');
+  resultEl.className='ai-result visible';
+  resultEl.innerHTML=`<div class="ai-result-box" style="color:rgba(255,255,255,.4);font-style:italic">Enviando ${filteredNps.length} respuestas al flujo n8n · Ollama...</div>`;
 
-function actualizarKPIs() {
-  const n = calcSegmentos(DATA_FILTRADA.nps);
-  const a = calcSegmentos(DATA_FILTRADA.csat_abono);
-  const r = calcSegmentos(DATA_FILTRADA.csat_reunion);
-  const pct = (v, t) => t > 0 ? `${Math.round(v/t*100)}%` : '—';
+  // Construir muestraNPS en el formato que espera el nodo "Preparar Prompt CX"
+  const muestraNPS=filteredNps.map(r=>({
+    empresa:   r['CLIENTE']||'',
+    pais:      r['PAÍS']||'',
+    puntuacion:r['NPS (Col G)']||'',
+    permanencia:r['INTENCIÓN PERMANENCIA']||'',
+    riesgo:    r['Nivel de Riesgo']||'',
+    razon:     r['Interpretación']||''   // el nodo usa r.razon para comentarios cualitativos
+  }));
 
-  // NPS
-  document.getElementById('v-nps-score').textContent = n.total > 0 ? n.score : '—';
-  document.getElementById('v-nps-pro').textContent = n.pro;
-  document.getElementById('v-nps-neu').textContent = n.neu;
-  document.getElementById('v-nps-det').textContent = n.det;
-  document.getElementById('v-nps-total').textContent = n.total;
-  document.getElementById('v-nps-pro-pct').textContent = `Nota 9-10 · ${pct(n.pro, n.total)}`;
-  document.getElementById('v-nps-neu-pct').textContent = `Nota 7-8 · ${pct(n.neu, n.total)}`;
-  document.getElementById('v-nps-det-pct').textContent = `Nota 0-6 · ${pct(n.det, n.total)}`;
-  if (n.total > 0) {
-    document.getElementById('bar-pro').style.width = pct(n.pro, n.total);
-    document.getElementById('bar-neu').style.width = pct(n.neu, n.total);
-    document.getElementById('bar-det').style.width = pct(n.det, n.total);
-  }
+  const pro=filteredNps.filter(r=>+r['NPS (Col G)']>=9).length;
+  const neu=filteredNps.filter(r=>{const v=+r['NPS (Col G)'];return v>=7&&v<=8;}).length;
+  const det=filteredNps.filter(r=>+r['NPS (Col G)']<=6).length;
 
-  // CSAT Abono
-  document.getElementById('v-csa-score').textContent = a.total > 0 ? pct(a.pro, a.total) : '—';
-  document.getElementById('v-csa-pro').textContent = a.pro;
-  document.getElementById('v-csa-neu').textContent = a.neu;
-  document.getElementById('v-csa-det').textContent = a.det;
-  document.getElementById('v-csa-total').textContent = a.total;
-
-  // CSAT Reunión
-  document.getElementById('v-csr-score').textContent = r.total > 0 ? pct(r.pro, r.total) : '—';
-  document.getElementById('v-csr-pro').textContent = r.pro;
-  document.getElementById('v-csr-neu').textContent = r.neu;
-  document.getElementById('v-csr-det').textContent = r.det;
-  document.getElementById('v-csr-total').textContent = r.total;
-}
-
-// ── Charts ──
-const COLORS = {
-  brand: '#FA345E', info: '#3B82F6', success: '#10B981',
-  warning: '#F59E0B', danger: '#EF4444', neutral: '#8B93A7',
-  purple: '#8B5CF6', teal: '#14B8A6', pink: '#EC4899', orange: '#F97316'
-};
-const PAIS_COLORS = ['#FA345E','#3B82F6','#10B981','#F59E0B','#8B5CF6','#14B8A6','#EC4899','#F97316'];
-
-function crearOActualizarChart(id, config) {
-  if (CHARTS[id]) CHARTS[id].destroy();
-  const canvas = document.getElementById(id);
-  if (!canvas) return;
-  CHARTS[id] = new Chart(canvas.getContext('2d'), config);
-}
-
-function agruparPorMes(arr, tipo='nps') {
-  const porMes = {};
-  arr.forEach(r => {
-    const m = r.mes || 'Sin mes';
-    if (!porMes[m]) porMes[m] = [];
-    porMes[m].push(r);
-  });
-  const meses = Object.keys(porMes).sort();
-  const scores = meses.map(m => {
-    const g = porMes[m];
-    if (tipo === 'nps') {
-      const s = calcSegmentos(g);
-      return s.score;
-    } else {
-      const pro = g.filter(r=>parseFloat(r.puntuacion)>=9).length;
-      return g.length > 0 ? Math.round(pro/g.length*100) : 0;
+  const payload={
+    modulo:'NPS',
+    datos:{
+      totalNPS:       filteredNps.length,
+      totalCSAT_abono:0,
+      totalCSAT_reunion:0,
+      muestraNPS,
+      muestraCSAT:[],
+      filtros:{
+        pais:    document.getElementById('filter-country').value||'todos',
+        periodo: document.getElementById('filter-period').value||'todos',
+        riesgo:  document.getElementById('filter-risk').value||'todos'
+      },
+      distribucion:{ promotores:pro, neutros:neu, detractores:det }
     }
-  });
-  return { meses, scores };
-}
-
-function agruparPorPais(arr) {
-  const por = {};
-  arr.forEach(r => { if (r.pais) por[r.pais] = (por[r.pais]||0)+1; });
-  return Object.entries(por).sort((a,b)=>b[1]-a[1]).slice(0,8);
-}
-
-function actualizarCharts() {
-  // NPS trend
-  const nt = agruparPorMes(DATA_FILTRADA.nps, 'nps');
-  crearOActualizarChart('chart-nps-trend', {
-    type:'line',
-    data:{labels:nt.meses,datasets:[{label:'Score NPS',data:nt.scores,borderColor:COLORS.brand,backgroundColor:COLORS.brand+'18',borderWidth:4,tension:.3,pointBackgroundColor:COLORS.brand,pointRadius:5,fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11}}},x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:11}}}},plugins:{legend:{display:false}}}
-  });
-
-  // NPS por país (donut)
-  const np = agruparPorPais(DATA_FILTRADA.nps);
-  crearOActualizarChart('chart-nps-pais', {
-    type:'doughnut',
-    data:{labels:np.map(p=>p[0]),datasets:[{data:np.map(p=>p[1]),backgroundColor:PAIS_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},boxWidth:12,padding:12}}}}
-  });
-
-  // CSAT Abono trend
-  const at = agruparPorMes(DATA_FILTRADA.csat_abono, 'csat');
-  crearOActualizarChart('chart-csa-trend', {
-    type:'line',
-    data:{labels:at.meses,datasets:[{label:'% Satisfechos',data:at.scores,borderColor:COLORS.brand,backgroundColor:COLORS.brand+'18',borderWidth:4,tension:.3,pointBackgroundColor:COLORS.brand,pointRadius:5,fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11},callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:11}}}},plugins:{legend:{display:false}}}
-  });
-
-  const ap = agruparPorPais(DATA_FILTRADA.csat_abono);
-  crearOActualizarChart('chart-csa-pais', {
-    type:'doughnut',
-    data:{labels:ap.map(p=>p[0]),datasets:[{data:ap.map(p=>p[1]),backgroundColor:PAIS_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},boxWidth:12,padding:12}}}}
-  });
-
-  // CSAT Reunión
-  const rrt = agruparPorMes(DATA_FILTRADA.csat_reunion, 'csat');
-  crearOActualizarChart('chart-csr-trend', {
-    type:'line',
-    data:{labels:rrt.meses,datasets:[{label:'% Satisfechos',data:rrt.scores,borderColor:COLORS.info,backgroundColor:COLORS.info+'18',borderWidth:4,tension:.3,pointBackgroundColor:COLORS.info,pointRadius:5,fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:100,grid:{color:'#F3F4F6'},ticks:{font:{family:'DM Sans',size:11},callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:11}}}},plugins:{legend:{display:false}}}
-  });
-
-  const rrp = agruparPorPais(DATA_FILTRADA.csat_reunion);
-  crearOActualizarChart('chart-csr-pais', {
-    type:'doughnut',
-    data:{labels:rrp.map(p=>p[0]),datasets:[{data:rrp.map(p=>p[1]),backgroundColor:PAIS_COLORS,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{family:'DM Sans',size:11},boxWidth:12,padding:12}}}}
-  });
-}
-
-// ── Tabla detractores ──
-function actualizarTablaDetractores() {
-  const det = DATA_FILTRADA.nps.filter(r => parseFloat(r.puntuacion) <= 6);
-  // Agrupar por empresa y contar detractores
-  const porEmp = {};
-  det.forEach(r => {
-    const e = r.empresa || 'Sin empresa';
-    if (!porEmp[e]) porEmp[e] = { empresa: e, count: 0, puntMin: 10, razones: [], pais: r.pais, contacto: r.contacto };
-    porEmp[e].count++;
-    if (r.puntuacion < porEmp[e].puntMin) porEmp[e].puntMin = r.puntuacion;
-    if (r.razon) porEmp[e].razones.push(r.razon);
-  });
-  const lista = Object.values(porEmp).sort((a,b) => b.count - a.count).slice(0,15);
-  
-  if (lista.length === 0) {
-    document.getElementById('tabla-detractores').innerHTML = '<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">No hay detractores en el período seleccionado</div></div>';
-    return;
-  }
-
-  const maxCount = lista[0].count;
-  const html = `<table>
-    <thead><tr>
-      <th>#</th><th>Empresa</th><th>País</th><th>Detractores</th><th>Nota Mín</th><th>Principal Queja</th><th>Nivel de Riesgo</th>
-    </tr></thead>
-    <tbody>
-    ${lista.map((e,i) => {
-      const pct = e.count / maxCount;
-      const risk = pct > 0.6 ? ['critical','🔴 Crítico'] : pct > 0.3 ? ['high','🟡 Alto'] : ['medium','🟣 Medio'];
-      const queja = e.razones[0] || '—';
-      return `<tr>
-        <td style="color:var(--text2);font-family:var(--mono)">${i+1}</td>
-        <td><strong>${e.empresa}</strong></td>
-        <td>${e.pais||'—'}</td>
-        <td><span style="font-weight:700;color:var(--danger)">${e.count}</span></td>
-        <td><span style="font-family:var(--mono);color:var(--danger)">${e.puntMin}</span></td>
-        <td style="max-width:240px;font-size:12px;color:var(--text2)">${queja.substring(0,80)}${queja.length>80?'...':''}</td>
-        <td><span class="risk-badge risk-${risk[0]}">${risk[1]}</span></td>
-      </tr>`;
-    }).join('')}
-    </tbody>
-  </table>`;
-  document.getElementById('tabla-detractores').innerHTML = html;
-}
-
-// ── Alertas ──
-function actualizarAlertas() {
-  const nps = calcSegmentos(DATA_FILTRADA.nps);
-  const csa = calcSegmentos(DATA_FILTRADA.csat_abono);
-  const csr = calcSegmentos(DATA_FILTRADA.csat_reunion);
-  const alertas = [];
-
-  if (nps.total > 0 && nps.score < 0) alertas.push({type:'critical', icon:'🚨', title:`NPS en territorio negativo: ${nps.score}`, desc:`${nps.det} detractores vs ${nps.pro} promotores. Requiere acción inmediata del equipo KAM.`});
-  else if (nps.total > 0 && nps.score < 20) alertas.push({type:'warning', icon:'⚠️', title:`NPS bajo: ${nps.score}`, desc:`Score por debajo del benchmark. Revisar comentarios de detractores.`});
-  
-  if (nps.total > 0 && nps.det/nps.total > 0.3) alertas.push({type:'critical', icon:'🔴', title:`Alta concentración de detractores: ${Math.round(nps.det/nps.total*100)}%`, desc:`Más del 30% de los encuestados son detractores. Riesgo alto de churn.`});
-  
-  if (csa.total > 0 && csa.pro/csa.total < 0.5) alertas.push({type:'warning', icon:'📉', title:`CSAT Post Abono bajo: ${Math.round(csa.pro/csa.total*100)}% satisfechos`, desc:`Menos del 50% de clientes satisfechos con el proceso de abono.`});
-  
-  if (csr.total > 0 && csr.pro/csr.total < 0.5) alertas.push({type:'warning', icon:'🤝', title:`CSAT Post Reunión bajo: ${Math.round(csr.pro/csr.total*100)}% satisfechos`, desc:`Menos del 50% satisfechos con las reuniones comerciales. Revisar metodología KAM.`});
-  
-  alertas.push({type:'info', icon:'📊', title:`Período analizado: ${DATA_FILTRADA.nps.length} respuestas NPS`, desc:`${DATA_FILTRADA.csat_abono.length} CSAT Post Abono · ${DATA_FILTRADA.csat_reunion.length} CSAT Post Reunión en el filtro actual.`});
-
-  const html = alertas.length > 0 ? alertas.map(a => `
-    <div class="alert-item ${a.type}">
-      <span class="alert-icon">${a.icon}</span>
-      <div class="alert-content">
-        <div class="alert-title">${a.title}</div>
-        <div class="alert-desc">${a.desc}</div>
-      </div>
-    </div>`).join('') : '<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alertas críticas en el período</div></div>';
-  
-  document.getElementById('lista-alertas').innerHTML = html;
-}
-
-// ═══════════════════════════════════════════════════════
-// ANÁLISIS IA CON CLAUDE API
-// ═══════════════════════════════════════════════════════
-
-async function llamarClaudeIA(prompt, mensajeLoading, idModulo) {
-  const loadingEl = document.getElementById(`ia-loading-${idModulo}`);
-  const errorEl   = document.getElementById(`ia-error-${idModulo}`);
-  const resultEl  = document.getElementById(`ia-result-${idModulo}`);
-  const loadTxt   = document.getElementById(`ia-loading-text-${idModulo}`);
-  
-  loadingEl.style.display = 'flex';
-  errorEl.style.display = 'none';
-  resultEl.style.display = 'none';
-  if (loadTxt) loadTxt.textContent = mensajeLoading;
-
-  // Deshabilitar botones
-  document.querySelectorAll(`#ia-loading-${idModulo}`).forEach(() => {});
-
-  try {
-    const res = await fetch(CONFIG.CLAUDE_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: CONFIG.CLAUDE_MODEL,
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const texto = data.content?.map(b => b.text||'').join('') || JSON.stringify(data);
-    
-    loadingEl.style.display = 'none';
-    resultEl.style.display = 'block';
-    resultEl.innerHTML = formatearResultadoIA(texto);
-  } catch (err) {
-    loadingEl.style.display = 'none';
-    errorEl.style.display = 'block';
-    errorEl.textContent = `Error al conectar con IA: ${err.message}. Configura CLAUDE_API en CONFIG.`;
-  }
-}
-
-function formatearResultadoIA(texto) {
-  // Convertir markdown básico a HTML
-  return texto
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/#{1,3} (.+)/g, '<h4>$1</h4>')
-    .replace(/^[•·\-] (.+)/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^(.)/gm, (m, c) => c === '<' ? m : '<p>' + m)
-    .replace(/<p>(<[uh])/g, '$1')
-    .trim();
-}
-
-function prepararContexto(modulo) {
-  const arr = DATA_FILTRADA[modulo] || DATA_FILTRADA.nps;
-  const seg = calcSegmentos(arr);
-  const detractores = arr.filter(r => parseFloat(r.puntuacion) <= 6);
-  const promotores  = arr.filter(r => parseFloat(r.puntuacion) >= 9);
-  const neutros     = arr.filter(r => { const v=parseFloat(r.puntuacion); return v>=7 && v<=8; });
-  
-  // Casos más frecuentes en comentarios
-  const todosComentarios = arr.map(r => r.razon || r.comentario || '').filter(Boolean);
-  
-  // Top empresas detractoras
-  const porEmp = {};
-  detractores.forEach(r => {
-    const e = r.empresa||'Sin empresa';
-    if (!porEmp[e]) porEmp[e] = 0;
-    porEmp[e]++;
-  });
-  const topDetEmp = Object.entries(porEmp).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([e,c])=>`${e}: ${c} respuestas detractoras`).join('\n');
-  
-  return {
-    seg, detractores, promotores, neutros, todosComentarios, topDetEmp,
-    muestraDet: detractores.slice(0,20).map(r=>`[${r.empresa||'?'} | ${r.pais||'?'} | Nota:${r.puntuacion}] ${r.razon||r.comentario||''}`).join('\n'),
-    muestraPro: promotores.slice(0,10).map(r=>`[${r.empresa||'?'} | Nota:${r.puntuacion}] ${r.razon||r.comentario||''}`).join('\n'),
-    muestraNeu: neutros.slice(0,10).map(r=>`[${r.empresa||'?'} | Nota:${r.puntuacion}] ${r.razon||r.comentario||''}`).join('\n')
   };
-}
 
-async function ejecutarAnalisisIA(modulo) {
-  const ctx = prepararContexto(modulo);
-  const nombres = { nps:'NPS', csat_abono:'CSAT Post Abono', csat_reunion:'CSAT Post Reunión' };
-  
-  const prompt = `Eres Apprecio Beat IA, analista experto en experiencia del cliente (CX) para programas de beneficios corporativos en Latinoamérica.
-
-DATOS DEL MÓDULO: ${nombres[modulo]}
-- Total respuestas: ${ctx.seg.total}
-- Promotores (nota ≥9): ${ctx.seg.pro} (${ctx.seg.total>0?Math.round(ctx.seg.pro/ctx.seg.total*100):0}%)
-- Neutros (nota 7-8): ${ctx.seg.neu} (${ctx.seg.total>0?Math.round(ctx.seg.neu/ctx.seg.total*100):0}%)
-- Detractores (nota 0-6): ${ctx.seg.det} (${ctx.seg.total>0?Math.round(ctx.seg.det/ctx.seg.total*100):0}%)
-- Score: ${ctx.seg.score}
-
-RESPUESTAS DETRACTORAS (muestra):
-${ctx.muestraDet || 'Sin respuestas detractoras'}
-
-RESPUESTAS PROMOTORAS (muestra):
-${ctx.muestraPro || 'Sin respuestas promotoras'}
-
-RESPUESTAS NEUTRAS (muestra):
-${ctx.muestraNeu || 'Sin respuestas neutras'}
-
-EMPRESAS CON MÁS DETRACTORES:
-${ctx.topDetEmp || 'Sin datos'}
-
-INSTRUCCIONES:
-1. NO entregues la lista completa de respuestas. Analiza y sintetiza.
-2. Identifica los CASOS QUE MÁS SE REPITEN en cada segmento (máx 3 por segmento).
-3. Detecta patrones en el lenguaje de detractores vs promotores.
-4. Indica qué empresas tienen comportamiento más crítico.
-5. Máximo 280 palabras. Tono ejecutivo y directo.
-
-Estructura tu respuesta en estas 4 secciones:
-📊 CASOS MÁS FRECUENTES (qué se repite más en todo el módulo)
-🚨 PATRONES DETRACTORES (qué dicen los que ponen nota baja)
-⭐ LO QUE VALORAN LOS PROMOTORES (qué destacan los que dan nota alta)
-⚠️ EMPRESAS CON MAYOR RIESGO (las más críticas y por qué)`;
-
-  await llamarClaudeIA(prompt, `Analizando patrones en ${nombres[modulo]}...`, modulo);
-}
-
-async function ejecutarAnalisisDetractores(modulo) {
-  const ctx = prepararContexto(modulo);
-  const nombres = { nps:'NPS', csat_abono:'CSAT Post Abono', csat_reunion:'CSAT Post Reunión' };
-  
-  const prompt = `Eres Apprecio Beat IA, analista de riesgo de clientes para programas de beneficios corporativos.
-
-DATOS: ${nombres[modulo]}
-Total respuestas: ${ctx.seg.total}
-Detractores: ${ctx.seg.det} (${ctx.seg.total>0?Math.round(ctx.seg.det/ctx.seg.total*100):0}%)
-
-DETRACTORES POR EMPRESA:
-${ctx.topDetEmp || 'Sin datos'}
-
-MUESTRA DE RESPUESTAS DETRACTORAS:
-${ctx.muestraDet || 'Sin respuestas'}
-
-INSTRUCCIONES CRÍTICAS:
-- Identifica los CLIENTES/EMPRESAS con mayor probabilidad de abandonar Apprecio Beat
-- Evalúa nivel de riesgo (crítico/alto/medio) por empresa basándote en el volumen y tono de quejas
-- NO menciones acciones a tomar (solo el diagnóstico de riesgo)
-- Máximo 200 palabras
-
-Estructura:
-🚨 CLIENTES EN RIESGO CRÍTICO DE SALIDA
-(lista con empresa, nivel de riesgo y razón principal de la queja)
-
-📉 TENDENCIA GENERAL DE DETRACTORES
-(1 párrafo sobre el patrón de insatisfacción)`;
-
-  await llamarClaudeIA(prompt, 'Identificando clientes en riesgo...', modulo);
-}
-
-async function ejecutarRadarCompleto() {
-  const n = calcSegmentos(DATA_FILTRADA.nps);
-  const a = calcSegmentos(DATA_FILTRADA.csat_abono);
-  const r = calcSegmentos(DATA_FILTRADA.csat_reunion);
-  
-  // Consolidar detractores de todos los módulos por empresa
-  const allDet = [
-    ...DATA_FILTRADA.nps.filter(x=>parseFloat(x.puntuacion)<=6).map(x=>({...x,modulo:'NPS'})),
-    ...DATA_FILTRADA.csat_abono.filter(x=>parseFloat(x.puntuacion)<=6).map(x=>({...x,modulo:'CSAT Abono'})),
-    ...DATA_FILTRADA.csat_reunion.filter(x=>parseFloat(x.puntuacion)<=6).map(x=>({...x,modulo:'CSAT Reunión'}))
-  ];
-  
-  const porEmp = {};
-  allDet.forEach(x => {
-    const e = x.empresa||'Sin empresa';
-    if (!porEmp[e]) porEmp[e] = { total:0, modulos:[], razones:[], pais: x.pais };
-    porEmp[e].total++;
-    if (!porEmp[e].modulos.includes(x.modulo)) porEmp[e].modulos.push(x.modulo);
-    if (x.razon||x.comentario) porEmp[e].razones.push(x.razon||x.comentario);
-  });
-  
-  const topEmp = Object.entries(porEmp).sort((a,b)=>b[1].total-a[1].total).slice(0,8)
-    .map(([e,d]) => `${e} (${d.pais||'?'}): ${d.total} detractores en [${d.modulos.join(', ')}]. Queja: "${d.razones[0]||'Sin comentario'}"`)
-    .join('\n');
-
-  const prompt = `Eres Apprecio Beat IA, sistema de radar de riesgo para clientes corporativos de la plataforma de beneficios Apprecio Beat.
-
-RESUMEN GLOBAL DE TODOS LOS MÓDULOS:
-- NPS: Score ${n.score} | ${n.pro} promotores, ${n.neu} neutros, ${n.det} detractores
-- CSAT Post Abono: ${a.total>0?Math.round(a.pro/a.total*100):0}% satisfechos | ${a.det} detractores
-- CSAT Post Reunión: ${r.total>0?Math.round(r.pro/r.total*100):0}% satisfechos | ${r.det} detractores
-
-EMPRESAS CON MAYOR CONCENTRACIÓN DE DETRACTORES (MULTI-MÓDULO):
-${topEmp || 'Sin datos suficientes'}
-
-INSTRUCCIONES:
-- Haz un radar completo del estado de la cartera
-- Identifica cuáles son los clientes MÁS CRÍTICOS que podrían DEJAR DE USAR Apprecio Beat
-- Clasifica por nivel de urgencia
-- NO incluyas plan de acciones, solo el diagnóstico y el mapa de riesgo
-- Máximo 300 palabras. Tono de alerta ejecutiva.
-
-Estructura obligatoria:
-🎯 ESTADO GENERAL DE LA CARTERA
-🚨 MAPA DE RIESGO DE CHURN (top 5-8 clientes más críticos con nivel: CRÍTICO/ALTO/MEDIO)
-📍 PAÍSES CON MAYOR CONCENTRACIÓN DE RIESGO
-⚠️ SEÑALES DE ALERTA TRANSVERSALES`;
-
-  await llamarClaudeIA(prompt, 'Ejecutando radar completo de cartera...', 'alertas');
-}
-
-async function ejecutarChurnIA() {
-  const allDet = [
-    ...DATA_FILTRADA.nps.filter(x=>parseFloat(x.puntuacion)<=4).map(x=>({...x,modulo:'NPS',peso:3})),
-    ...DATA_FILTRADA.csat_abono.filter(x=>parseFloat(x.puntuacion)<=5).map(x=>({...x,modulo:'CSAT Abono',peso:2})),
-    ...DATA_FILTRADA.csat_reunion.filter(x=>parseFloat(x.puntuacion)<=5).map(x=>({...x,modulo:'CSAT Reunión',peso:1}))
-  ];
-  
-  const porEmp = {};
-  allDet.forEach(x => {
-    const e = x.empresa||'Sin empresa';
-    if (!porEmp[e]) porEmp[e] = { score:0, eventos:0, razones:[], pais:x.pais };
-    porEmp[e].score += x.peso;
-    porEmp[e].eventos++;
-    if (x.razon||x.comentario) porEmp[e].razones.push(x.razon||x.comentario);
-  });
-  
-  const ranking = Object.entries(porEmp).sort((a,b)=>b[1].score-a[1].score).slice(0,10)
-    .map(([e,d]) => `${e} (${d.pais||'?'}): score_riesgo=${d.score}, eventos=${d.eventos}. Razón: "${d.razones[0]||'Sin comentario'}"`)
-    .join('\n');
-
-  const prompt = `Eres Apprecio Beat IA especializada en predicción de churn para clientes corporativos.
-
-RANKING DE EMPRESAS CON MAYOR RIESGO DE CHURN (algoritmo multi-módulo):
-${ranking || 'Sin datos suficientes para calcular riesgo'}
-
-El score_riesgo combina: NPS detractor grave (peso 3) + CSAT Abono detractor (peso 2) + CSAT Reunión detractor (peso 1).
-
-INSTRUCCIONES:
-- Presenta los clientes en riesgo de abandonar Apprecio Beat de forma clara
-- Para cada uno, indica: nivel de urgencia y principal señal de alarma basada en sus comentarios
-- NO agregues planes de acción ni recomendaciones, solo el diagnóstico de riesgo
-- Máximo 250 palabras
-
-Estructura:
-⛔ CLIENTES EN RIESGO INMEDIATO DE SALIDA (próximas 4 semanas)
-🟡 CLIENTES EN RIESGO MODERADO (próximos 2-3 meses)
-📊 RESUMEN: X clientes requieren atención urgente`;
-
-  await llamarClaudeIA(prompt, 'Calculando riesgo de churn...', 'alertas');
-}
-
-function limpiarIA(modulo) {
-  const resultEl  = document.getElementById(`ia-result-${modulo}`);
-  const errorEl   = document.getElementById(`ia-error-${modulo}`);
-  const loadingEl = document.getElementById(`ia-loading-${modulo}`);
-  if (resultEl)  { resultEl.style.display  = 'none'; resultEl.innerHTML = ''; }
-  if (errorEl)   { errorEl.style.display   = 'none'; }
-  if (loadingEl) { loadingEl.style.display = 'none'; }
-}
-
-// ═══════════════════════════════════════════════════════
-// MODAL PDF
-// ═══════════════════════════════════════════════════════
-function abrirModalPDF() {
-  document.getElementById('modalPDF').classList.add('open');
-}
-function cerrarModalPDF() {
-  document.getElementById('modalPDF').classList.remove('open');
-}
-function seleccionarOpcion(opt) {
-  OPCION_PDF = opt;
-  document.querySelectorAll('.modal-option').forEach(el => el.classList.remove('selected'));
-  document.getElementById('opt-'+opt).classList.add('selected');
-}
-
-async function generarReportePDF() {
-  const btn = document.getElementById('btnGenerarPDF');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="modal-spinner"></div> Generando con IA...';
-  
-  const n = calcSegmentos(DATA_FILTRADA.nps);
-  const a = calcSegmentos(DATA_FILTRADA.csat_abono);
-  const r = calcSegmentos(DATA_FILTRADA.csat_reunion);
-  
-  const allDet = [...DATA_FILTRADA.nps, ...DATA_FILTRADA.csat_abono, ...DATA_FILTRADA.csat_reunion]
-    .filter(x => parseFloat(x.puntuacion) <= 6);
-  const porEmp = {};
-  allDet.forEach(x => {
-    const e = x.empresa||'Sin empresa';
-    if (!porEmp[e]) porEmp[e] = { total:0, razones:[], pais:x.pais };
-    porEmp[e].total++;
-    if (x.razon||x.comentario) porEmp[e].razones.push(x.razon||x.comentario);
-  });
-  const topEmp = Object.entries(porEmp).sort((a,b)=>b[1].total-a[1].total).slice(0,6)
-    .map(([e,d]) => `• ${e}: ${d.total} casos — "${d.razones[0]||'Sin comentario'}"`).join('\n');
-
-  const instrExtra = OPCION_PDF === 'ejecutivo'
-    ? 'Genera un resumen ejecutivo SIN incluir planes de acción detallados por cliente. Solo análisis, tendencias y diagnóstico.'
-    : OPCION_PDF === 'completo'
-    ? 'Incluye para los 3 clientes más críticos un plan de recuperación específico (2-3 pasos concretos por cliente).'
-    : 'Enfócate EXCLUSIVAMENTE en el riesgo de churn. Lista los clientes por nivel de urgencia (CRÍTICO/ALTO) con la señal de alarma principal.';
-
-  const prompt = `Genera un reporte ejecutivo de Apprecio Beat para el período analizado.
-
-MÉTRICAS GLOBALES:
-- NPS Score: ${n.score} | Promotores: ${n.pro} | Neutros: ${n.neu} | Detractores: ${n.det} | Total: ${n.total}
-- CSAT Post Abono: ${a.total>0?Math.round(a.pro/a.total*100):0}% satisfechos | ${a.total} respuestas
-- CSAT Post Reunión: ${r.total>0?Math.round(r.pro/r.total*100):0}% satisfechos | ${r.total} respuestas
-
-EMPRESAS CON MÁS DETRACTORES:
-${topEmp || 'Sin datos'}
-
-TIPO DE REPORTE: ${OPCION_PDF === 'ejecutivo' ? 'Resumen Ejecutivo' : OPCION_PDF === 'completo' ? 'Reporte Completo' : 'Análisis de Riesgo de Churn'}
-
-${instrExtra}
-
-Formato de salida:
-- Título: REPORTE CX APPRECIO BEAT — [tipo]
-- Secciones claramente delimitadas
-- Máximo 350 palabras
-- Tono profesional ejecutivo`;
-
-  try {
-    const res = await fetch(CONFIG.CLAUDE_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: CONFIG.CLAUDE_MODEL,
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+  try{
+    const res=await fetch(N8N_WEBHOOK,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
     });
-    const data = await res.json();
-    const texto = data.content?.map(b => b.text||'').join('') || '';
-    cerrarModalPDF();
-    abrirReportePDF(texto);
-  } catch (err) {
-    cerrarModalPDF();
-    alert('Error al generar reporte: ' + err.message);
+    if(!res.ok) throw new Error('n8n respondió HTTP '+res.status);
+    const data=await res.json();
+
+    // El nodo "Responde al Dashboard" devuelve { respuesta, ok }
+    const texto=data.respuesta||data.text||data.output||JSON.stringify(data);
+    resultEl.innerHTML=`<div class="ai-result-box">${formatMD(texto)}</div>`;
+  }catch(e){
+    resultEl.innerHTML=`
+      <div class="ai-result-box" style="border-color:rgba(239,68,68,.4)">
+        <strong style="color:#FC8181">⚠ Error al contactar n8n:</strong> ${x(e.message)}\n\nVerifica que:\n• El webhook esté activo en n8n\n• La URL N8N_WEBHOOK en el código sea la correcta\n• El flujo permita CORS (Access-Control-Allow-Origin: *)\n\n<span style="color:rgba(255,255,255,.35);font-size:11px">Payload enviado (debug):\n${x(JSON.stringify(payload,null,2))}</span>
+      </div>`;
   }
-  btn.disabled = false;
-  btn.innerHTML = '<span>⚡</span> Generar con IA';
+  btn.disabled=false; btn.innerHTML='✨ Generar Reporte';
 }
 
-function abrirReportePDF(texto) {
-  const ventana = window.open('', '_blank');
-  const html = `<!DOCTYPE html>
-<html lang="es"><head><meta charset="UTF-8">
-<title>Reporte CX · Apprecio Beat</title>
-<style>
-  body { font-family: 'Segoe UI', sans-serif; max-width: 720px; margin: 40px auto; padding: 0 24px; color: #1A1A2E; line-height: 1.7; }
-  .header { display:flex; align-items:center; gap:12px; margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #FA345E; }
-  .header svg { width:40px; height:40px; }
-  .header h1 { font-size:22px; font-weight:700; color:#1A1A2E; margin:0; }
-  .header span { color:#FA345E; }
-  .meta { color:#6B7280; font-size:13px; margin-top:4px; }
-  pre { white-space:pre-wrap; font-family:inherit; font-size:14px; }
-  @media print { body { margin:20px; } }
-</style>
-</head><body>
-<div class="header">
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 78 C50 78 17 55 17 34 C17 23 25.5 15.5 35.5 15.5 C42 15.5 47.5 19 50 23 C52.5 19 58 15.5 64.5 15.5 C74.5 15.5 83 23 83 34 C83 55 50 78 50 78Z" fill="#FA345E"/>
-    <polyline points="22,43 30,43 34,33 39,53 44,38 48,43 52,43 56,36 60,50 65,43 78,43" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div>
-    <h1>apprecio<span>Beat</span> · Reporte CX</h1>
-    <div class="meta">Generado por Apprecio Beat IA · Confidencial</div>
-  </div>
-</div>
-<pre>` + texto + `</pre>
-<hr style="margin-top:40px;border:none;border-top:1px solid #E8EAF0">
-<p style="font-size:12px;color:#9CA3AF;text-align:center">Apprecio Beat IA · Confidencial</p>
-<script>window.print();<\/script>
-</body></html>`;
-  ventana.document.write(html);
-  ventana.document.close();
+function clearAI(){const el=document.getElementById('ai-result');el.className='ai-result';el.innerHTML='';}
+
+// Convierte Markdown simple a HTML (negritas, emojis, saltos)
+function formatMD(txt){
+  return x(txt)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^(#{1,3} .+)$/gm,'<strong style="display:block;margin-top:10px">$1</strong>')
+    .replace(/\n/g,'<br>');
 }
 
-// ═══════════════════════════════════════════════════════
-// TABS
-// ═══════════════════════════════════════════════════════
-function cambiarTab(idx) {
-  TAB_ACTUAL = idx;
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
-  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i===idx));
-  setTimeout(() => actualizarCharts(), 50);
+// ══════════════════════════════════════════
+//  TAB SWITCH
+// ══════════════════════════════════════════
+function showTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-nps').style.display      =id==='tab-nps'?'block':'none';
+  document.getElementById('tab-empresas').style.display =id==='tab-empresas'?'block':'none';
 }
 
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', () => {
-  cargarDatos();
-});
+// ══════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════
+function parseDate(s){if(!s)return null;const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);return m?new Date(+m[3],+m[2]-1,+m[1]):null;}
+function monthName(m){return['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m-1];}
+function riskOrd(r){return{'Crítico':0,'Alto':1,'Medio':2,'Sano':3}[r]??4;}
+function flag(c){return{'Colombia':'🇨🇴','Chile':'🇨🇱','Mexico':'🇲🇽','Ecuador':'🇪🇨','Peru':'🇵🇪','Argentina':'🇦🇷'}[c]||'🌎';}
+function x(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
