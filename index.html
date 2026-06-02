@@ -55,29 +55,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .tab-btn.coming-soon:hover{color:var(--text2);background:transparent;cursor:default}
 
 /* ── METRIC CARD (gran widget donut) ── */
-.metric-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;transition:box-shadow .2s}
+.metric-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;transition:box-shadow .2s}
 .metric-card:hover{box-shadow:var(--shadow-lg)}
-.mc-left{display:flex;flex-direction:column;gap:14px;padding-right:28px;border-right:1.5px solid var(--border)}
-.mc-question{font-size:15px;font-weight:700;color:var(--text);line-height:1.45;max-width:240px}
+.mc-left{display:flex;flex-direction:column;gap:10px;padding-right:24px;border-right:1.5px solid var(--border)}
+.mc-question{font-size:14px;font-weight:700;color:var(--text);line-height:1.4;max-width:220px}
 .mc-based{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
-.mc-filters{display:flex;gap:8px;flex-wrap:wrap}
+.mc-filters{display:flex;gap:7px;flex-wrap:wrap}
 select.mc-sel{font-family:var(--font);font-size:12px;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:6px 26px 6px 11px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color .15s}
 select.mc-sel:hover,select.mc-sel:focus{border-color:var(--brand)}
 
-/* Donut — tamaño compacto y elegante */
-.mc-donut-wrap{position:relative;width:140px;height:140px;margin:8px auto 4px;flex-shrink:0}
-.mc-donut-wrap canvas{position:absolute;inset:0;width:140px!important;height:140px!important}
+/* Donut — elegante, anillo fino tipo gauge */
+.mc-donut-wrap{position:relative;width:170px;height:170px;margin:6px auto 4px;flex-shrink:0}
+.mc-donut-wrap canvas{position:absolute;inset:0;width:170px!important;height:170px!important}
 .mc-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.mc-donut-score{font-size:26px;font-weight:800;color:var(--text);line-height:1}
-.mc-donut-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.05em;margin-top:2px;text-align:center}
+.mc-donut-score{font-size:30px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-.5px}
+.mc-donut-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.05em;margin-top:4px;text-align:center}
 
-.mc-legend{display:flex;justify-content:center;gap:18px;margin-top:8px}
+.mc-legend{display:flex;justify-content:center;gap:20px;margin-top:12px}
 .mc-leg-item{text-align:center}
-.mc-leg-val{font-size:19px;font-weight:700}
-.mc-leg-val.alto{color:#10B981}
+.mc-leg-val{font-size:17px;font-weight:700}
+/* Paleta Apprecio */
+.mc-leg-val.alto{color:#22C55E}
 .mc-leg-val.medio{color:#F59E0B}
-.mc-leg-val.bajo{color:#EF4444}
-.mc-leg-lbl{font-size:10px;color:var(--text3);margin-top:1px}
+.mc-leg-val.bajo{color:#FA345E}
+.mc-leg-lbl{font-size:10px;color:var(--text3);margin-top:2px}
 
 .mc-right{display:flex;flex-direction:column;gap:18px;padding-left:28px;justify-content:space-between}
 .mc-consolidado-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
@@ -255,7 +256,7 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
           <div class="ai-banner-title-row">
             <span style="font-size:22px">🤖</span>
             <span class="ai-banner-title">Asistente IA · Apprecio Beat</span>
-            <span class="ai-banner-badge">⚡ Apprecio Beat IA</span>
+            <span class="ai-banner-badge">⚡ n8n + Ollama</span>
           </div>
           <div class="ai-banner-desc">Pregunta sobre clientes en riesgo, acciones para mejorar el NPS, qué está fallando o cualquier insight de las métricas. No responderá preguntas ajenas al negocio.</div>
         </div>
@@ -374,7 +375,7 @@ footer{text-align:center;padding:28px;font-size:11px;font-family:var(--mono);col
           <div class="ai-banner-title-row">
             <span style="font-size:22px">🤖</span>
             <span class="ai-banner-title">Asistente IA · CSAT</span>
-            <span class="ai-banner-badge">⚡ Apprecio Beat IA</span>
+            <span class="ai-banner-badge">⚡ n8n + Ollama</span>
           </div>
           <div class="ai-banner-desc">Consulta sobre satisfacción de plataforma, calidad de reuniones comerciales, qué mejorar y acciones concretas para subir el CSAT.</div>
         </div>
@@ -559,11 +560,11 @@ const N8N_WEBHOOK = 'https://n8n.openip.cl/webhook/apprecio-cx-analisis';
 const SHEET_NPS_RESPUESTAS = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:json&gid=1574708855';
 // NPS: datos KPI principales
 const SHEET_NPS = 'https://docs.google.com/spreadsheets/d/1qfVFOBpgVmbEloiE58c3CfRccx0iempLidu1t8cPH5E/gviz/tq?tqx=out:json&gid=749991184';
-// Empresas (estado encuestas)
+// Empresas (estado encuestas) = consulta_abono
 const SHEET_EMPRESAS = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897';
-// CSAT Post Abono: respuestas_encuestas gid=122849284 + consulta_abono (estado)
+// CSAT Post Abono: respuestas_encuestas gid=122849284
 const SHEET_CSAT_ABONO = 'https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=122849284';
-// CSAT Post Reunión: Hoja 1 gid=0
+// CSAT Post Reunión: Hoja 1 gid=0 (segundo spreadsheet)
 const SHEET_CSAT_REUNION = 'https://docs.google.com/spreadsheets/d/1tmj01fcch0CkFeGl_RZL3iLMZqe2kwBn5odATT5DgKU/gviz/tq?tqx=out:json&gid=0';
 
 // ══════════════════════════════════════════
@@ -636,19 +637,50 @@ async function refreshData(){
     npsRespuestasData = npsRespRaw;
     empresaData = empRaw.filter(r=>r['empresa_id']?.trim());
 
-    // CSAT Abono — intentar con gid=122849284; si vacío fallback a gid=527249897 (respuestas_encuestas)
-    let csatAbonoRawFinal = csatAbonoRaw;
-    if(!csatAbonoRaw.length){
-      try{ csatAbonoRawFinal = await fetchSheet('https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897'); }
-      catch(e){}
-    }
-    csatAbonoData = csatAbonoRawFinal
-      .filter(r=>r['Estado']==='COMPLETADO'||r['Estado']==='completado')
+    // CSAT Post Abono — respuestas_encuestas (gid=122849284)
+    // Columnas clave: Estado=COMPLETADO, nota en col con "satisfech", comentario en col con "fácil/mejorar"
+    csatAbonoData = csatAbonoRaw
+      .filter(r=>{
+        const est=(r['Estado']||r['estado']||'').toString().toUpperCase();
+        return est==='COMPLETADO'||est.includes('COMPLET');
+      })
       .map(r=>{
-        const notaKey=Object.keys(r).find(k=>k.toLowerCase().includes('satisfech'));
-        const comentKey=Object.keys(r).find(k=>k.toLowerCase().includes('facil')||k.toLowerCase().includes('fácil')||k.toLowerCase().includes('mejorar'));
-        return{empresa:r['Nombre de la empresa']||r['empresa_id']||'',pais:r['País']||r['Pais']||'',ejecutivo:'',nota:notaKey?+r[notaKey]:NaN,comentario:comentKey?r[comentKey]:'',fecha:r['Fecha_Envio']||r['fecha']||'',email:r['correo_enviado']||''};
+        // Detectar columna de nota — puede ser nombre largo o "Satisfaccion"
+        const notaKey=Object.keys(r).find(k=>{
+          const kl=k.toLowerCase();
+          return kl.includes('satisfech')||kl==='satisfaccion'||kl.includes('escala')||kl.includes('nota');
+        });
+        const comentKey=Object.keys(r).find(k=>{
+          const kl=k.toLowerCase();
+          return kl.includes('facil')||kl.includes('fácil')||kl.includes('mejorar')||kl.includes('comentar')||kl.includes('respuesta');
+        });
+        const fechaKey=Object.keys(r).find(k=>k.toLowerCase().includes('fecha'));
+        const notaVal=notaKey?+r[notaKey]:NaN;
+        return{
+          empresa:r['Nombre de la empresa']||r['empresa_id']||r['Empresa']||'',
+          pais:r['País']||r['Pais']||r['pais']||'',
+          ejecutivo:'',
+          nota:notaVal,
+          comentario:comentKey?r[comentKey]:'',
+          fecha:fechaKey?r[fechaKey]:'',
+          email:r['correo_enviado']||r['Email']||''
+        };
       }).filter(r=>!isNaN(r.nota)&&r.nota>0);
+
+    // Si gid=122849284 no trajo resultados, intentar con el fallback gid=527249897
+    if(!csatAbonoData.length){
+      try{
+        const fb=await fetchSheet('https://docs.google.com/spreadsheets/d/1C6rtU6inPtFLVXVtvkKQTGinBYru15TlRUzDnoCe12g/gviz/tq?tqx=out:json&gid=527249897');
+        csatAbonoData=fb
+          .filter(r=>{const e=(r['Estado']||'').toString().toUpperCase();return e==='COMPLETADO'||e.includes('COMPLET');})
+          .map(r=>{
+            const notaKey=Object.keys(r).find(k=>k.toLowerCase().includes('satisfech')||k.toLowerCase().includes('escala')||k.toLowerCase()==='satisfaccion');
+            const comentKey=Object.keys(r).find(k=>k.toLowerCase().includes('facil')||k.toLowerCase().includes('fácil')||k.toLowerCase().includes('mejorar')||k.toLowerCase().includes('comentar'));
+            const fechaKey=Object.keys(r).find(k=>k.toLowerCase().includes('fecha'));
+            return{empresa:r['Nombre de la empresa']||r['empresa_id']||'',pais:r['País']||r['Pais']||'',ejecutivo:'',nota:notaKey?+r[notaKey]:NaN,comentario:comentKey?r[comentKey]:'',fecha:fechaKey?r[fechaKey]:'',email:r['correo_enviado']||''};
+          }).filter(r=>!isNaN(r.nota)&&r.nota>0);
+      }catch(_){}
+    }
 
     csatReunionData = csatReunRaw
       .map(r=>({empresa:r['Empresa']||'',pais:r['País']||r['Pais']||'',ejecutivo:r['ejecutivo comercial']||'',nota:+r['Satisfaccion'],comentario:r['Comentarios']||'',fecha:r['Fecha']||'',email:r['Email']||''}))
@@ -721,11 +753,17 @@ function renderMetricCard(prefix,data,scoreKey,centerLabel,basedId){
     type:'doughnut',
     data:{labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
       datasets:[{data:[pro,neu,det],
-        backgroundColor:['rgba(16,185,129,.85)','rgba(245,158,11,.85)','rgba(239,68,68,.85)'],
-        borderColor:['#059669','#D97706','#DC2626'],
-        borderWidth:3,hoverOffset:6,hoverBorderWidth:4}]},
-    options:{responsive:false,maintainAspectRatio:false,cutout:'70%',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}`}}}}
+        // Paleta Apprecio refinada con opacidad sutil
+        backgroundColor:['rgba(34,197,94,.90)','rgba(245,158,11,.90)','rgba(250,52,94,.90)'],
+        borderColor:['rgba(34,197,94,.0)','rgba(245,158,11,.0)','rgba(250,52,94,.0)'],
+        borderWidth:0,
+        spacing:2,       // pequeño gap entre segmentos
+        hoverBackgroundColor:['#16A34A','#D97706','#D42050'],
+        hoverOffset:4}]},
+    options:{responsive:false,maintainAspectRatio:false,
+      cutout:'76%',     // anillo muy delgado y elegante
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw}`}}}
+    }
   });
 }
 function destroyChart(p){if(charts[p]){charts[p].destroy();delete charts[p];}}
@@ -786,10 +824,14 @@ function renderCSATCard(prefix,data,basedId){
     type:'doughnut',
     data:{labels:['Alto / Satisfecho','Medio / Neutral','Bajo / Crítico'],
       datasets:[{data:[pro,neu,det],
-        backgroundColor:['rgba(16,185,129,.85)','rgba(245,158,11,.85)','rgba(239,68,68,.85)'],
-        borderColor:['#059669','#D97706','#DC2626'],
-        borderWidth:3,hoverOffset:6,hoverBorderWidth:4}]},
-    options:{responsive:false,maintainAspectRatio:false,cutout:'70%',
+        backgroundColor:['rgba(34,197,94,.90)','rgba(245,158,11,.90)','rgba(250,52,94,.90)'],
+        borderColor:['rgba(0,0,0,0)','rgba(0,0,0,0)','rgba(0,0,0,0)'],
+        borderWidth:0,
+        spacing:2,
+        hoverBackgroundColor:['#16A34A','#D97706','#D42050'],
+        hoverOffset:4}]},
+    options:{responsive:false,maintainAspectRatio:false,
+      cutout:'76%',
       plugins:{legend:{display:false}}}
   });
 }
@@ -875,10 +917,47 @@ async function openReport(prefix){
     modulo='CSAT_REUNION';
   }
 
+  // Construir prompt específico según módulo y datos reales
+  const neg=comentariosData.filter(r=>+r.puntuacion<=6);
+  const neu2=comentariosData.filter(r=>{const v=+r.puntuacion;return v>=7&&v<=8;});
+  const pos=comentariosData.filter(r=>+r.puntuacion>=9);
+  const scoreActual=comentariosData.length?Math.round(((pos.length-neg.length)/comentariosData.length)*100):0;
+
+  const moduloLabel={nps1:'NPS de recomendación de la aplicación Apprecio',nps2:'NPS de calidad de atención del KAM trimestral',csat1:'CSAT de satisfacción con la plataforma (post abono trimestral)',csat2:'CSAT de calidad del ejecutivo comercial (post reunión)'}[prefix]||modulo;
+
+  const resumenComentarios=(arr,lbl)=>{
+    if(!arr.length)return``;
+    return`\n[${lbl} - ${arr.length} respuestas]\n`+arr.slice(0,15).map((r,i)=>`${i+1}. ${r.empresa||r.email||'Empresa N/A'} (nota ${r.puntuacion}): "${r.comentario}"`).join('\n');
+  };
+
+  const promptContextual=`Eres el analista CX senior de Apprecio, una plataforma B2B de beneficios para empleados en Latinoamérica.
+
+MÉTRICA ANALIZADA: ${moduloLabel}
+SCORE ACTUAL: ${scoreActual>0?'+':''}${scoreActual} puntos
+DISTRIBUCIÓN: ${pos.length} promotores (≥9) · ${neu2.length} neutros (7-8) · ${neg.length} detractores (≤6)
+TOTAL RESPUESTAS: ${comentariosData.length}
+${resumenComentarios(neg,'NEGATIVOS')}${resumenComentarios(neu2,'NEUTROS')}${resumenComentarios(pos,'POSITIVOS')}
+
+TAREA: Basándote EXCLUSIVAMENTE en los comentarios reales anteriores:
+1. **Análisis de Negativos**: ¿Qué patrones concretos se repiten? ¿Qué está fallando?
+2. **Análisis de Neutros**: ¿Qué aspectos generan indiferencia? ¿Qué falta para convertirlos en promotores?
+3. **Análisis de Positivos**: ¿Qué valoran más los promotores? ¿Qué podemos amplificar?
+4. **Plan de Acción (5 acciones)**: Acciones específicas y accionables para subir el score de ${moduloLabel}, basadas en los comentarios reales. Cada acción debe mencionar el problema que resuelve.
+
+Responde en español, de forma ejecutiva y directa. NO uses frases genéricas. Cada punto debe basarse en los comentarios reales proporcionados.`;
+
   const payload={
     modulo,
     tipo:'REPORTE_RESPUESTAS_ABIERTAS',
-    datos:{total:comentariosData.length,comentarios:comentariosData,instrucciones:'Agrupa los comentarios en NEGATIVOS, NEUTROS y POSITIVOS. Para cada grupo muestra un resumen de los patrones principales. Al final genera un PLAN DE ACCIÓN concreto con 5 acciones para mejorar el score basándote en los comentarios negativos y neutros.'}
+    prompt:promptContextual,
+    datos:{
+      total:comentariosData.length,
+      score:scoreActual,
+      distribucion:{promotores:pos.length,neutros:neu2.length,detractores:neg.length},
+      comentarios:comentariosData,
+      // instrucciones para el nodo n8n que construye el prompt de Ollama
+      instrucciones:promptContextual
+    }
   };
 
   try{
@@ -983,13 +1062,35 @@ async function sendAIChat(tab){
   sendBtn.textContent='Analizando...';
   aiChatHistory[tab].push({role:'user',content:text});
 
-  // Contexto de datos actuales
+  // Contexto de datos actuales — rico y específico
   const ctx=buildContext(tab);
+
+  // Prompt del sistema con datos reales embebidos
+  const systemPrompt=`Eres el asistente de CX de Apprecio Beat, plataforma B2B de beneficios para empleados en Latinoamérica.
+
+DATOS ACTUALES DEL DASHBOARD:
+${JSON.stringify(ctx,null,2)}
+
+REGLAS:
+- Solo respondes sobre métricas NPS, CSAT, clientes en riesgo, planes de acción y estrategias CX de Apprecio.
+- Usa los datos reales del contexto para fundamentar tus respuestas. Menciona empresas, scores y comentarios concretos cuando sea relevante.
+- Si preguntan sobre algo ajeno (clima, deportes, política, etc.), declina amablemente y redirige al contexto CX.
+- Responde en español, de forma ejecutiva y concisa. Máximo 300 palabras.
+- Si hay clientes de riesgo en el contexto, nómbralos específicamente.
+- Historial de conversación: ${JSON.stringify(aiChatHistory[tab].slice(-4))}
+
+PREGUNTA DEL USUARIO: ${text}`;
+
   const payload={
     modulo:tab.toUpperCase()+'_CHAT',
     tipo:'CHAT_CX',
-    datos:{pregunta:text,contexto:ctx,historial:aiChatHistory[tab].slice(-6)},
-    instrucciones:'Eres el asistente de CX de Apprecio Beat. Solo respondes sobre métricas NPS, CSAT, clientes en riesgo, planes de acción y estrategias para mejorar los indicadores. Si la pregunta no está relacionada, declina amablemente. Responde en español, de forma concisa y ejecutiva.'
+    prompt:systemPrompt,
+    datos:{
+      pregunta:text,
+      contexto:ctx,
+      historial:aiChatHistory[tab].slice(-6),
+      instrucciones:systemPrompt
+    }
   };
   try{
     const res=await fetch(N8N_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
